@@ -11,8 +11,13 @@ namespace QuartzHostedService
 {
     public static class IServiceCollectionExtensions
     {
+        public static IJobRegistrator UseQuartzHostedService(this IServiceCollection services)
+        {
+            return UseQuartzHostedService(services, null);
+        }
+
         public static IJobRegistrator UseQuartzHostedService(this IServiceCollection services,
-            Action<NameValueCollection> stdSchedulerFactoryOptions)
+        Action<NameValueCollection> stdSchedulerFactoryOptions)
         {
             services.AddHostedService<QuartzHostedService>();
 
@@ -23,7 +28,7 @@ namespace QuartzHostedService
                 var result = new StdSchedulerFactory();
                 if (options.Count > 0)
                     result.Initialize(options);
-                return new StdSchedulerFactory();
+                return result;
             });
             services.AddTransient<IJobFactory, ServiceCollectionJobFactory>();
 
