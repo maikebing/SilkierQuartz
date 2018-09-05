@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>mukmyash</Authors>
+    <Company />
+    <Version>0.0.1</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/mukmyash/QuartzHostedService</RepositoryUrl>
+    <Description>Wrapper above [Quartz.NET] (https://github.com/quartznet/quartznet) for .NET Core.</Description>
+    <PackageTags>scheduling tasks jobs triggers scheduler threading quartz</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
