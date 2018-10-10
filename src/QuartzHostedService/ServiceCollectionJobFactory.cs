@@ -1,4 +1,4 @@
-﻿using Quartz;
+using Quartz;
 using Quartz.Spi;
 using System;
 using System.Collections.Generic;
@@ -17,8 +17,11 @@ namespace QuartzHostedService
 
         public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
         {
-            return Container.GetService(bundle.JobDetail.JobType) as IJob;
-        }
+            using (var scoped = Container.CreateScope())
+            {
+                return scoped.ServiceProvider.GetService(bundle.JobDetail.JobType) as IJob;
+            }
+	}
 
         public void ReturnJob(IJob job)
         {
