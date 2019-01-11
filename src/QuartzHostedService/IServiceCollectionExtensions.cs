@@ -15,7 +15,17 @@ namespace QuartzHostedService
         {
             return UseQuartzHostedService(services, null);
         }
+        public static IServiceCollection AddQuartzHostedService(this IServiceCollection services)
+        {
+            return AddQuartzHostedService(services, null);
 
+        }
+        public static IServiceCollection AddQuartzHostedService(this IServiceCollection services,
+                                                    Action<NameValueCollection> stdSchedulerFactoryOptions)
+        {
+            var re = services.UseQuartzHostedService(stdSchedulerFactoryOptions);
+            return re.Services;
+        }
         public static IJobRegistrator UseQuartzHostedService(this IServiceCollection services,
         Action<NameValueCollection> stdSchedulerFactoryOptions)
         {

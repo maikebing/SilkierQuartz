@@ -19,7 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleQuartzHostedService", "sample\SampleQuartzHostedService\SampleQuartzHostedService.csproj", "{DE3C9BAF-B262-4346-996C-283E974C0449}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleQuartzHostedService", "sample\SampleQuartzHostedService\SampleQuartzHostedService.csproj", "{DE3C9BAF-B262-4346-996C-283E974C0449}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreSampleQuartzHostedService", "AspNetCoreSampleQuartzHostedService\AspNetCoreSampleQuartzHostedService.csproj", "{714C8496-11F6-4DD4-B3A8-9CED74F38215}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +69,18 @@ Global
 		{DE3C9BAF-B262-4346-996C-283E974C0449}.Release|x64.Build.0 = Release|Any CPU
 		{DE3C9BAF-B262-4346-996C-283E974C0449}.Release|x86.ActiveCfg = Release|Any CPU
 		{DE3C9BAF-B262-4346-996C-283E974C0449}.Release|x86.Build.0 = Release|Any CPU
+		{714C8496-11F6-4DD4-B3A8-9CED74F38215}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{714C8496-11F6-4DD4-B3A8-9CED74F38215}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{714C8496-11F6-4DD4-B3A8-9CED74F38215}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{714C8496-11F6-4DD4-B3A8-9CED74F38215}.Debug|x64.Build.0 = Debug|Any CPU
+		{714C8496-11F6-4DD4-B3A8-9CED74F38215}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{714C8496-11F6-4DD4-B3A8-9CED74F38215}.Debug|x86.Build.0 = Debug|Any CPU
+		{714C8496-11F6-4DD4-B3A8-9CED74F38215}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{714C8496-11F6-4DD4-B3A8-9CED74F38215}.Release|Any CPU.Build.0 = Release|Any CPU
+		{714C8496-11F6-4DD4-B3A8-9CED74F38215}.Release|x64.ActiveCfg = Release|Any CPU
+		{714C8496-11F6-4DD4-B3A8-9CED74F38215}.Release|x64.Build.0 = Release|Any CPU
+		{714C8496-11F6-4DD4-B3A8-9CED74F38215}.Release|x86.ActiveCfg = Release|Any CPU
+		{714C8496-11F6-4DD4-B3A8-9CED74F38215}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +89,7 @@ Global
 		{08939639-5650-4141-9CC7-9B2956701488} = {DD437750-ADAF-4565-9B50-959A92A67100}
 		{B6BE5ED4-B7F3-48C3-8374-8B479F40F5F2} = {EDF98575-67B2-4C80-87FC-051AAF2A9E8A}
 		{DE3C9BAF-B262-4346-996C-283E974C0449} = {B2530695-ADDC-4F87-9B86-E5AEA6FF8EEC}
+		{714C8496-11F6-4DD4-B3A8-9CED74F38215} = {B2530695-ADDC-4F87-9B86-E5AEA6FF8EEC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C92A5047-9DD9-4F11-9FEE-F1AB1679F94F}
