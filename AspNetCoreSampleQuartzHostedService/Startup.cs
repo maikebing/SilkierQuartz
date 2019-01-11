@@ -33,20 +33,20 @@ namespace AspNetCoreSampleQuartzHostedService
             services.Configure<InjectProperty>(options => { options.WriteText = "This is inject string"; });
             services.AddQuartzHostedService()
                     .AddQuartzJob<HelloJob>()
-                    .AddQuartzJob< InjectSampleJob>()
+                    .AddQuartzJob<InjectSampleJob>()
                     .AddQuartzJob<HelloJobSingle>()
                     .AddQuartzJob<InjectSampleJobSingle>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, AppSettings  settings)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptions<AppSettings> settings)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             app.UseMvc();
-            if (settings.EnableHelloSingleJob)
+            if (settings.Value.EnableHelloSingleJob)
             {
                 app.UseQuartzJob<HelloJobSingle>(TriggerBuilder.Create().WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever()))
                 .UseQuartzJob<InjectSampleJobSingle>(() =>
@@ -55,7 +55,7 @@ namespace AspNetCoreSampleQuartzHostedService
                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever());
                 });
             }
-            if (settings.EnableHelloJob)
+            if (settings.Value.EnableHelloJob)
             {
                 app.UseQuartzJob<HelloJob>(new List<TriggerBuilder>
                 {
@@ -64,14 +64,14 @@ namespace AspNetCoreSampleQuartzHostedService
                     TriggerBuilder.Create()
                     .WithSimpleSchedule(x => x.WithIntervalInSeconds(2).RepeatForever())
                 });
-           
-            app.UseQuartzJob<InjectSampleJob>(() =>
-            {
-                var result = new List<TriggerBuilder>();
-                result.Add(TriggerBuilder.Create()
-                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(10).RepeatForever()));
-                return result;
-            });
+
+                app.UseQuartzJob<InjectSampleJob>(() =>
+                {
+                    var result = new List<TriggerBuilder>();
+                    result.Add(TriggerBuilder.Create()
+                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(10).RepeatForever()));
+                    return result;
+                });
             }
         }
 
