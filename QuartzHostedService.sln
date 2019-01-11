@@ -16,12 +16,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		.travis.yml = .travis.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleQuartzHostedService", "sample\SampleQuartzHostedService\SampleQuartzHostedService.csproj", "{DE3C9BAF-B262-4346-996C-283E974C0449}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreSampleQuartzHostedService", "AspNetCoreSampleQuartzHostedService\AspNetCoreSampleQuartzHostedService.csproj", "{714C8496-11F6-4DD4-B3A8-9CED74F38215}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreSampleQuartzHostedService", "AspNetCoreSampleQuartzHostedService\AspNetCoreSampleQuartzHostedService.csproj", "{714C8496-11F6-4DD4-B3A8-9CED74F38215}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
