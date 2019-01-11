@@ -30,7 +30,7 @@ namespace QuartzHostedService
                     result.Initialize(options);
                 return result;
             });
-            services.AddTransient<IJobFactory, ServiceCollectionJobFactory>();
+            services.AddSingleton<IJobFactory, ServiceCollectionJobFactory>();
 
             return new JobRegistrator(services);
         }
