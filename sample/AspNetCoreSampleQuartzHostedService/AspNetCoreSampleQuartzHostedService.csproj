@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\QuartzHostedService\QuartzHostedService.csproj" />
+    <ProjectReference Include="..\..\src\QuartzHostedService\QuartzHostedService.csproj" />
   </ItemGroup>
 
 </Project>
