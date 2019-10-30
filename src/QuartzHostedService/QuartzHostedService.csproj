@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <Authors>mukmyash</Authors>
     <Company />
-    <Version>0.0.6</Version>
+    <Version>0.0.7</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/mukmyash/QuartzHostedService</RepositoryUrl>
     <Description>Wrapper above [Quartz.NET] (https://github.com/quartznet/quartznet) for .NET Core.</Description>
