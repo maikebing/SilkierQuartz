@@ -4,11 +4,12 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <Authors>mukmyash</Authors>
     <Company />
-    <Version>0.0.5</Version>
+    <Version>0.0.6</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/mukmyash/QuartzHostedService</RepositoryUrl>
     <Description>Wrapper above [Quartz.NET] (https://github.com/quartznet/quartznet) for .NET Core.</Description>
     <PackageTags>scheduling tasks jobs triggers scheduler threading quartz</PackageTags>
+    <PackageId>QuartzHostedServiceEx</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
