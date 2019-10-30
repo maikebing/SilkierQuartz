@@ -9,7 +9,7 @@
     <RepositoryUrl>https://github.com/mukmyash/QuartzHostedService</RepositoryUrl>
     <Description>Wrapper above [Quartz.NET] (https://github.com/quartznet/quartznet) for .NET Core.</Description>
     <PackageTags>scheduling tasks jobs triggers scheduler threading quartz</PackageTags>
-    <PackageId>QuartzHostedServiceEx</PackageId>
+    <PackageId>QuartzHostedService</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
