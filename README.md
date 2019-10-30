@@ -29,3 +29,26 @@ Wrapper above [Quartz.NET] (https://github.com/quartznet/quartznet) for .NET Cor
             return result;
         })
     ```
+1. ConfigureQuartzHost  Must be call after Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults()    
+
+    ``` 
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                 .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                    webBuilder.ConfigureKestrel(serverOptions =>
+                    {
+                        serverOptions.AllowSynchronousIO = true;
+                    });
+                })
+                .ConfigureQuartzHost();
+    }
+    ```
