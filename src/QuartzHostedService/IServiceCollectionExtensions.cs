@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
@@ -26,11 +28,29 @@ namespace QuartzHostedService
             var re = services.UseQuartzHostedService(stdSchedulerFactoryOptions);
             return re.Services;
         }
+    
+        private static bool _quartzHostedServiceIsAdded = false;
+        /// <summary>
+        ///  Must be call after Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults()
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <seealso cref="https://github.com/aspnet/AspNetCore.Docs/issues/14381"/>
+        ///  <seealso cref="https://github.com/aspnet/AspNetCore/pull/11575"/>
+        /// <returns></returns>
+        public static IHostBuilder ConfigureQuartzHost(this IHostBuilder builder)
+        {
+            _quartzHostedServiceIsAdded = true;
+            return builder.ConfigureServices(services => services.AddHostedService<QuartzHostedService>());
+        }
+
+
         public static IJobRegistrator UseQuartzHostedService(this IServiceCollection services,
         Action<NameValueCollection> stdSchedulerFactoryOptions)
         {
-            services.AddHostedService<QuartzHostedService>();
-
+            if (!_quartzHostedServiceIsAdded)
+            {
+                services.AddHostedService<QuartzHostedService>();
+            }
             services.AddTransient<ISchedulerFactory>(provider =>
             {
                 var options = new NameValueCollection();
@@ -41,7 +61,6 @@ namespace QuartzHostedService
                 return result;
             });
             services.AddSingleton<IJobFactory, ServiceCollectionJobFactory>();
-
             return new JobRegistrator(services);
         }
     }

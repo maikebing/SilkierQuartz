@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreSampleQuartzHostedService.Jobs;
+using CrystalQuartz.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Quartz;
@@ -27,7 +29,7 @@ namespace AspNetCoreSampleQuartzHostedService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddControllersWithViews();
             services.AddOptions();
             services.Configure<AppSettings>(Configuration);
             services.Configure<InjectProperty>(options => { options.WriteText = "This is inject string"; });
@@ -39,13 +41,18 @@ namespace AspNetCoreSampleQuartzHostedService
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptions<AppSettings> settings)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<AppSettings> settings, ISchedulerFactory factory)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseMvc();
+            app.UseRouting();
+            app.UseEndpoints(endpoint =>
+            {
+                endpoint.MapControllers();
+            });
+            app.UseCrystalQuartz(() => factory.GetScheduler().Result);
             if (settings.Value.EnableHelloSingleJob)
             {
                 app.UseQuartzJob<HelloJobSingle>(TriggerBuilder.Create().WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever()))
@@ -72,6 +79,7 @@ namespace AspNetCoreSampleQuartzHostedService
                         .WithSimpleSchedule(x => x.WithIntervalInSeconds(10).RepeatForever()));
                     return result;
                 });
+          
             }
         }
 

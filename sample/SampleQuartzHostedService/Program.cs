@@ -18,7 +18,6 @@ namespace SampleQuartzHostedService
                 {
                     services.AddOptions();
                     services.Configure<InjectProperty>(options=> { options.WriteText = "This is inject string"; });
-
                     services.UseQuartzHostedService()
                     .RegiserJob<HelloJob>(() =>
                     {
@@ -36,7 +35,7 @@ namespace SampleQuartzHostedService
                             .WithSimpleSchedule(x => x.WithIntervalInSeconds(10).RepeatForever()));
                         return result;
                     });
-                });
+                }).ConfigureQuartzHost();
 
             await hostBuilder.RunConsoleAsync();
         }
