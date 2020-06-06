@@ -11,21 +11,21 @@
 		<Version>1.0.5</Version>
 		<Product>SilkierQuartz</Product>
 		<Title>Web management tool for Quartz.NET</Title>
-		<Authors>Jan Lucansky</Authors>
-		<PackageProjectUrl>https://github.com/jlucansky/SilkierQuartz</PackageProjectUrl>
+		<Authors>Jan Lucansky, Yanhong Ma,  mukmyash</Authors>
+		<PackageProjectUrl>https://github.com/maikebing/SilkierQuartz</PackageProjectUrl>
 		<PackageIconUrl></PackageIconUrl>
 		<Description>Powerful, easy to use web management tool for Quartz.NET</Description>
 		<PackageTags>quartz;web;ui</PackageTags>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<FileVersion>1.0.0.0</FileVersion>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<Copyright>Copyright © 2020 Jan Lucansky</Copyright>
+		<Copyright>Copyright © 2020 Jan Lucansky, Yanhong Ma,  mukmyash</Copyright>
 		<RepositoryType>git</RepositoryType>
-		<RepositoryUrl>https://github.com/jlucansky/SilkierQuartz</RepositoryUrl>
+		<RepositoryUrl>https://github.com/maikebing/SilkierQuartz</RepositoryUrl>
 		<EmbeddedResourceUseDependentUponConvention>false</EmbeddedResourceUseDependentUponConvention>
 		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<PackageId>SilkierQuartzFork</PackageId>
+		<PackageId>SilkierQuartz</PackageId>
 		<PackageIcon>logo.png</PackageIcon>
 	</PropertyGroup>
 

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Quartz;
 using SilkierQuartz;
+using SilkierQuartz.HostedService;
 
 namespace AspNetCore31
 {
