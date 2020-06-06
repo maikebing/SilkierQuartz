@@ -32,8 +32,7 @@ namespace AspNetCore31
             services.AddOptions();
             services.Configure<AppSettings>(Configuration);
             services.Configure<InjectProperty>(options => { options.WriteText = "This is inject string"; });
-            services.AddQuartzHostedService()
-                    .AddQuartzJob<HelloJob>()
+            services.AddQuartzJob<HelloJob>()
                     .AddQuartzJob<InjectSampleJob>()
                     .AddQuartzJob<HelloJobSingle>()
                     .AddQuartzJob<InjectSampleJobSingle>();

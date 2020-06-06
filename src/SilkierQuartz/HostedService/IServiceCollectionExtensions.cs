@@ -4,12 +4,13 @@ using Microsoft.Extensions.Hosting;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
+using SilkierQuartz.HostedService;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
 
-namespace SilkierQuartz.HostedService
+namespace SilkierQuartz
 {
     public static class IServiceCollectionExtensions
     {

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using Quartz.Spi;
+using SilkierQuartz.HostedService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SilkierQuartz.HostedService
+namespace SilkierQuartz
 {
     public static class IJobRegistratorExtensions
     {
