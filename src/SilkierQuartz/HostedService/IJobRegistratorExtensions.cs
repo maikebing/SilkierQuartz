@@ -48,15 +48,20 @@ namespace SilkierQuartz
 
         public static IServiceCollection AddQuartzJob<TJob>(this IServiceCollection services, string identity, string description) where TJob : class
         {
-            if (!services.Any(sd => sd.ServiceType == typeof(TJob)))
+             
+            return services.AddQuartzJob(typeof(TJob),identity,description);
+        }
+
+        public static IServiceCollection AddQuartzJob(this IServiceCollection services, Type t, string identity, string description)  
+        {
+            if (!services.Any(sd => sd.ServiceType ==t))
             {
-                services.AddTransient<TJob>();
+                services.AddTransient(t);
             }
-            var jobDetail = JobBuilder.Create(typeof(TJob)).WithIdentity(identity).WithDescription(description).Build();
+            var jobDetail = JobBuilder.Create(t).WithIdentity(identity).WithDescription(description).Build();
             services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(jobDetail, new List<ITrigger>()));
             return services;
         }
-
 
         public static IServiceCollection AddQuartzJobDetail(this IServiceCollection services, IJobDetail detail) 
         {
@@ -113,8 +118,33 @@ namespace SilkierQuartz
           IEnumerable<TriggerBuilder> triggerBuilders)
           where TJob : class, IJob
         {
+            return app.UseQuartzJob(typeof(TJob), triggerBuilders);
+        }
+        public static IApplicationBuilder UseQuartzJob(
+             this IApplicationBuilder app, Type t,
+             TriggerBuilder triggerBuilder)
+        {
+            return app.UseQuartzJob(t, new TriggerBuilder[] { triggerBuilder });
+        }
+        public static IApplicationBuilder UseQuartzJob(
+              this IApplicationBuilder app, Type t,
+             Func<TriggerBuilder> triggerBuilders_func)
+        {
+            return app.UseQuartzJob(t,new TriggerBuilder[] { triggerBuilders_func() });
+        }
+        public static IApplicationBuilder UseQuartzJob(
+           this IApplicationBuilder app, Type t,
+           Func<IEnumerable<TriggerBuilder>> triggerBuilders_func)
+        {
+            return app.UseQuartzJob(t, triggerBuilders_func());
+        }
+
+        public static IApplicationBuilder UseQuartzJob(
+   this IApplicationBuilder app, Type t,
+   IEnumerable<TriggerBuilder> triggerBuilders)
+        {
             var _scheduleJobs = app.ApplicationServices.GetService<IEnumerable<IScheduleJob>>();
-            var job = from js in _scheduleJobs where js.JobDetail.JobType == typeof(TJob) select js;
+            var job = from js in _scheduleJobs where js.JobDetail.JobType == t select js;
             if (job.Any())
             {
                 var scheduleJob = job.First();
@@ -126,6 +156,7 @@ namespace SilkierQuartz
             }
             return app;
         }
+
         public static IJobRegistrator RegiserJob<TJob>(
             this IJobRegistrator jobRegistrator,
             IEnumerable<TriggerBuilder> triggerBuilders)
