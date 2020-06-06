@@ -4,11 +4,11 @@ using System.Dynamic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Quartzmin.Models;
-using Quartzmin.Helpers;
+using SilkierQuartz.Models;
+using SilkierQuartz.Helpers;
 using Quartz;
 
-namespace Quartzmin.Controllers
+namespace SilkierQuartz.Controllers
 {
 	#region Target-Specific Directives
 

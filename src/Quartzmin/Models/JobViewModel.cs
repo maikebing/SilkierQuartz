@@ -1,8 +1,8 @@
-﻿using Quartzmin.Helpers;
+﻿using SilkierQuartz.Helpers;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Quartzmin.Models
+namespace SilkierQuartz.Models
 {
     public class JobViewModel : IHasValidation
     {

@@ -1,7 +1,7 @@
 ﻿using Quartz;
 using Quartz.Impl.Matchers;
-using Quartzmin.Helpers;
-using Quartzmin.Models;
+using SilkierQuartz.Helpers;
+using SilkierQuartz.Models;
 using Quartz.Plugins.RecentHistory;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ using IActionResult = System.Web.Http.IHttpActionResult;
 #endif
 #endregion
 
-namespace Quartzmin.Controllers
+namespace SilkierQuartz.Controllers
 {
     public class TriggersController : PageControllerBase
     {

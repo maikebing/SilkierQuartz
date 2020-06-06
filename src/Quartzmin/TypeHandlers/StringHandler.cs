@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Quartzmin.TypeHandlers
+namespace SilkierQuartz.TypeHandlers
 {
     [EmbeddedTypeHandlerResources(nameof(StringHandler))]
     public class StringHandler : TypeHandlerBase

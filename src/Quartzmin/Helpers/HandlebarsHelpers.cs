@@ -1,6 +1,6 @@
 ﻿using HandlebarsDotNet;
-using Quartzmin.Models;
-using Quartzmin.TypeHandlers;
+using SilkierQuartz.Models;
+using SilkierQuartz.TypeHandlers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,9 +10,9 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 
-using static Quartzmin.Controllers.PageControllerBase;
+using static SilkierQuartz.Controllers.PageControllerBase;
 
-namespace Quartzmin.Helpers
+namespace SilkierQuartz.Helpers
 {
     internal class HandlebarsHelpers
     {
@@ -57,7 +57,7 @@ namespace Quartzmin.Helpers
             h.RegisterHelper(nameof(eachItems), eachItems);
             h.RegisterHelper(nameof(ToBase64), ToBase64);
             h.RegisterHelper(nameof(footer), footer);
-            h.RegisterHelper(nameof(QuartzminVersion), QuartzminVersion);
+            h.RegisterHelper(nameof(SilkierQuartzVersion), SilkierQuartzVersion);
             h.RegisterHelper(nameof(Logo), Logo);
             h.RegisterHelper(nameof(ProductName), ProductName);
         }
@@ -258,7 +258,7 @@ namespace Quartzmin.Helpers
                 options.Template(writer, (object)context);
             }
         }
-        void QuartzminVersion(TextWriter output, dynamic context, params object[] arguments)
+        void SilkierQuartzVersion(TextWriter output, dynamic context, params object[] arguments)
         {
             var v = GetType().Assembly.GetCustomAttributes<AssemblyInformationalVersionAttribute>().FirstOrDefault();
             output.Write(v.InformationalVersion);

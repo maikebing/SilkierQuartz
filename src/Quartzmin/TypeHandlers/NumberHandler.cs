@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace Quartzmin.TypeHandlers
+namespace SilkierQuartz.TypeHandlers
 {
     [EmbeddedTypeHandlerResources(nameof(NumberHandler), Script = "")]
     public class NumberHandler : TypeHandlerBase

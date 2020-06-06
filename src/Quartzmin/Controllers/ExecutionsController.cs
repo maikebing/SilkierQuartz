@@ -1,6 +1,6 @@
 ﻿using Quartz;
-using Quartzmin.Helpers;
-using Quartzmin.Models;
+using SilkierQuartz.Helpers;
+using SilkierQuartz.Models;
 using Quartz.Plugins.RecentHistory;
 using Quartz.Impl.Matchers;
 using System;
@@ -18,7 +18,7 @@ using IActionResult = System.Web.Http.IHttpActionResult;
 #endif
 #endregion
 
-namespace Quartzmin.Controllers
+namespace SilkierQuartz.Controllers
 {
     public class ExecutionsController : PageControllerBase
     {

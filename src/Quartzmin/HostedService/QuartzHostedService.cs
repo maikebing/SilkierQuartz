@@ -10,7 +10,7 @@ using Quartz;
 using Quartz.Spi;
 using System.Linq;
 
-namespace Quartzmin.HostedService
+namespace SilkierQuartz.HostedService
 {
     internal class QuartzHostedService : IHostedService
     {

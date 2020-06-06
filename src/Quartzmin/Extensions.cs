@@ -1,6 +1,6 @@
 ﻿using Quartz;
-using Quartzmin.Models;
-using Quartzmin.TypeHandlers;
+using SilkierQuartz.Models;
+using SilkierQuartz.TypeHandlers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -21,7 +21,7 @@ using HttpRequest = System.Net.Http.HttpRequestMessage;
 #endif
 #endregion
 
-namespace Quartzmin
+namespace SilkierQuartz
 {
     internal static class Extensions
     {

@@ -14,7 +14,7 @@ using IActionResult = System.Web.Http.IHttpActionResult;
 #endif
 #endregion
 
-namespace Quartzmin.Controllers
+namespace SilkierQuartz.Controllers
 {
     public class HistoryController : PageControllerBase
     {

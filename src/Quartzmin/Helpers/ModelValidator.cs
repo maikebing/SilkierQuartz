@@ -1,11 +1,11 @@
-﻿using Quartzmin.Models;
+﻿using SilkierQuartz.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
-namespace Quartzmin.Helpers
+namespace SilkierQuartz.Helpers
 {
     public static class ModelValidator
     {

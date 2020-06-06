@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Quartz;
 
-namespace Quartzmin.HostedService
+namespace SilkierQuartz.HostedService
 {
     internal interface IScheduleJob
     {

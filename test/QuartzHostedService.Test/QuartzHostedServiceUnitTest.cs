@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
-using Quartzmin.HostedService;
+using SilkierQuartz.HostedService;
 namespace SilkierQuartz.Test
 {
     public class QuartzHostedServiceUnitTest

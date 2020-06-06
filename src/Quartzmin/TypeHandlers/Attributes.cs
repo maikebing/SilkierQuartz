@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace Quartzmin.TypeHandlers
+namespace SilkierQuartz.TypeHandlers
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class TypeHandlerResourcesAttribute : Attribute

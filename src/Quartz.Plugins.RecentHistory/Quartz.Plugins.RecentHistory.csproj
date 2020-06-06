@@ -11,15 +11,15 @@
     <Product>Quartz.Plugins.RecentHistory</Product>
     <Title>Quartz.NET plugin to persist recent job execution history</Title>
     <Authors>Jan Lucansky</Authors>
-    <PackageProjectUrl>https://github.com/jlucansky/Quartzmin</PackageProjectUrl>
-    <Description>This is supporting package for Quartzmin</Description>
+    <PackageProjectUrl>https://github.com/jlucansky/SilkierQuartz</PackageProjectUrl>
+    <Description>This is supporting package for SilkierQuartz</Description>
     <PackageTags>quartz;recent;history</PackageTags>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Copyright>Copyright © 2018 Jan Lucansky</Copyright>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/jlucansky/Quartzmin</RepositoryUrl>
+    <RepositoryUrl>https://github.com/jlucansky/SilkierQuartz</RepositoryUrl>
     <PackageId>Quartz.Plugins.RecentHistoryFork</PackageId>
   </PropertyGroup>
 

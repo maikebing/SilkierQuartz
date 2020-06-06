@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Quartzmin.Helpers
+namespace SilkierQuartz.Helpers
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
     public class FromFormAttribute : Attribute

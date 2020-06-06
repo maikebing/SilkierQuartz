@@ -1,12 +1,12 @@
 ﻿using JsonSubTypes;
 using Newtonsoft.Json;
-using Quartzmin.TypeHandlers;
+using SilkierQuartz.TypeHandlers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Quartzmin
+namespace SilkierQuartz
 {
     public class TypeHandlerService
     {

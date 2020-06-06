@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{B669A725-70A9-4E80-BAC7-9765A14CAAA4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quartzmin", "src\Quartzmin\Quartzmin.csproj", "{D7BBB236-B0D3-4CB8-86C8-C7E925BBBE38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilkierQuartz", "src\Quartzmin\SilkierQuartz.csproj", "{D7BBB236-B0D3-4CB8-86C8-C7E925BBBE38}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quartz.Plugins.RecentHistory", "src\Quartz.Plugins.RecentHistory\Quartz.Plugins.RecentHistory.csproj", "{4CEFA319-5052-4B65-B1B8-647CCFFF2A1C}"
 EndProject

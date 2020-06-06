@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Quartzmin.Owin
+namespace SilkierQuartz.Owin
 {
     /// <summary>
     /// Looks up files using embedded resources in the specified assembly.

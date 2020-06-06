@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
 
-namespace Quartzmin.HostedService
+namespace SilkierQuartz.HostedService
 {
     public static class IServiceCollectionExtensions
     {

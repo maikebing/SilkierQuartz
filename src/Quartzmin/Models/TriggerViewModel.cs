@@ -2,7 +2,7 @@
 using Quartz;
 using Quartz.Impl.Matchers;
 using Quartz.Impl.Triggers;
-using Quartzmin.Helpers;
+using SilkierQuartz.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 using static Quartz.MisfireInstruction;
 
-namespace Quartzmin.Models
+namespace SilkierQuartz.Models
 {
     public class TriggerViewModel : IHasValidation
     {

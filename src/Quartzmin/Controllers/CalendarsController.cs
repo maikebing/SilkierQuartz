@@ -1,6 +1,6 @@
 ﻿using Quartz;
-using Quartzmin.Helpers;
-using Quartzmin.Models;
+using SilkierQuartz.Helpers;
+using SilkierQuartz.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ using IActionResult = System.Web.Http.IHttpActionResult;
 #endif
 #endregion
 
-namespace Quartzmin.Controllers
+namespace SilkierQuartz.Controllers
 {
     public class CalendarsController : PageControllerBase
     {

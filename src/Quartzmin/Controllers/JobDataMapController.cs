@@ -1,6 +1,6 @@
-﻿using Quartzmin.Helpers;
-using Quartzmin.Models;
-using Quartzmin.TypeHandlers;
+﻿using SilkierQuartz.Helpers;
+using SilkierQuartz.Models;
+using SilkierQuartz.TypeHandlers;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Linq;
@@ -20,7 +20,7 @@ using System.Web.Http.Results;
 #endif
 #endregion
 
-namespace Quartzmin.Controllers
+namespace SilkierQuartz.Controllers
 {
     public class JobDataMapController : PageControllerBase
     {

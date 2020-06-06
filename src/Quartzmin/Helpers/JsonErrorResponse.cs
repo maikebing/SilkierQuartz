@@ -1,5 +1,5 @@
 ﻿
-namespace Quartzmin.Helpers
+namespace SilkierQuartz.Helpers
 {
 #if (NETSTANDARD || NETCOREAPP)
     using Microsoft.AspNetCore.Mvc.Filters;

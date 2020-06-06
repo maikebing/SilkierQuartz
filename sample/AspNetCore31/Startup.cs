@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Quartz;
-using Quartzmin;
+using SilkierQuartz;
 
 namespace AspNetCore31
 {
@@ -27,7 +27,7 @@ namespace AspNetCore31
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddQuartzmin();
+            services.AddSilkierQuartz();
             services.AddOptions();
             services.Configure<AppSettings>(Configuration);
             services.Configure<InjectProperty>(options => { options.WriteText = "This is inject string"; });
@@ -54,7 +54,7 @@ namespace AspNetCore31
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
-            app.UseQuartzmin(new QuartzminOptions() { Scheduler = scheduler, VirtualPathRoot = "/Quartzmin" , UseLocalTime =true, DefaultDateFormat="yyyy-MM-dd", DefaultTimeFormat="HH:mm:ss" });
+            app.UseSilkierQuartz(new SilkierQuartzOptions() { Scheduler = scheduler, VirtualPathRoot = "/SilkierQuartz" , UseLocalTime =true, DefaultDateFormat="yyyy-MM-dd", DefaultTimeFormat="HH:mm:ss" });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

@@ -1,18 +1,18 @@
 ﻿using Quartz;
-using Quartzmin.TypeHandlers;
+using SilkierQuartz.TypeHandlers;
 using System.Collections.Generic;
 using System.IO;
 
-using Number = Quartzmin.TypeHandlers.NumberHandler.UnderlyingType;
+using Number = SilkierQuartz.TypeHandlers.NumberHandler.UnderlyingType;
 
-namespace Quartzmin
+namespace SilkierQuartz
 {
-    public class QuartzminOptions
+    public class SilkierQuartzOptions
     {
         /// <summary>
         /// Supports any value that is a viable as a img src attribute value: url, or base64
         /// src='data:image/jpeg;base64, LzlqLzRBQ...[end of base64 data]'
-        /// Defaults to the quartzmin original logo
+        /// Defaults to the SilkierQuartz original logo
         /// </summary>
         public string Logo { get; set; } = "Content/Images/logo.png";
 
@@ -50,7 +50,7 @@ namespace Quartzmin
             set => DateTimeSettings.UseLocalTime = value;
         }
 
-        public QuartzminOptions()
+        public SilkierQuartzOptions()
         {
             DefaultSelectedType = new StringHandler() { Name = "String" };
 

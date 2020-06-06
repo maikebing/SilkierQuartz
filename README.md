@@ -3,12 +3,12 @@
 [![NuGet](https://img.shields.io/nuget/v/SilkierQuartz.svg)](https://www.nuget.org/packages/SilkierQuartz)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-SilkierQuartz is a new after merging  [Quartzmin](https://github.com/jlucansky/Quartzmin) and  [QuartzHostedService](https://github.com/mukmyash/QuartzHostedService)!
+SilkierQuartz is a new after merging  [SilkierQuartz](https://github.com/jlucansky/SilkierQuartz) and  [QuartzHostedService](https://github.com/mukmyash/QuartzHostedService)!
 
 > [Quartz.NET](https://www.quartz-scheduler.net) is a full-featured, open source job scheduling system that can be used from smallest apps to large scale enterprise systems.
 
 
-> [Quartzmin](https://github.com/jlucansky/Quartzmin)  Quartzmin is powerful, easy to use web management tool for Quartz.NET
+> [SilkierQuartz](https://github.com/jlucansky/SilkierQuartz)  SilkierQuartz is powerful, easy to use web management tool for Quartz.NET
 
 >  [QuartzHostedService](https://github.com/mukmyash/QuartzHostedService) QuartzHostedService is easy to host Quartz as service in .Net Core !
 
@@ -18,11 +18,11 @@ So
 SilkierQuartz can be used within your existing application with minimum effort as a Quartz.NET plugin when it automatically creates embedded web server. Or it can be plugged into your existing OWIN-based web application as a middleware.
 
 
-![Demo](https://raw.githubusercontent.com/jlucansky/public-assets/master/Quartzmin/demo.gif)
+![Demo](https://raw.githubusercontent.com/jlucansky/public-assets/master/SilkierQuartz/demo.gif)
 
-The goal of this project is to provide convenient tool to utilize most of the functionality that Quartz.NET enables. The biggest challenge was to create a simple yet effective editor of job data map which is heart of Quartz.NET. Every job data map item is strongly typed and Quartzmin can be easily extended with a custom editor for your specific type beside standard supported types such as String, Integer, DateTime and so on. 
+The goal of this project is to provide convenient tool to utilize most of the functionality that Quartz.NET enables. The biggest challenge was to create a simple yet effective editor of job data map which is heart of Quartz.NET. Every job data map item is strongly typed and SilkierQuartz can be easily extended with a custom editor for your specific type beside standard supported types such as String, Integer, DateTime and so on. 
 
-Quartzmin was created with **Semantic UI** and **Handlebars.Net** as the template engine.
+SilkierQuartz was created with **Semantic UI** and **Handlebars.Net** as the template engine.
 
 ## Features
 - Add, modify jobs and triggers
@@ -74,7 +74,7 @@ public void ConfigureServices(IServiceCollection services)
 
 public void Configure(IApplicationBuilder app)
 {
-    app.UseSilkierQuartz(new QuartzminOptions()
+    app.UseSilkierQuartz(new SilkierQuartzOptions()
     {
         Scheduler = StdSchedulerFactory.GetDefaultScheduler().Result
     });

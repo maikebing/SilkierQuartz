@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace Quartzmin.TypeHandlers
+namespace SilkierQuartz.TypeHandlers
 {
     public abstract class TypeHandlerBase
     {
@@ -17,7 +17,7 @@ namespace Quartzmin.TypeHandlers
         internal static string GetTypeId(Type type) => type.FullName;
 
         /// <summary>
-        /// Unique name across <see cref="QuartzminOptions.StandardTypes"/>
+        /// Unique name across <see cref="SilkierQuartzOptions.StandardTypes"/>
         /// </summary>
         public string Name
         {

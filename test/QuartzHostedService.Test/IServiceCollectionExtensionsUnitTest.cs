@@ -4,8 +4,8 @@ using Microsoft.Extensions.Hosting;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
-using Quartzmin;
-using Quartzmin.HostedService;
+using SilkierQuartz;
+using SilkierQuartz.HostedService;
 using System;
 using Xunit;
 
@@ -22,7 +22,7 @@ namespace SilkierQuartz.Test
             var testClass = serviceCollection.BuildServiceProvider().GetRequiredService<IHostedService>();
             testClass.Should()
                 .NotBeNull()
-                .And.BeOfType<Quartzmin.HostedService.QuartzHostedService>();
+                .And.BeOfType<SilkierQuartz.HostedService.QuartzHostedService>();
         }
 
         [Fact(DisplayName = "«арегистрировали IJobFactory (дл¤ DI в Job'ах)")]

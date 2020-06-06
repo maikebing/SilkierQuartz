@@ -1,9 +1,9 @@
-﻿using Quartzmin.TypeHandlers;
+﻿using SilkierQuartz.TypeHandlers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Quartzmin.Models
+namespace SilkierQuartz.Models
 {
     public class JobDataMapItemBase : IHasValidation
     {

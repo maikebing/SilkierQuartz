@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
-namespace Quartzmin.TypeHandlers
+namespace SilkierQuartz.TypeHandlers
 {
     public class EnumHandler : OptionSetHandler
     {

@@ -9,11 +9,11 @@ using Microsoft.Extensions.FileProviders;
 using System;
 using System.Reflection;
 
-namespace Quartzmin
+namespace SilkierQuartz
 {
     public static class ApplicationBuilderExtensions
     {
-        public static void UseQuartzmin( this IApplicationBuilder app, QuartzminOptions options, Action<Services> configure = null )
+        public static void UseSilkierQuartz( this IApplicationBuilder app, SilkierQuartzOptions options, Action<Services> configure = null )
         {
             options = options ?? throw new ArgumentNullException( nameof( options ) );
 
@@ -32,19 +32,19 @@ namespace Quartzmin
 #if NETCOREAPP
             app.UseEndpoints( endpoints =>
             {
-                endpoints.MapControllerRoute( nameof( Quartzmin ), $"{options.VirtualPathRoot}/{{controller=Scheduler}}/{{action=Index}}" );
+                endpoints.MapControllerRoute( nameof( SilkierQuartz ), $"{options.VirtualPathRoot}/{{controller=Scheduler}}/{{action=Index}}" );
             } );
 #else
             app.UseMvc( routes =>
             {
                 routes.MapRoute(
-                    name: nameof( Quartzmin ),
+                    name: nameof( SilkierQuartz ),
                     template: "{controller=Scheduler}/{action=Index}" );
             } );
 #endif
         }
 
-        private static void UseFileServer( this IApplicationBuilder app, QuartzminOptions options )
+        private static void UseFileServer( this IApplicationBuilder app, SilkierQuartzOptions options )
         {
             IFileProvider fs;
             if ( string.IsNullOrEmpty( options.ContentRootDirectory ) )
@@ -64,14 +64,14 @@ namespace Quartzmin
         }
 
 #if NETCOREAPP
-        public static void AddQuartzmin( this IServiceCollection services )
+        public static void AddSilkierQuartz( this IServiceCollection services )
         {
             services.AddControllers()
                 .AddApplicationPart( Assembly.GetExecutingAssembly() )
                 .AddNewtonsoftJson();
         }
 #else
-        public static void AddQuartzmin( this IServiceCollection services )
+        public static void AddSilkierQuartz( this IServiceCollection services )
         {
             services.AddMvcCore()
                 .AddApplicationPart( Assembly.GetExecutingAssembly() )

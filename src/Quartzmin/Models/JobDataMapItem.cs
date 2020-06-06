@@ -1,6 +1,6 @@
-﻿using Quartzmin.TypeHandlers;
+﻿using SilkierQuartz.TypeHandlers;
 
-namespace Quartzmin.Models
+namespace SilkierQuartz.Models
 {
     public class JobDataMapItem : JobDataMapItemBase
     {

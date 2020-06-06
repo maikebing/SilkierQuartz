@@ -1,14 +1,14 @@
 ﻿using HandlebarsDotNet;
 using Quartz;
-using Quartzmin.Helpers;
+using SilkierQuartz.Helpers;
 
-namespace Quartzmin
+namespace SilkierQuartz
 {
     public class Services
     {
-        internal const string ContextKey = "quartzmin.services";
+        internal const string ContextKey = "SilkierQuartz.services";
 
-        public QuartzminOptions Options { get; set; }
+        public SilkierQuartzOptions Options { get; set; }
 
         public ViewEngine ViewEngine { get; set; }
 
@@ -20,7 +20,7 @@ namespace Quartzmin
 
         internal Cache Cache { get; private set; }
 
-        public static Services Create(QuartzminOptions options)
+        public static Services Create(SilkierQuartzOptions options)
         {
             var handlebarsConfiguration = new HandlebarsConfiguration()
             {

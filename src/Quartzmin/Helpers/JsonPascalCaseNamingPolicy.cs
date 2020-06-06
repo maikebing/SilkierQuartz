@@ -2,7 +2,7 @@
 using System;
 using System.Text.Json;
 
-namespace Quartzmin.Helpers
+namespace SilkierQuartz.Helpers
 {
     public class JsonPascalCaseNamingPolicy : JsonNamingPolicy
     {

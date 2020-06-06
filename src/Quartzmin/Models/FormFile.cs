@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Quartzmin.Models
+namespace SilkierQuartz.Models
 {
     public class FormFile
     {

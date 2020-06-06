@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Quartzmin.Models
+namespace SilkierQuartz.Models
 {
     public interface IHasValidation
     {

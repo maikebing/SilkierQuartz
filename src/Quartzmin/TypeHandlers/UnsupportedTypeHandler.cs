@@ -1,4 +1,4 @@
-﻿namespace Quartzmin.TypeHandlers
+﻿namespace SilkierQuartz.TypeHandlers
 {
     [EmbeddedTypeHandlerResources(nameof(UnsupportedTypeHandler), Script = "")]
     public class UnsupportedTypeHandler : TypeHandlerBase

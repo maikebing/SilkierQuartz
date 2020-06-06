@@ -1,4 +1,4 @@
-﻿namespace Quartzmin
+﻿namespace SilkierQuartz
 {
     internal static class DateTimeSettings
     {

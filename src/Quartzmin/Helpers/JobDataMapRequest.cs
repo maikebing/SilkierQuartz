@@ -1,4 +1,4 @@
-﻿using Quartzmin.Models;
+﻿using SilkierQuartz.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,7 +13,7 @@ using System.Net.Http;
 #endif
 #endregion
 
-namespace Quartzmin.Helpers
+namespace SilkierQuartz.Helpers
 {
     internal static class JobDataMapRequest
     {

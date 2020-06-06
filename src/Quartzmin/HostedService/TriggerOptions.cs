@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Quartzmin.HostedService
+namespace SilkierQuartz.HostedService
 {
     public class TriggerOptions
     {

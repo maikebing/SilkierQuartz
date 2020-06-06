@@ -3,11 +3,11 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace Quartzmin
+namespace SilkierQuartz
 {
     public static class ViewFileSystemFactory
     {
-        public static ViewEngineFileSystem Create(QuartzminOptions options)
+        public static ViewEngineFileSystem Create(SilkierQuartzOptions options)
         {
             ViewEngineFileSystem fs;
 
@@ -81,7 +81,7 @@ namespace Quartzmin
 
             string GetFullPath(string filePath)
             {
-                return Path.Combine(nameof(Quartzmin) + ".Views", filePath.Replace("partials/", "Partials/")).Replace('/', '.').Replace('\\', '.');
+                return Path.Combine(nameof(SilkierQuartz) + ".Views", filePath.Replace("partials/", "Partials/")).Replace('/', '.').Replace('\\', '.');
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Quartzmin.TypeHandlers
+namespace SilkierQuartz.TypeHandlers
 {
     [EmbeddedTypeHandlerResources(nameof(OptionSetHandler))]
     public abstract class OptionSetHandler : TypeHandlerBase

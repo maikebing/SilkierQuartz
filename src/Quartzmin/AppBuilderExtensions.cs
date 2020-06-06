@@ -7,7 +7,7 @@ using Microsoft.Owin.StaticFiles.ContentTypes;
 using MultipartDataMediaFormatter;
 using MultipartDataMediaFormatter.Infrastructure;
 using Owin;
-using Quartzmin.Owin;
+using SilkierQuartz.Owin;
 using System;
 using System.Globalization;
 using System.Net;
@@ -23,11 +23,11 @@ using System.Web.Http.Hosting;
 using System.Web.Http.Results;
 using System.Web.Management;
 
-namespace Quartzmin
+namespace SilkierQuartz
 {
     public static class AppBuilderExtensions
     {
-        public static void UseQuartzmin(this IAppBuilder app, QuartzminOptions options, Action<Services> configure = null)
+        public static void UseSilkierQuartz(this IAppBuilder app, SilkierQuartzOptions options, Action<Services> configure = null)
         {
             options = options ?? throw new ArgumentNullException(nameof(options));
 
@@ -45,7 +45,7 @@ namespace Quartzmin
             HttpConfiguration config = new HttpConfiguration();
 
             config.Routes.MapHttpRoute(
-                name: nameof(Quartzmin),
+                name: nameof(SilkierQuartz),
                 routeTemplate: "{controller}/{action}",
                 defaults: new { controller = "Scheduler", action = "Index" }
             );
@@ -110,11 +110,11 @@ namespace Quartzmin
             bool IHostBufferPolicySelector.UseBufferedInputStream(object hostContext) => true;
         }
 
-        private static void UseFileServer(this IAppBuilder app, QuartzminOptions options)
+        private static void UseFileServer(this IAppBuilder app, SilkierQuartzOptions options)
         {
             IFileSystem fs;
             if (string.IsNullOrEmpty(options.ContentRootDirectory))
-                fs = new FixedEmbeddedResourceFileSystem(Assembly.GetExecutingAssembly(), nameof(Quartzmin) + ".Content");
+                fs = new FixedEmbeddedResourceFileSystem(Assembly.GetExecutingAssembly(), nameof(SilkierQuartz) + ".Content");
             else
                 fs = new PhysicalFileSystem(options.ContentRootDirectory);
 

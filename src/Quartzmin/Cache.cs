@@ -3,7 +3,7 @@ using Quartz.Impl.Matchers;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Quartzmin
+namespace SilkierQuartz
 {
     internal class Cache
     {

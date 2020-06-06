@@ -1,10 +1,10 @@
-﻿using Quartzmin.Models;
+﻿using SilkierQuartz.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System;
 
-namespace Quartzmin.TypeHandlers
+namespace SilkierQuartz.TypeHandlers
 {
     [EmbeddedTypeHandlerResources(nameof(FileHandler))]
     public class FileHandler : TypeHandlerBase

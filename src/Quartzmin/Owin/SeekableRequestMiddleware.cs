@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Management;
 
-namespace Quartzmin.Owin
+namespace SilkierQuartz.Owin
 {
     internal class SeekableRequestMiddleware : OwinMiddleware
     {

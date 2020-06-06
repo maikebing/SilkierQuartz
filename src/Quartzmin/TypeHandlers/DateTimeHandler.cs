@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace Quartzmin.TypeHandlers
+namespace SilkierQuartz.TypeHandlers
 {
     [EmbeddedTypeHandlerResources(nameof(DateTimeHandler))]
     public class DateTimeHandler : TypeHandlerBase

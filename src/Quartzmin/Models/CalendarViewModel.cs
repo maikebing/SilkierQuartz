@@ -1,14 +1,14 @@
 ﻿using Quartz;
 using Quartz.Impl.Calendar;
-using Quartzmin.Helpers;
-using Quartzmin.TypeHandlers;
+using SilkierQuartz.Helpers;
+using SilkierQuartz.TypeHandlers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 
-namespace Quartzmin.Models
+namespace SilkierQuartz.Models
 {
     public class CalendarViewModel : IHasValidation
     {

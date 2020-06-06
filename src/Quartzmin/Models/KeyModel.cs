@@ -1,6 +1,6 @@
 ﻿using Quartz;
 
-namespace Quartzmin.Models
+namespace SilkierQuartz.Models
 {
     public class KeyModel
     {
