@@ -1,4 +1,4 @@
-﻿using FakeItEasy;
+using FakeItEasy;
 using Quartz;
 using Quartz.Spi;
 using System;
@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
-
-namespace QuartzHostedService.Test
+using Quartzmin.HostedService;
+namespace SilkierQuartz.Test
 {
     public class QuartzHostedServiceUnitTest
     {

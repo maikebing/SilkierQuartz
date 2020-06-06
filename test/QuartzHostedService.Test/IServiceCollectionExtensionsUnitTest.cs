@@ -1,17 +1,19 @@
-using FluentAssertions;
+п»їusing FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
+using Quartzmin;
+using Quartzmin.HostedService;
 using System;
 using Xunit;
 
-namespace QuartzHostedService.Test
+namespace SilkierQuartz.Test
 {
     public class IServiceCollectionExtensionsUnitTest
     {
-        [Fact(DisplayName = "Зарегистрировали HostedService")]
+        [Fact(DisplayName = "В«Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°Р»Рё HostedService")]
         public void IServiceCollectionExtensions_Register_HostedService()
         {
             IServiceCollection serviceCollection = new ServiceCollection();
@@ -20,10 +22,10 @@ namespace QuartzHostedService.Test
             var testClass = serviceCollection.BuildServiceProvider().GetRequiredService<IHostedService>();
             testClass.Should()
                 .NotBeNull()
-                .And.BeOfType<QuartzHostedService>();
+                .And.BeOfType<Quartzmin.HostedService.QuartzHostedService>();
         }
 
-        [Fact(DisplayName = "Зарегистрировали IJobFactory (для DI в Job'ах)")]
+        [Fact(DisplayName = "В«Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°Р»Рё IJobFactory (РґР»В¤ DI РІ Job'Р°С…)")]
         public void IServiceCollectionExtensions_Register_IJobFactory()
         {
             IServiceCollection serviceCollection = new ServiceCollection();
@@ -35,7 +37,7 @@ namespace QuartzHostedService.Test
                 .And.BeOfType<ServiceCollectionJobFactory>();
         }
 
-        [Fact(DisplayName = "Зарегистрировали ISchedulerFactory (не передали параметры для инициализации)")]
+        [Fact(DisplayName = "В«Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°Р»Рё ISchedulerFactory (РЅРµ РїРµСЂРµРґР°Р»Рё РїР°СЂР°РјРµС‚СЂС‹ РґР»В¤ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё)")]
         public void IServiceCollectionExtensions_Register_ISchedulerFactory()
         {
             IServiceCollection serviceCollection = new ServiceCollection();
@@ -47,20 +49,20 @@ namespace QuartzHostedService.Test
                 .And.BeOfType<StdSchedulerFactory>();
         }
 
-        [Fact(DisplayName = "Зарегистрировали ISchedulerFactory (передали параметры для инициализации)")]
+        [Fact(DisplayName = "В«Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°Р»Рё ISchedulerFactory (РїРµСЂРµРґР°Р»Рё РїР°СЂР°РјРµС‚СЂС‹ РґР»В¤ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё)")]
         public void IServiceCollectionExtensions_Register_ISchedulerFactory_WithParams()
         {
             IServiceCollection serviceCollection = new ServiceCollection();
             IServiceCollectionExtensions.UseQuartzHostedService(serviceCollection, options => { options.Add("quartz.threadPool.threadCount", "1"); });
 
-            // TODO: Проверить что параметры передались в конструктор
+            // TODO: С•СЂРѕРІРµСЂРёС‚СЊ С‡С‚Рѕ РїР°СЂР°РјРµС‚СЂС‹ РїРµСЂРµРґР°Р»РёСЃСЊ РІ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
             var testClass = serviceCollection.BuildServiceProvider().GetRequiredService<ISchedulerFactory>();
             testClass.Should()
                 .NotBeNull()
                 .And.BeOfType<StdSchedulerFactory>();
         }
 
-        [Fact(DisplayName = "После регистрации зависимосте возвращается IJobRegistrator")]
+        [Fact(DisplayName = "С•РѕСЃР»Рµ СЂРµРіРёСЃС‚СЂР°С†РёРё Р·Р°РІРёСЃРёРјРѕСЃС‚Рµ РІРѕР·РІСЂР°С‰Р°РµС‚СЃВ¤ IJobRegistrator")]
         public void IServiceCollectionExtensions_Return_IJobRegistrator()
         {
             IServiceCollection serviceCollection = new ServiceCollection();

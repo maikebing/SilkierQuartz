@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Quartzmin
+namespace Quartzmin.HostedService
 {
     internal class ScheduleJob : IScheduleJob
     {

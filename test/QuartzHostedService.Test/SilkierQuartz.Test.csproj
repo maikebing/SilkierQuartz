@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -20,7 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\QuartzHostedService\QuartzHostedService.csproj" />
+    <ProjectReference Include="..\..\src\Quartz.Plugins.RecentHistory\Quartz.Plugins.RecentHistory.csproj" />
+    <ProjectReference Include="..\..\src\Quartzmin\Quartzmin.csproj" />
   </ItemGroup>
 
 </Project>

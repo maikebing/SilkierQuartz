@@ -1,20 +1,22 @@
-<p align="center">
-    <img src="https://raw.githubusercontent.com/jlucansky/public-assets/master/Quartzmin/logo.png" height="150">
-</p>
 
----
 
-[![NuGet](https://img.shields.io/nuget/v/QuartzminFork.svg)](https://www.nuget.org/packages/QuartzminFork)
+[![NuGet](https://img.shields.io/nuget/v/SilkierQuartz.svg)](https://www.nuget.org/packages/SilkierQuartz)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-QuartzminFork is  fork from Quartzmin!
-
-
-Quartzmin is powerful, easy to use web management tool for Quartz.NET
-
-Quartzmin can be used within your existing application with minimum effort as a Quartz.NET plugin when it automatically creates embedded web server. Or it can be plugged into your existing OWIN-based web application as a middleware.
+SilkierQuartz is a new after merging  [Quartzmin](https://github.com/jlucansky/Quartzmin) and  [QuartzHostedService](https://github.com/mukmyash/QuartzHostedService)!
 
 > [Quartz.NET](https://www.quartz-scheduler.net) is a full-featured, open source job scheduling system that can be used from smallest apps to large scale enterprise systems.
+
+
+> [Quartzmin](https://github.com/jlucansky/Quartzmin)  Quartzmin is powerful, easy to use web management tool for Quartz.NET
+
+>  [QuartzHostedService](https://github.com/mukmyash/QuartzHostedService) QuartzHostedService is easy to host Quartz as service in .Net Core !
+
+
+So  
+
+SilkierQuartz can be used within your existing application with minimum effort as a Quartz.NET plugin when it automatically creates embedded web server. Or it can be plugged into your existing OWIN-based web application as a middleware.
+
 
 ![Demo](https://raw.githubusercontent.com/jlucansky/public-assets/master/Quartzmin/demo.gif)
 
@@ -39,51 +41,23 @@ Quartzmin was created with **Semantic UI** and **Handlebars.Net** as the templat
 - See recent job history, state and error messages
 
 ## Install
-Quartzmin is available on [nuget.org](https://www.nuget.org/packages/QuartzminFork)
+SilkierQuartz is available on [nuget.org](https://www.nuget.org/packages/SilkierQuartz)
 
-To install QuartzminFork, run the following command in the Package Manager Console
+To install SilkierQuartz, run the following command in the Package Manager Console
 ```powershell
-PM> Install-Package QuartzminFork
+PM> Install-Package SilkierQuartz
 ```
 ## Minimum requirements
-- .NET Framework 4.5.2 
-- .NET Standard 2.0
-
-## Usage
-### Embedded web server
-Everything you should do is just install [Quartzmin.SelfHost](https://www.nuget.org/packages/Quartzmin.SelfHost) package and configure `QuartzminPlugin` and `ExecutionHistoryPlugin` to support histograms and statistics.
-
-Run the following command in the Package Manager Console:
-```powershell
-PM> Install-Package Quartzmin.SelfHost
-```
-Add to your `App.config` file:
-```xml
-<configuration>
-  <configSections>
-    <section name="quartz" type="System.Configuration.NameValueFileSectionHandler" />
-  </configSections>
-
-  <quartz>
-    <add key="quartz.plugin.quartzmin.type" value="Quartzmin.SelfHost.QuartzminPlugin, Quartzmin.SelfHost" />
-    <add key="quartz.plugin.quartzmin.url" value="http://localhost:5000" />
-      
-    <add key="quartz.plugin.recentHistory.type" value="Quartz.Plugins.RecentHistory.ExecutionHistoryPlugin, Quartz.Plugins.RecentHistory" />
-    <add key="quartz.plugin.recentHistory.storeType" value="Quartz.Plugins.RecentHistory.Impl.InProcExecutionHistoryStore, Quartz.Plugins.RecentHistory" />
-  </quartz>
-</configuration>
-```
-Start Quartz.NET scheduler somewhere:
-```csharp
-StdSchedulerFactory.GetDefaultScheduler().Result.Start();
-```
+ 
+- .NET Core 3.1
+  
 
 ### OWIN middleware
 Add to your `Startup.cs` file:
 ```csharp
 public void Configuration(IAppBuilder app)
 {
-    app.UseQuartzmin(new QuartzminOptions()
+    app.UseSilkierQuartz(new SilkierQuartzOptions()
     {
         Scheduler = StdSchedulerFactory.GetDefaultScheduler().Result
     });
@@ -95,12 +69,12 @@ Add to your `Startup.cs` file:
 ```csharp
 public void ConfigureServices(IServiceCollection services)
 {
-    services.AddQuartzmin();
+    services.AddSilkierQuartz();
 }
 
 public void Configure(IApplicationBuilder app)
 {
-    app.UseQuartzmin(new QuartzminOptions()
+    app.UseSilkierQuartz(new QuartzminOptions()
     {
         Scheduler = StdSchedulerFactory.GetDefaultScheduler().Result
     });
@@ -108,7 +82,7 @@ public void Configure(IApplicationBuilder app)
 ```
 
 ## Notes
-In clustered environment, it make more sense to host Quarzmin on single dedicated Quartz.NET node in standby mode and implement own `IExecutionHistoryStore` depending on database or ORM framework you typically incorporate. Every clustered Quarz.NET node should be configured with `ExecutionHistoryPlugin` and only dedicated node for management may have `QuartzminPlugin`.
+In clustered environment, it make more sense to host SilkierQuartz on single dedicated Quartz.NET node in standby mode and implement own `IExecutionHistoryStore` depending on database or ORM framework you typically incorporate. Every clustered Quarz.NET node should be configured with `ExecutionHistoryPlugin` and only dedicated node for management may have `SilkierQuartzPlugin`.
 
 
 ## License

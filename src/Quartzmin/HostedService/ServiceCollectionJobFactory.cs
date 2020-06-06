@@ -6,7 +6,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Quartzmin
+namespace Quartzmin.HostedService
 {
     public class ServiceCollectionJobFactory : IJobFactory
     {

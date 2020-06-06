@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Quartzmin
+namespace Quartzmin.HostedService
 {
     public interface IJobRegistrator
     {

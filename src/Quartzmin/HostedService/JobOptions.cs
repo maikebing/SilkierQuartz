@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Quartzmin
+namespace Quartzmin.HostedService
 {
     public class JobOptions
     {
