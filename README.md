@@ -27,7 +27,8 @@ The goal of this project is to provide convenient tool to utilize most of the fu
 SilkierQuartz was created with **Semantic UI** and **Handlebars.Net** as the template engine.
 
 ##  SilkierQuartz's Features
-
+  -  automatically discover IJob subclasses with SilkierQuartzAttribute
+  -  With QuartzHostedService and more extensions
 
 
 ## Quartzmin's Features
@@ -88,6 +89,7 @@ Add to your `Program.cs` file:
                     webBuilder.UseStartup<Startup>();
                 })
              .ConfigureSilkierQuartzHost();
+     }
 
 ```
 Add to your `Startup.cs` file:
