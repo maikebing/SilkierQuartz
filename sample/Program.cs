@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using SilkierQuartz;
 using SilkierQuartz.HostedService;
 
-namespace AspNetCore31
+namespace SilkierQuartz.Example
 {
     public class Program
     {

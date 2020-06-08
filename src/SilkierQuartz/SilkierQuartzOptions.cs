@@ -1,4 +1,5 @@
 ﻿using Quartz;
+using Quartz.Impl;
 using SilkierQuartz.TypeHandlers;
 using System.Collections.Generic;
 using System.IO;
@@ -53,7 +54,6 @@ namespace SilkierQuartz
         public SilkierQuartzOptions()
         {
             DefaultSelectedType = new StringHandler() { Name = "String" };
-
             // order of StandardTypes is important due to TypeHandlerBase.CanHandle evaluation
             StandardTypes.Add(new FileHandler() { Name = "File", DisplayName = "Binary Data" });
             StandardTypes.Add(new BooleanHandler() { Name = "Boolean" });

@@ -68,6 +68,8 @@ namespace SilkierQuartz
             services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(detail, new List<ITrigger>()));
             return services;
         }
+
+        [Obsolete("We recommend SilkierQuartzAttribute")]
         public static IServiceCollection AddQuartzJob<TJob>(this IServiceCollection services) where TJob : class
         {
             services.AddTransient<TJob>();
@@ -97,7 +99,7 @@ namespace SilkierQuartz
             }
             return app;
         }
-
+        [Obsolete("We recommend  SilkierQuartzAttribute")]
         public static IApplicationBuilder UseQuartzJob<TJob>(
                 this IApplicationBuilder app,
                 TriggerBuilder triggerBuilder)
@@ -105,7 +107,7 @@ namespace SilkierQuartz
         {
             return app.UseQuartzJob<TJob>(new TriggerBuilder[] { triggerBuilder });
         }
-
+        [Obsolete("We recommend  SilkierQuartzAttribute")]
         public static IApplicationBuilder UseQuartzJob<TJob>(
             this IApplicationBuilder app,
             Func<IEnumerable<TriggerBuilder>> triggerBuilders_func)
@@ -113,6 +115,7 @@ namespace SilkierQuartz
         {
             return app.UseQuartzJob<TJob>(triggerBuilders_func());
         }
+        [Obsolete("We recommend  SilkierQuartzAttribute")]
         public static IApplicationBuilder UseQuartzJob<TJob>(
           this IApplicationBuilder app,
           IEnumerable<TriggerBuilder> triggerBuilders)
@@ -120,6 +123,7 @@ namespace SilkierQuartz
         {
             return app.UseQuartzJob(typeof(TJob), triggerBuilders);
         }
+        [Obsolete("We recommend  SilkierQuartzAttribute")]
         public static IApplicationBuilder UseQuartzJob(
              this IApplicationBuilder app, Type t,
              TriggerBuilder triggerBuilder)

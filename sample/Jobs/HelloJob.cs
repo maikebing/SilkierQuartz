@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AspNetCore31.Jobs
+namespace SilkierQuartz.Example.Jobs
 {
     public class HelloJob : IJob
     {

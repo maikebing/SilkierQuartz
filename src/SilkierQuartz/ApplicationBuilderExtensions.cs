@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Quartz;
+using Quartz.Impl;
 using SilkierQuartz;
 using System;
 using System.Collections.Generic;
@@ -18,12 +19,65 @@ namespace SilkierQuartz
 {
     public static class ApplicationBuilderExtensions
     {
+        /// <summary>
+        ///  Returns a client-usable handle to a Quartz.IScheduler.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
+        public static IScheduler GetScheduler(this IApplicationBuilder app)
+        {
+            return app.ApplicationServices.GetRequiredService<ISchedulerFactory>().GetScheduler().Result;
+        }
+        /// <summary>
+        ///  Returns a handle to the Scheduler with the given name, if it exists.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="schedName"></param>
+        /// <returns></returns>
+        public static IScheduler GetScheduler(this IApplicationBuilder app,string schedName)
+        {
+            return app.ApplicationServices.GetRequiredService<ISchedulerFactory>().GetScheduler(schedName ).Result;
+        }
+        /// <summary>
+        /// Returns handles to all known Schedulers (made by any SchedulerFactory within  this app domain.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
+        public static IReadOnlyList<IScheduler> GetAllSchedulers(this IApplicationBuilder app)
+        {
+            return app.ApplicationServices.GetRequiredService<ISchedulerFactory>().GetAllSchedulers().Result;
+        }
+
+        [Obsolete("We recommend UseSilkierQuartz")]
+        public static void UseQuartzmin(this IApplicationBuilder app, SilkierQuartzOptions options, Action<Services> configure = null)
+            => app.UseSilkierQuartz(options, configure);
+
+        /// <summary>
+        /// Use SilkierQuartz and automatically discover IJob subclasses with SilkierQuartzAttribute
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="options"></param>
+        /// <param name="configure"></param>
         public static void UseSilkierQuartz(this IApplicationBuilder app, SilkierQuartzOptions options, Action<Services> configure = null)
         {
             options = options ?? throw new ArgumentNullException(nameof(options));
 
             app.UseFileServer(options);
-
+            if (options.Scheduler == null)
+            {
+                try
+                {
+                    options.Scheduler = app.ApplicationServices.GetRequiredService<ISchedulerFactory>()?.GetScheduler().Result;
+                }
+                catch (Exception)
+                {
+                    options.Scheduler = null;
+                }
+                if (options.Scheduler==null)
+                {
+                    options.Scheduler = StdSchedulerFactory.GetDefaultScheduler().Result;
+                }
+            }
             var services = Services.Create(options);
             configure?.Invoke(services);
 
@@ -101,6 +155,10 @@ namespace SilkierQuartz
 
             app.UseFileServer(fsOptions);
         }
+        [Obsolete("We recommend AddSilkierQuartz")]
+        public static void AddQuartzmin(this IServiceCollection services, Action<NameValueCollection> stdSchedulerFactoryOptions = null)
+            => services.AddSilkierQuartz(stdSchedulerFactoryOptions);
+
 
         public static void AddSilkierQuartz(this IServiceCollection services, Action<NameValueCollection> stdSchedulerFactoryOptions = null,Func<List<Assembly>> jobsasmlist=null)
         {

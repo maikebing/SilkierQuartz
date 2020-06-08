@@ -26,7 +26,8 @@ namespace SilkierQuartz
             _quartzHostedServiceIsAdded = true;
             return builder.ConfigureServices(services => services.AddHostedService<QuartzHostedService>());
         }
-
+        [Obsolete("We recommend ConfigureSilkierQuartzHost")]
+        public static IHostBuilder ConfigureQuartzHost(this IHostBuilder builder) => builder.ConfigureSilkierQuartzHost();
 
         public static IJobRegistrator UseQuartzHostedService(this IServiceCollection services,
         Action<NameValueCollection> stdSchedulerFactoryOptions)

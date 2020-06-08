@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AspNetCore31.Jobs
+namespace SilkierQuartz.Example.Jobs
 {
 
     [SilkierQuartz(5, "this e sq test","_hellojobauto",TriggerGroup = "SilkierQuartz")]

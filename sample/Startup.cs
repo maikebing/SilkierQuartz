@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AspNetCore31.Jobs;
+using SilkierQuartz.Example.Jobs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -10,10 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Quartz;
-using SilkierQuartz;
-using SilkierQuartz.HostedService;
 
-namespace AspNetCore31
+namespace SilkierQuartz.Example
 {
     public class Startup
     {
@@ -32,14 +30,16 @@ namespace AspNetCore31
             services.AddOptions();
             services.Configure<AppSettings>(Configuration);
             services.Configure<InjectProperty>(options => { options.WriteText = "This is inject string"; });
+#pragma warning disable CS0618 // 类型或成员已过时
             services.AddQuartzJob<HelloJob>()
                     .AddQuartzJob<InjectSampleJob>()
                     .AddQuartzJob<HelloJobSingle>()
                     .AddQuartzJob<InjectSampleJobSingle>();
+#pragma warning restore CS0618 // 类型或成员已过时
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<AppSettings> settings, ISchedulerFactory factory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -49,24 +49,38 @@ namespace AspNetCore31
             {
                 app.UseExceptionHandler("/Error");
             }
-            var scheduler = DemoScheduler.Create().Result;
-        
+
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
-            app.UseSilkierQuartz(new SilkierQuartzOptions() { Scheduler = scheduler, VirtualPathRoot = "/SilkierQuartz" , UseLocalTime =true, DefaultDateFormat="yyyy-MM-dd", DefaultTimeFormat="HH:mm:ss" });
+            app.UseSilkierQuartz(
+                new SilkierQuartzOptions()
+                {
+                    VirtualPathRoot = "/SilkierQuartz",
+                    UseLocalTime = true,
+                    DefaultDateFormat = "yyyy-MM-dd",
+                    DefaultTimeFormat = "HH:mm:ss"
+                }
+                );
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
             });
+            //How to compatible old code to SilkierQuartz
+            //将旧的原来的规划Job的代码进行移植兼容的示例
+            app.SchedulerJobs();
 
+
+            #region  不使用 SilkierQuartzAttribe 属性的进行注册和使用的IJob，这里通过UseQuartzJob的IJob必须在  ConfigureServices进行AddQuartzJob
+
+#pragma warning disable CS0618 // 类型或成员已过时
             app.UseQuartzJob<HelloJobSingle>(TriggerBuilder.Create().WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever()))
             .UseQuartzJob<InjectSampleJobSingle>(() =>
             {
                 return TriggerBuilder.Create()
                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever());
             });
-
+            
             app.UseQuartzJob<HelloJob>(new List<TriggerBuilder>
                 {
                     TriggerBuilder.Create()
@@ -82,7 +96,8 @@ namespace AspNetCore31
                     .WithSimpleSchedule(x => x.WithIntervalInSeconds(10).RepeatForever()));
                 return result;
             });
-
+#pragma warning restore CS0618 // 类型或成员已过时
+            #endregion
         }
     }
 }

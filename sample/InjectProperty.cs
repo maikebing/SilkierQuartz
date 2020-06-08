@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AspNetCore31
+namespace SilkierQuartz.Example
 {
     public class InjectProperty
     {
