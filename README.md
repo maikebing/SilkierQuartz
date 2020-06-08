@@ -26,7 +26,11 @@ The goal of this project is to provide convenient tool to utilize most of the fu
 
 SilkierQuartz was created with **Semantic UI** and **Handlebars.Net** as the template engine.
 
-## Features
+##  SilkierQuartz's Features
+
+
+
+## Quartzmin's Features
 - Add, modify jobs and triggers
 - Add, modify calendars (Annual, Cron, Daily, Holiday, Monthly, Weekly)
 - Change trigger type to Cron, Simple, Calendar Interval or Daily Time Interval
@@ -67,6 +71,25 @@ public void Configuration(IAppBuilder app)
 ```
 
 ### ASP.NET Core middleware
+Add to your `Program.cs` file:
+
+```csharp
+   public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                })
+             .ConfigureSilkierQuartzHost();
+
+```
 Add to your `Startup.cs` file:
 ```csharp
 public void ConfigureServices(IServiceCollection services)
@@ -77,9 +100,13 @@ public void ConfigureServices(IServiceCollection services)
 public void Configure(IApplicationBuilder app)
 {
     app.UseSilkierQuartz(new SilkierQuartzOptions()
-    {
-        Scheduler = StdSchedulerFactory.GetDefaultScheduler().Result
-    });
+                {
+                    Scheduler = scheduler,
+                    VirtualPathRoot = "/SilkierQuartz",
+                    UseLocalTime = true,
+                    DefaultDateFormat = "yyyy-MM-dd",
+                    DefaultTimeFormat = "HH:mm:ss"
+                });
 }
 ```
 
