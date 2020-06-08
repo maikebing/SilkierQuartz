@@ -3,6 +3,7 @@
 [![NuGet](https://img.shields.io/nuget/v/SilkierQuartz.svg)](https://www.nuget.org/packages/SilkierQuartz)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Build status](https://ci.appveyor.com/api/projects/status/0ojmooqvycks11kw?svg=true)](https://ci.appveyor.com/project/MaiKeBing/silkierquartz)
+![.NET Core](https://github.com/maikebing/SilkierQuartz/workflows/.NET%20Core/badge.svg?branch=master)
 
 SilkierQuartz is a new after merging  [SilkierQuartz](https://github.com/jlucansky/SilkierQuartz) and  [QuartzHostedService](https://github.com/mukmyash/QuartzHostedService)!
 
