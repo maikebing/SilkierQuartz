@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
-
 namespace SilkierQuartz
 {
     public static class IServiceCollectionExtensions
@@ -35,8 +34,6 @@ namespace SilkierQuartz
         ///  Must be call after Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults()
         /// </summary>
         /// <param name="builder"></param>
-        /// <seealso cref="https://github.com/aspnet/AspNetCore.Docs/issues/14381"/>
-        ///  <seealso cref="https://github.com/aspnet/AspNetCore/pull/11575"/>
         /// <returns></returns>
         public static IHostBuilder ConfigureQuartzHost(this IHostBuilder builder)
         {

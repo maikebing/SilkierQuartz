@@ -59,18 +59,15 @@ namespace AspNetCore31
             {
                 endpoints.MapRazorPages();
             });
-            if (settings.Value.EnableHelloSingleJob)
+
+            app.UseQuartzJob<HelloJobSingle>(TriggerBuilder.Create().WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever()))
+            .UseQuartzJob<InjectSampleJobSingle>(() =>
             {
-                app.UseQuartzJob<HelloJobSingle>(TriggerBuilder.Create().WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever()))
-                .UseQuartzJob<InjectSampleJobSingle>(() =>
-                {
-                    return TriggerBuilder.Create()
-                       .WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever());
-                });
-            }
-            if (settings.Value.EnableHelloJob)
-            {
-                app.UseQuartzJob<HelloJob>(new List<TriggerBuilder>
+                return TriggerBuilder.Create()
+                   .WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever());
+            });
+
+            app.UseQuartzJob<HelloJob>(new List<TriggerBuilder>
                 {
                     TriggerBuilder.Create()
                     .WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever()),
@@ -78,15 +75,14 @@ namespace AspNetCore31
                     .WithSimpleSchedule(x => x.WithIntervalInSeconds(2).RepeatForever())
                 });
 
-                app.UseQuartzJob<InjectSampleJob>(() =>
-                {
-                    var result = new List<TriggerBuilder>();
-                    result.Add(TriggerBuilder.Create()
-                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(10).RepeatForever()));
-                    return result;
-                });
+            app.UseQuartzJob<InjectSampleJob>(() =>
+            {
+                var result = new List<TriggerBuilder>();
+                result.Add(TriggerBuilder.Create()
+                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(10).RepeatForever()));
+                return result;
+            });
 
-            }
         }
     }
 }
