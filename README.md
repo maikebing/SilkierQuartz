@@ -5,12 +5,12 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/0ojmooqvycks11kw?svg=true)](https://ci.appveyor.com/project/MaiKeBing/silkierquartz)
 ![.NET Core](https://github.com/maikebing/SilkierQuartz/workflows/.NET%20Core/badge.svg?branch=master)
 
-SilkierQuartz is a new after merging  [SilkierQuartz](https://github.com/jlucansky/SilkierQuartz) and  [QuartzHostedService](https://github.com/mukmyash/QuartzHostedService)!
+SilkierQuartz is a new after merging  [Quartzmin](https://github.com/jlucansky/Quartzmin) and  [QuartzHostedService](https://github.com/mukmyash/QuartzHostedService)!
 
 > [Quartz.NET](https://www.quartz-scheduler.net) is a full-featured, open source job scheduling system that can be used from smallest apps to large scale enterprise systems.
 
 
-> [SilkierQuartz](https://github.com/jlucansky/SilkierQuartz)  SilkierQuartz is powerful, easy to use web management tool for Quartz.NET
+> [Quartzmin](https://github.com/jlucansky/Quartzmin) Quartzmin is powerful, easy to use web management tool for Quartz.NET
 
 >  [QuartzHostedService](https://github.com/mukmyash/QuartzHostedService) QuartzHostedService is easy to host Quartz as service in .Net Core !
 
@@ -20,7 +20,7 @@ So
 SilkierQuartz can be used within your existing application with minimum effort as a Quartz.NET plugin when it automatically creates embedded web server. Or it can be plugged into your existing OWIN-based web application as a middleware.
 
 
-![Demo](https://raw.githubusercontent.com/jlucansky/public-assets/master/SilkierQuartz/demo.gif)
+![Demo](https://raw.githubusercontent.com/jlucansky/public-assets/master/Quartzmin/demo.gif)
 
 The goal of this project is to provide convenient tool to utilize most of the functionality that Quartz.NET enables. The biggest challenge was to create a simple yet effective editor of job data map which is heart of Quartz.NET. Every job data map item is strongly typed and SilkierQuartz can be easily extended with a custom editor for your specific type beside standard supported types such as String, Integer, DateTime and so on. 
 
