@@ -16,9 +16,9 @@ jobs:
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1.5.0
     - name: Install dependencies
-      run: dotnet restore ./SilkierQuartz.sln
+      run: dotnet restore ./src/SilkierQuartz/SilkierQuartz.csproj
     - name: Build
-      run: dotnet build  ./SilkierQuartz.sln  --configuration Release  
+      run: dotnet build  ./src/SilkierQuartz/SilkierQuartz.csproj  --configuration Release  
     - name: Test
       run: dotnet test --no-restore --verbosity normal
       
