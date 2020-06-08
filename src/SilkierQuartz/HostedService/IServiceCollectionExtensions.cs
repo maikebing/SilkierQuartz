@@ -21,7 +21,7 @@ namespace SilkierQuartz
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
-        public static IHostBuilder ConfigureQuartzHost(this IHostBuilder builder)
+        public static IHostBuilder ConfigureSilkierQuartzHost(this IHostBuilder builder)
         {
             _quartzHostedServiceIsAdded = true;
             return builder.ConfigureServices(services => services.AddHostedService<QuartzHostedService>());

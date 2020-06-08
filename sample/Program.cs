@@ -24,7 +24,7 @@ namespace AspNetCore31
                 {
                     webBuilder.UseStartup<Startup>();
                 })
-             .ConfigureQuartzHost();
+             .ConfigureSilkierQuartzHost();
 
     }
 }
