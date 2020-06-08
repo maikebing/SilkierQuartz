@@ -13,7 +13,7 @@ namespace SilkierQuartz.Test
 {
     public class IServiceCollectionExtensionsUnitTest
     {
-        [Fact(DisplayName = "«арегистрировали HostedService")]
+        [Fact(DisplayName = "Registered HostedService")]
         public void IServiceCollectionExtensions_Register_HostedService()
         {
             IServiceCollection serviceCollection = new ServiceCollection();
@@ -25,7 +25,7 @@ namespace SilkierQuartz.Test
                 .And.BeOfType<SilkierQuartz.HostedService.QuartzHostedService>();
         }
 
-        [Fact(DisplayName = "«арегистрировали IJobFactory (дл¤ DI в Job'ах)")]
+        [Fact(DisplayName = "IJobFactory(d - di in Job)")]
         public void IServiceCollectionExtensions_Register_IJobFactory()
         {
             IServiceCollection serviceCollection = new ServiceCollection();
@@ -37,7 +37,7 @@ namespace SilkierQuartz.Test
                 .And.BeOfType<ServiceCollectionJobFactory>();
         }
 
-        [Fact(DisplayName = "«арегистрировали ISchedulerFactory (не передали параметры дл¤ инициализации)")]
+        [Fact(DisplayName = "ISchedulerFactory(did not pass the parameters for initialization)")]
         public void IServiceCollectionExtensions_Register_ISchedulerFactory()
         {
             IServiceCollection serviceCollection = new ServiceCollection();
@@ -49,7 +49,7 @@ namespace SilkierQuartz.Test
                 .And.BeOfType<StdSchedulerFactory>();
         }
 
-        [Fact(DisplayName = "«арегистрировали ISchedulerFactory (передали параметры дл¤ инициализации)")]
+        [Fact(DisplayName = "ISchedulerFactory(transmitted parameters for initialization)")]
         public void IServiceCollectionExtensions_Register_ISchedulerFactory_WithParams()
         {
             IServiceCollection serviceCollection = new ServiceCollection();
@@ -62,7 +62,7 @@ namespace SilkierQuartz.Test
                 .And.BeOfType<StdSchedulerFactory>();
         }
 
-        [Fact(DisplayName = "ѕосле регистрации зависимосте возвращаетс¤ IJobRegistrator")]
+        [Fact(DisplayName = "IJobRegistrator registration")]
         public void IServiceCollectionExtensions_Return_IJobRegistrator()
         {
             IServiceCollection serviceCollection = new ServiceCollection();

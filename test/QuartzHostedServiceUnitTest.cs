@@ -12,7 +12,7 @@ namespace SilkierQuartz.Test
 {
     public class QuartzHostedServiceUnitTest
     {
-        [Fact(DisplayName = "Устанавливаем JobFactory (Для DI)")]
+        [Fact(DisplayName = "Install JobFactory (For DI)")]
         public async void IServiceCollectionExtensions_Register_HostedService()
         {
             IServiceProvider serviceProvider = A.Fake<IServiceProvider>();
@@ -33,10 +33,10 @@ namespace SilkierQuartz.Test
         }
 
 
-        [Fact(DisplayName = "Запустили все зарегистрированые Job")]
+        [Fact(DisplayName = "All Registered Job")]
         public async void IServiceCollectionExtensions_Register_RegisterJob()
         {
-            // Зарегистрированные джобы
+            // Registered jobs
             var scheduleJobc = new List<IScheduleJob>();
             var jobDetail1 = A.Fake<IJobDetail>();
             var jobDetail2 = A.Fake<IJobDetail>();
@@ -68,10 +68,10 @@ namespace SilkierQuartz.Test
                 .MustHaveHappened(Repeated.Like(count => count == 3));
         }
 
-        [Fact(DisplayName = "Запустили все зарегистрированые Job с указанными ITrigger")]
+        [Fact(DisplayName = "Started all registered Job with specified ITrigger")]
         public async void IServiceCollectionExtensions_Register_RegisterJob_ITrigger()
         {
-            // Зарегистрированные джобы
+            // Registered jobas
             var scheduleJobc = new List<IScheduleJob>();
             var jobDetail1 = A.Fake<IJobDetail>();
 
