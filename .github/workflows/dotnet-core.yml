@@ -20,6 +20,6 @@ jobs:
     - name: Build
       run: dotnet build  ./src/SilkierQuartz/SilkierQuartz.csproj  --configuration Release  
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test ./test/SilkierQuartz.Test.csproj  --verbosity normal
       
       
