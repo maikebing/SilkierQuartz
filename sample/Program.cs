@@ -23,10 +23,6 @@ namespace AspNetCore31
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.ConfigureKestrel(serverOptions =>
-                    {
-                        serverOptions.AllowSynchronousIO = true;
-                    });
                 })
              .ConfigureQuartzHost();
 

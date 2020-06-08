@@ -13,22 +13,8 @@ namespace SilkierQuartz
 {
     public static class IServiceCollectionExtensions
     {
-        public static IJobRegistrator UseQuartzHostedService(this IServiceCollection services)
-        {
-            return UseQuartzHostedService(services, null);
-        }
-        public static IServiceCollection AddQuartzHostedService(this IServiceCollection services)
-        {
-            return AddQuartzHostedService(services, null);
-
-        }
-        public static IServiceCollection AddQuartzHostedService(this IServiceCollection services,
-                                                    Action<NameValueCollection> stdSchedulerFactoryOptions)
-        {
-            var re = services.UseQuartzHostedService(stdSchedulerFactoryOptions);
-            return re.Services;
-        }
-    
+         
+     
         private static bool _quartzHostedServiceIsAdded = false;
         /// <summary>
         ///  Must be call after Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults()
