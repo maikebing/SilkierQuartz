@@ -16,8 +16,8 @@
 		<PackageIconUrl></PackageIconUrl>
 		<Description>Powerful, easy to use web management tool for Quartz.NET</Description>
 		<PackageTags>quartz;web;ui</PackageTags>
-		<AssemblyVersion>1.0.0.0</AssemblyVersion>
-		<FileVersion>1.0.0.0</FileVersion>
+		<AssemblyVersion>1.0.5.0</AssemblyVersion>
+		<FileVersion>1.0.5.0</FileVersion>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<Copyright>Copyright © 2020 Jan Lucansky, Yanhong Ma,  mukmyash</Copyright>
 		<RepositoryType>git</RepositoryType>
@@ -38,6 +38,9 @@
 	</PropertyGroup>
 	<PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^netcoreapp\d'))">
 		<DefineConstants>NETCOREAPP</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <DocumentationFile>D:\GitHub\Quartzmin\src\SilkierQuartz\SilkierQuartz.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>

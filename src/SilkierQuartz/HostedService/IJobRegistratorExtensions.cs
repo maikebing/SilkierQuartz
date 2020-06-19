@@ -48,13 +48,13 @@ namespace SilkierQuartz
 
         public static IServiceCollection AddQuartzJob<TJob>(this IServiceCollection services, string identity, string description) where TJob : class
         {
-             
-            return services.AddQuartzJob(typeof(TJob),identity,description);
+
+            return services.AddQuartzJob(typeof(TJob), identity, description);
         }
 
-        public static IServiceCollection AddQuartzJob(this IServiceCollection services, Type t, string identity, string description)  
+        public static IServiceCollection AddQuartzJob(this IServiceCollection services, Type t, string identity, string description)
         {
-            if (!services.Any(sd => sd.ServiceType ==t))
+            if (!services.Any(sd => sd.ServiceType == t))
             {
                 services.AddTransient(t);
             }
@@ -63,7 +63,7 @@ namespace SilkierQuartz
             return services;
         }
 
-        public static IServiceCollection AddQuartzJobDetail(this IServiceCollection services, IJobDetail detail) 
+        public static IServiceCollection AddQuartzJobDetail(this IServiceCollection services, IJobDetail detail)
         {
             services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(detail, new List<ITrigger>()));
             return services;
@@ -77,6 +77,7 @@ namespace SilkierQuartz
             services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(jobDetail, new List<ITrigger>()));
             return services;
         }
+        [Obsolete("We recommend SilkierQuartzAttribute")]
         public static IApplicationBuilder UseQuartzJob<TJob>(
                 this IApplicationBuilder app,
                 Func<TriggerBuilder> triggerBuilder_func)
@@ -85,7 +86,7 @@ namespace SilkierQuartz
             return app.UseQuartzJob<TJob>(new TriggerBuilder[] { triggerBuilder_func() });
         }
         public static IApplicationBuilder UseQuartzJob<TJob>(
-            this IApplicationBuilder app,string JobKey,
+            this IApplicationBuilder app, string JobKey,
             Func<TriggerBuilder> triggerBuilder_func)
             where TJob : class, IJob
         {
@@ -134,7 +135,7 @@ namespace SilkierQuartz
               this IApplicationBuilder app, Type t,
              Func<TriggerBuilder> triggerBuilders_func)
         {
-            return app.UseQuartzJob(t,new TriggerBuilder[] { triggerBuilders_func() });
+            return app.UseQuartzJob(t, new TriggerBuilder[] { triggerBuilders_func() });
         }
         public static IApplicationBuilder UseQuartzJob(
            this IApplicationBuilder app, Type t,

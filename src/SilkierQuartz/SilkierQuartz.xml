@@ -1,0 +1,288 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SilkierQuartz</name>
+    </assembly>
+    <members>
+        <member name="M:SilkierQuartz.ApplicationBuilderExtensions.GetScheduler(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+             Returns a client-usable handle to a Quartz.IScheduler.
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SilkierQuartz.ApplicationBuilderExtensions.GetScheduler(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.String)">
+            <summary>
+             Returns a handle to the Scheduler with the given name, if it exists.
+            </summary>
+            <param name="app"></param>
+            <param name="schedName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SilkierQuartz.ApplicationBuilderExtensions.GetAllSchedulers(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Returns handles to all known Schedulers (made by any SchedulerFactory within  this app domain.
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SilkierQuartz.ApplicationBuilderExtensions.UseSilkierQuartz(Microsoft.AspNetCore.Builder.IApplicationBuilder,SilkierQuartz.SilkierQuartzOptions,System.Action{SilkierQuartz.Services})">
+            <summary>
+            Use SilkierQuartz and automatically discover IJob subclasses with SilkierQuartzAttribute
+            </summary>
+            <param name="app"></param>
+            <param name="options"></param>
+            <param name="configure"></param>
+        </member>
+        <member name="M:SilkierQuartz.IServiceCollectionExtensions.ConfigureSilkierQuartzHost(Microsoft.Extensions.Hosting.IHostBuilder)">
+            <summary>
+             Must be call after Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults()
+            </summary>
+            <param name="builder"></param>
+            <returns></returns>
+        </member>
+        <member name="P:SilkierQuartz.SilkierQuartzOptions.Logo">
+            <summary>
+            Supports any value that is a viable as a img src attribute value: url, or base64
+            src='data:image/jpeg;base64, LzlqLzRBQ...[end of base64 data]'
+            Defaults to the SilkierQuartz original logo
+            </summary>
+        </member>
+        <member name="P:SilkierQuartz.SilkierQuartzOptions.StandardTypes">
+            <summary>
+            Supported value types in job data map.
+            </summary>
+        </member>
+        <member name="P:SilkierQuartz.SilkierQuartzOptions.DefaultSelectedType">
+            <summary>
+            Default type for new job data map item.
+            </summary>
+        </member>
+        <member name="P:SilkierQuartz.TypeHandlers.EmbeddedTypeHandlerResourcesAttribute.Assembly">
+            <summary>
+            Should override when used in another assembly.
+            </summary>
+        </member>
+        <member name="P:SilkierQuartz.TypeHandlers.EmbeddedTypeHandlerResourcesAttribute.Namespace">
+            <summary>
+            Should override when used in another assembly.
+            </summary>
+        </member>
+        <member name="M:SilkierQuartz.TypeHandlers.OptionSetHandler.GetItems">
+            <summary>
+            Return Key->DisplayName
+            </summary>
+        </member>
+        <member name="P:SilkierQuartz.TypeHandlers.TypeHandlerBase.TypeId">
+            <summary>
+            Type Discriminator
+            </summary>
+        </member>
+        <member name="P:SilkierQuartz.TypeHandlers.TypeHandlerBase.Name">
+            <summary>
+            Unique name across <see cref="P:SilkierQuartz.SilkierQuartzOptions.StandardTypes"/>
+            </summary>
+        </member>
+        <member name="M:SilkierQuartz.TypeHandlers.TypeHandlerBase.ConvertFrom(System.Object)">
+            <summary>
+            If the value is expected type, just return the value. Every implementation should support conversion from String.
+            </summary>
+        </member>
+        <member name="M:SilkierQuartz.TypeHandlers.TypeHandlerBase.ConvertToString(System.Object)">
+            <summary>
+            Most of TypeHandlers support conversion from invariant string. Implement this method such as another TypeHandler can easily convert from this string.
+            </summary>
+        </member>
+        <member name="T:CronExpressionDescriptor.DescriptionTypeEnum">
+            <summary>
+            Enum to define the description "parts" of a Cron Expression  
+            </summary>
+        </member>
+        <member name="T:CronExpressionDescriptor.ExpressionDescriptor">
+            <summary>
+            Converts a Cron Expression into a human readable string
+            </summary>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CronExpressionDescriptor.ExpressionDescriptor"/> class
+            </summary>
+            <param name="expression">The cron expression string</param>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.#ctor(System.String,CronExpressionDescriptor.Options)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CronExpressionDescriptor.ExpressionDescriptor"/> class
+            </summary>
+            <param name="expression">The cron expression string</param>
+            <param name="options">Options to control the output description</param>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.GetDescription(CronExpressionDescriptor.DescriptionTypeEnum)">
+            <summary>
+            Generates a human readable string for the Cron Expression
+            </summary>
+            <param name="type">Which part(s) of the expression to describe</param>
+            <returns>The cron expression description</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.GetFullDescription">
+            <summary>
+            Generates the FULL description
+            </summary>
+            <returns>The FULL description</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.GetTimeOfDayDescription">
+            <summary>
+            Generates a description for only the TIMEOFDAY portion of the expression
+            </summary>
+            <returns>The TIMEOFDAY description</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.GetSecondsDescription">
+            <summary>
+            Generates a description for only the SECONDS portion of the expression
+            </summary>
+            <returns>The SECONDS description</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.GetMinutesDescription">
+            <summary>
+            Generates a description for only the MINUTE portion of the expression
+            </summary>
+            <returns>The MINUTE description</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.GetHoursDescription">
+            <summary>
+            Generates a description for only the HOUR portion of the expression
+            </summary>
+            <returns>The HOUR description</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.GetDayOfWeekDescription">
+            <summary>
+            Generates a description for only the DAYOFWEEK portion of the expression
+            </summary>
+            <returns>The DAYOFWEEK description</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.GetMonthDescription">
+            <summary>
+            Generates a description for only the MONTH portion of the expression
+            </summary>
+            <returns>The MONTH description</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.GetDayOfMonthDescription">
+            <summary>
+            Generates a description for only the DAYOFMONTH portion of the expression
+            </summary>
+            <returns>The DAYOFMONTH description</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.GetYearDescription">
+            <summary>
+            Generates a description for only the YEAR portion of the expression
+            </summary>
+            <returns>The YEAR description</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.GetSegmentDescription(System.String,System.String,System.Func{System.String,System.String},System.Func{System.String,System.String},System.Func{System.String,System.String},System.Func{System.String,System.String},System.Func{System.String,System.String})">
+            <summary>
+            Generates the segment description
+            <remarks>
+            Range expressions used the 'ComaX0ThroughX1' resource
+            However Romanian language has different idioms for
+            1. 'from number to number' (minutes, seconds, hours, days) => ComaMinX0ThroughMinX1 optional resource
+            2. 'from month to month' ComaMonthX0ThroughMonthX1 optional resource
+            3. 'from year to year' => ComaYearX0ThroughYearX1 oprtional resource
+            therefore <paramref name="getRangeFormat"/> was introduced
+            </remarks>
+            </summary>
+            <param name="expression"></param>
+            <param name="allDescription"></param>
+            <param name="getSingleItemDescription"></param>
+            <param name="getIntervalDescriptionFormat"></param>
+            <param name="getBetweenDescriptionFormat"></param>
+            <param name="getDescriptionFormat"></param>
+            <param name="getRangeFormat">function that formats range expressions depending on cron parts</param>
+            <returns></returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.GenerateBetweenSegmentDescription(System.String,System.Func{System.String,System.String},System.Func{System.String,System.String})">
+            <summary>
+            Generates the between segment description
+            </summary>
+            <param name="betweenExpression"></param>
+            <param name="getBetweenDescriptionFormat"></param>
+            <param name="getSingleItemDescription"></param>
+            <returns>The between segment description</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.FormatTime(System.String,System.String)">
+            <summary>
+            Given time parts, will contruct a formatted time description
+            </summary>
+            <param name="hourExpression">Hours part</param>
+            <param name="minuteExpression">Minutes part</param>
+            <returns>Formatted time description</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.FormatTime(System.String,System.String,System.String)">
+            <summary>
+            Given time parts, will contruct a formatted time description
+            </summary>
+            <param name="hourExpression">Hours part</param>
+            <param name="minuteExpression">Minutes part</param>
+            <param name="secondExpression">Seconds part</param>
+            <returns>Formatted time description</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.TransformVerbosity(System.String,System.Boolean)">
+            <summary>
+            Transforms the verbosity of the expression description by stripping verbosity from original description
+            </summary>
+            <param name="description">The description to transform</param>
+            <param name="useVerboseFormat">If true, will leave description as it, if false, will strip verbose parts</param>
+            <returns>The transformed description with proper verbosity</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.GetString(System.String)">
+            <summary>
+            Gets a localized string resource
+            refactored because Resources.ResourceManager.GetString was way too long
+            </summary>
+            <param name="resourceName">name of the resource</param>
+            <returns>translated resource</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.GetDescription(System.String)">
+            <summary>
+            Generates a human readable string for the Cron Expression
+            </summary>
+            <param name="expression">The cron expression string</param>
+            <returns>The cron expression description</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionDescriptor.GetDescription(System.String,CronExpressionDescriptor.Options)">
+            <summary>
+            Generates a human readable string for the Cron Expression
+            </summary>
+            <param name="expression">The cron expression string</param>
+            <param name="options">Options to control the output description</param>
+            <returns>The cron expression description</returns>
+        </member>
+        <member name="T:CronExpressionDescriptor.ExpressionParser">
+            <summary>
+            Cron Expression Parser
+            </summary>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionParser.#ctor(System.String,CronExpressionDescriptor.Options)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CronExpressionDescriptor.ExpressionParser"/> class
+            </summary>
+            <param name="expression">The cron expression string</param>
+            <param name="options">Parsing options</param>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionParser.Parse">
+            <summary>
+            Parses the cron expression string
+            </summary>
+            <returns>A 7 part string array, one part for each component of the cron expression (seconds, minutes, etc.)</returns>
+        </member>
+        <member name="M:CronExpressionDescriptor.ExpressionParser.NormalizeExpression(System.String[])">
+            <summary>
+            Converts cron expression components into consistent, predictable formats.
+            </summary>
+            <param name="expressionParts">A 7 part string array, one part for each component of the cron expression</param>
+        </member>
+        <member name="T:CronExpressionDescriptor.Options">
+            <summary>
+            Options for parsing and describing a Cron Expression
+            </summary>
+        </member>
+    </members>
+</doc>

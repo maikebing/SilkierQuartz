@@ -49,7 +49,7 @@ namespace SilkierQuartz
         }
 
         [Obsolete("We recommend UseSilkierQuartz")]
-        public static void UseQuartzmin(this IApplicationBuilder app, SilkierQuartzOptions options, Action<Services> configure = null)
+        public static IApplicationBuilder UseQuartzmin(this IApplicationBuilder app, SilkierQuartzOptions options, Action<Services> configure = null)
             => app.UseSilkierQuartz(options, configure);
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace SilkierQuartz
         /// <param name="app"></param>
         /// <param name="options"></param>
         /// <param name="configure"></param>
-        public static void UseSilkierQuartz(this IApplicationBuilder app, SilkierQuartzOptions options, Action<Services> configure = null)
+        public static IApplicationBuilder UseSilkierQuartz(this IApplicationBuilder app, SilkierQuartzOptions options, Action<Services> configure = null)
         {
             options = options ?? throw new ArgumentNullException(nameof(options));
 
@@ -133,8 +133,8 @@ namespace SilkierQuartz
 
             });
 
-           
 
+            return app;
         }
 
         private static void UseFileServer(this IApplicationBuilder app, SilkierQuartzOptions options)
@@ -156,11 +156,11 @@ namespace SilkierQuartz
             app.UseFileServer(fsOptions);
         }
         [Obsolete("We recommend AddSilkierQuartz")]
-        public static void AddQuartzmin(this IServiceCollection services, Action<NameValueCollection> stdSchedulerFactoryOptions = null)
+        public static IServiceCollection AddQuartzmin(this IServiceCollection services, Action<NameValueCollection> stdSchedulerFactoryOptions = null)
             => services.AddSilkierQuartz(stdSchedulerFactoryOptions);
 
 
-        public static void AddSilkierQuartz(this IServiceCollection services, Action<NameValueCollection> stdSchedulerFactoryOptions = null,Func<List<Assembly>> jobsasmlist=null)
+        public static IServiceCollection AddSilkierQuartz(this IServiceCollection services, Action<NameValueCollection> stdSchedulerFactoryOptions = null,Func<List<Assembly>> jobsasmlist=null)
         {
             services.AddControllers()
                 .AddApplicationPart(Assembly.GetExecutingAssembly())
@@ -173,6 +173,7 @@ namespace SilkierQuartz
                 var so = t.GetCustomAttribute<SilkierQuartzAttribute>();
                 services.AddQuartzJob(t,  so.Identity??t.Name, so.Desciption??t.FullName);
             });
+            return services;
         }
         private static List<Type> _silkierQuartzJobs = null;
         private static List<Type> GetSilkierQuartzJobs(List<Assembly> lists=null)
