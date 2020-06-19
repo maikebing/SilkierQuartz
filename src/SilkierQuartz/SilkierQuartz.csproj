@@ -65,7 +65,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.DataAnnotations" Version="2.1.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
-		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.1.0" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.1.0" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="2.1.0" />
