@@ -65,7 +65,7 @@ namespace SilkierQuartz.Test
                     A<IJobDetail>.That.Matches(jd => jd == jobDetail1 || jd == jobDetail2 || jd == jobDetail3),
                     A<ITrigger>.Ignored,
                     A<CancellationToken>.Ignored))
-                .MustHaveHappened(Repeated.Like(count => count == 3));
+                .MustHaveHappened(3, Times.Exactly);
         }
 
         [Fact(DisplayName = "Started all registered Job with specified ITrigger")]
@@ -99,13 +99,13 @@ namespace SilkierQuartz.Test
                     A<IJobDetail>.That.Matches(jd => jd == jobDetail1),
                     A<ITrigger>.That.Matches(t => t == trigger1),
                     A<CancellationToken>.Ignored))
-                .MustHaveHappened(Repeated.Exactly.Once);
+                .MustHaveHappened(1,Times.Exactly);
 
             A.CallTo(
                 () => scheduler.ScheduleJob(
                     A<ITrigger>.That.Matches(t => t == trigger2 || t == trigger3),
                     A<CancellationToken>.Ignored))
-                .MustHaveHappened(Repeated.Exactly.Twice);
+                .MustHaveHappened(2,Times.Exactly);
         }
     }
 }
