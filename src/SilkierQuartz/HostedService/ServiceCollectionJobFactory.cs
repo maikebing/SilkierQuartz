@@ -22,7 +22,10 @@ namespace SilkierQuartz.HostedService
         {
             var scoped = Container.CreateScope();
             var result = scoped.ServiceProvider.GetService(bundle.JobDetail.JobType) as IJob;
-            _createdJob.AddOrUpdate(result, scoped, (j, s) => scoped);
+            if (result != null)
+            {
+                _createdJob.AddOrUpdate(result, scoped, (j, s) => scoped);
+            }
             return result;
         }
 

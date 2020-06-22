@@ -28,21 +28,35 @@ namespace SilkierQuartz.Controllers
         {
             var histStore = Scheduler.Context.GetExecutionHistoryStore();
             var metadata = await Scheduler.GetMetaData();
-            var jobKeys = await Scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup());
-            var triggerKeys = await Scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.AnyGroup());
+            IReadOnlyCollection<JobKey> jobKeys = null;
+            IReadOnlyCollection<TriggerKey> triggerKeys = null; 
+            if (!Scheduler.IsShutdown)
+            {
+                try
+                {
+                    jobKeys = await Scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup());
+                    triggerKeys = await Scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.AnyGroup());
+                }
+                catch (NotImplementedException) { }
+            }
             var currentlyExecutingJobs = await Scheduler.GetCurrentlyExecutingJobs();
             IEnumerable<object> pausedJobGroups = null;
             IEnumerable<object> pausedTriggerGroups = null;
             IEnumerable<ExecutionHistoryEntry> execHistory = null;
-
-            try
+            if (!Scheduler.IsShutdown)
             {
-                pausedJobGroups = await GetGroupPauseState(await Scheduler.GetJobGroupNames(), async x => await Scheduler.IsJobGroupPaused(x));
-            } catch (NotImplementedException) { }
+                try
+                {
+                    pausedJobGroups = await GetGroupPauseState(await Scheduler.GetJobGroupNames(), async x => await Scheduler.IsJobGroupPaused(x));
+                }
+                catch (NotImplementedException) { }
 
-            try {
-                pausedTriggerGroups = await GetGroupPauseState(await Scheduler.GetTriggerGroupNames(), async x => await Scheduler.IsTriggerGroupPaused(x));
-            } catch (NotImplementedException) { }
+                try
+                {
+                    pausedTriggerGroups = await GetGroupPauseState(await Scheduler.GetTriggerGroupNames(), async x => await Scheduler.IsTriggerGroupPaused(x));
+                }
+                catch (NotImplementedException) { }
+            }
 
             int? failedJobs = null;
             int executedJobs = metadata.NumberOfJobsExecuted;
@@ -66,8 +80,8 @@ namespace SilkierQuartz.Controllers
                 UtcLabel = DateTimeSettings.UseLocalTime ? string.Empty : "UTC",
                 Environment.MachineName,
                 Application = Environment.CommandLine,
-                JobsCount = jobKeys.Count,
-                TriggerCount = triggerKeys.Count,
+                JobsCount = jobKeys?.Count??0,
+                TriggerCount = triggerKeys?.Count??0,
                 ExecutingJobs = currentlyExecutingJobs.Count,
                 ExecutedJobs = executedJobs,
                 FailedJobs = failedJobs?.ToString(CultureInfo.InvariantCulture) ?? "N / A",
