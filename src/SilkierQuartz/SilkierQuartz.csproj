@@ -58,7 +58,7 @@
 		<Reference Include="System.ComponentModel.DataAnnotations" />
 		<PackageReference Include="Microsoft.AspNet.WebApi" Version="5.2.7" />
 		<PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.7" />
-		<PackageReference Include="Microsoft.Owin.StaticFiles" Version="4.1.0" />
+		<PackageReference Include="Microsoft.Owin.StaticFiles" Version="4.1.1" />
 	</ItemGroup>
 
 	<ItemGroup Condition="$(DefineConstants.Contains('NETSTANDARD'))">
