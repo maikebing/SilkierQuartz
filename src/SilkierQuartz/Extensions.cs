@@ -73,16 +73,12 @@ namespace SilkierQuartz
 
         public static string ReadAsString(this HttpRequest request)
         {
-#if ( NETSTANDARD || NETCOREAPP )
 			using ( var ms = new MemoryStream())
             {
                 request.Body.CopyTo(ms);
                 return Encoding.UTF8.GetString(ms.ToArray());
             }
-#endif
-#if NETFRAMEWORK
-            return request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-#endif
+
         }
 
         public static JobDataMap GetQuartzJobDataMap(this IEnumerable<JobDataMapItemBase> models)

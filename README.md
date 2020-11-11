@@ -54,9 +54,7 @@ To install SilkierQuartz, run the following command in the Package Manager Conso
 ```powershell
 PM> Install-Package SilkierQuartz
 ```
-## Minimum requirements
- 
-- .NET Core 3.1
+
   
 
 ### OWIN middleware
