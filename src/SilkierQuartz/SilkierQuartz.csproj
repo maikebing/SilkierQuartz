@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFramework>net5</TargetFramework>
+		<TargetFramework>net5.0</TargetFramework>
 		<RestoreProjectStyle>PackageReference</RestoreProjectStyle>
 		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -27,15 +27,13 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>SilkierQuartz</PackageId>
 		<PackageIcon>logo.png</PackageIcon>
+	<IsPackable>true</IsPackable> 
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<DefineConstants></DefineConstants>
+		<OutputType>Library</OutputType>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <DocumentationFile>D:\GitHub\Quartzmin\src\SilkierQuartz\SilkierQuartz.xml</DocumentationFile>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\Quartz.Plugins.RecentHistory\Quartz.Plugins.RecentHistory.csproj" />
 	</ItemGroup>
@@ -44,7 +42,6 @@
 		<PackageReference Include="Handlebars.Net" Version="1.11.5" />
 		<PackageReference Include="JsonSubTypes" Version="1.8.0" />
 		<PackageReference Include="Quartz" Version="3.2.3" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.0" />
