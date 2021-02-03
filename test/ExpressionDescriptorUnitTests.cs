@@ -14,9 +14,6 @@ namespace SilkierQuartz.Test
 
     public class ExpressionDescriptorUnitTests
     {
-        public static Options ZeroBaseDoWIdxOptions = new Options() {DayOfWeekStartIndexZero = true};
-        public static readonly Options OneBasedDoWIdxOptions = new Options() {DayOfWeekStartIndexZero = false};
-
         [Theory(DisplayName = "Parse Expressions")]
         [InlineData("0 0 2 ? * 7 *", "At 02:00, only on Saturday", false)]
         [InlineData("0 0 7 * * ?", "At 07:00", false)]
