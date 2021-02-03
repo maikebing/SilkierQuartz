@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CronExpressionDescriptor;
 
 #region Target-Specific Directives
 #if ( NETSTANDARD || NETCOREAPP )
@@ -42,7 +43,7 @@ namespace SilkierQuartz.Controllers
                     JobKey = t.JobKey.ToString(),
                     JobGroup = t.JobKey.Group,
                     JobName = t.JobKey.Name,
-                    ScheduleDescription = t.GetScheduleDescription(),
+                    ScheduleDescription = t.GetScheduleDescription(Services),
                     History = Histogram.Empty,
                     StartTime = t.StartTimeUtc.UtcDateTime.ToDefaultFormat(),
                     EndTime = t.FinalFireTimeUtc?.UtcDateTime.ToDefaultFormat(),
@@ -247,7 +248,7 @@ namespace SilkierQuartz.Controllers
 
             try
             {
-                desc = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(cron);
+                desc = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(cron, Services.Options?.CronExpressionOptions);
             }
             catch
             { }
