@@ -59,7 +59,11 @@ namespace SilkierQuartz.Example
                     VirtualPathRoot = "/SilkierQuartz",
                     UseLocalTime = true,
                     DefaultDateFormat = "yyyy-MM-dd",
-                    DefaultTimeFormat = "HH:mm:ss"
+                    DefaultTimeFormat = "HH:mm:ss",
+                    CronExpressionOptions = new CronExpressionDescriptor.Options()
+                                            {
+                                                DayOfWeekStartIndexZero = false //Quartz uses 1-7 as the range
+                                            }
                 }
                 );
             app.UseEndpoints(endpoints =>
@@ -86,7 +90,10 @@ namespace SilkierQuartz.Example
                     TriggerBuilder.Create()
                     .WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever()),
                     TriggerBuilder.Create()
-                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(2).RepeatForever())
+                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(2).RepeatForever()),
+                     //Add a sample that uses 1-7 for dow
+                    TriggerBuilder.Create()
+                                  .WithCronSchedule("0 0 2 ? * 7 *"),
                 });
 
             app.UseQuartzJob<InjectSampleJob>(() =>

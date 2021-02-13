@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using CronExpressionDescriptor;
 using Quartz.Impl.Matchers;
 using Quartz.Plugins.RecentHistory;
 
@@ -293,10 +294,10 @@ namespace SilkierQuartz
             return TriggerType.Unknown;
         }
 
-        public static string GetScheduleDescription(this ITrigger trigger)
+        public static string GetScheduleDescription(this ITrigger trigger, Services services)
         {
             if (trigger is ICronTrigger cr)
-                return CronExpressionDescriptor.ExpressionDescriptor.GetDescription(cr.CronExpressionString);
+                return CronExpressionDescriptor.ExpressionDescriptor.GetDescription(cr.CronExpressionString, services?.Options?.CronExpressionOptions);
             if (trigger is IDailyTimeIntervalTrigger dt)
                 return GetScheduleDescription(dt);
             if (trigger is ISimpleTrigger st)

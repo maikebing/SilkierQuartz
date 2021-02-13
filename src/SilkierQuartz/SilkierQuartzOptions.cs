@@ -3,7 +3,7 @@ using Quartz.Impl;
 using SilkierQuartz.TypeHandlers;
 using System.Collections.Generic;
 using System.IO;
-
+using CronExpressionDescriptor;
 using Number = SilkierQuartz.TypeHandlers.NumberHandler.UnderlyingType;
 
 namespace SilkierQuartz
@@ -51,6 +51,11 @@ namespace SilkierQuartz
             set => DateTimeSettings.UseLocalTime = value;
         }
 
+        /// <summary>
+        /// Set options used by the cron expression description provider
+        /// </summary>
+        public Options CronExpressionOptions { get; set; } = new Options();
+        
         public SilkierQuartzOptions()
         {
             DefaultSelectedType = new StringHandler() { Name = "String" };
