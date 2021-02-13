@@ -30,12 +30,10 @@ namespace SilkierQuartz.Example
             services.AddOptions();
             services.Configure<AppSettings>(Configuration);
             services.Configure<InjectProperty>(options => { options.WriteText = "This is inject string"; });
-#pragma warning disable CS0618 // 类型或成员已过时
             services.AddQuartzJob<HelloJob>()
                     .AddQuartzJob<InjectSampleJob>()
                     .AddQuartzJob<HelloJobSingle>()
                     .AddQuartzJob<InjectSampleJobSingle>();
-#pragma warning restore CS0618 // 类型或成员已过时
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,7 +75,6 @@ namespace SilkierQuartz.Example
 
             #region  不使用 SilkierQuartzAttribe 属性的进行注册和使用的IJob，这里通过UseQuartzJob的IJob必须在  ConfigureServices进行AddQuartzJob
 
-#pragma warning disable CS0618 // 类型或成员已过时
             app.UseQuartzJob<HelloJobSingle>(TriggerBuilder.Create().WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever()))
             .UseQuartzJob<InjectSampleJobSingle>(() =>
             {
@@ -103,7 +100,6 @@ namespace SilkierQuartz.Example
                     .WithSimpleSchedule(x => x.WithIntervalInSeconds(10).RepeatForever()));
                 return result;
             });
-#pragma warning restore CS0618 // 类型或成员已过时
             #endregion
         }
     }
