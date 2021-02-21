@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SilkierQuartz.Example.Jobs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Quartz;
+using SilkierQuartz.Example.Jobs;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Reflection;
 
 namespace SilkierQuartz.Example
 {
@@ -26,7 +25,31 @@ namespace SilkierQuartz.Example
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddSilkierQuartz();
+            //services.AddSilkierQuartz(serviceCfg =>
+            //    serviceCfg.AddControllers()
+            //        .AddApplicationPart(Assembly.GetExecutingAssembly()));
+
+            services.Configure<QuartzOptions>(Configuration.GetSection("Quartz"));
+            var sectionData = Configuration.GetSection("Quartz");
+            var dictionaryData = sectionData.GetChildren().ToDictionary(x => x.Key, x => x.Value);
+            var quartzConfig = new NameValueCollection();
+            foreach (var kvp in dictionaryData)
+            {
+                string value = null;
+                if (kvp.Value != null)
+                {
+                    value = kvp.Value;
+                }
+                quartzConfig.Add(kvp.Key, value);
+            }
+
+            services.AddQuartz(quartzConfig, q =>
+            {
+                q.UseMicrosoftDependencyInjectionScopedJobFactory();
+                q.UseSimpleTypeLoader();
+            });
+            services.AddScoped<DemoScheduler.DummyJob>();
+
             services.AddOptions();
             services.Configure<AppSettings>(Configuration);
             services.Configure<InjectProperty>(options => { options.WriteText = "This is inject string"; });
@@ -51,25 +74,29 @@ namespace SilkierQuartz.Example
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
-            app.UseSilkierQuartz(
-                new SilkierQuartzOptions()
+
+            var silkierQuartzOptions = new SilkierQuartzOptions()
+            {
+                VirtualPathRoot = "/SilkierQuartz",
+                UseLocalTime = true,
+                DefaultDateFormat = "yyyy-MM-dd",
+                DefaultTimeFormat = "HH:mm:ss",
+                CronExpressionOptions = new CronExpressionDescriptor.Options()
                 {
-                    VirtualPathRoot = "/SilkierQuartz",
-                    UseLocalTime = true,
-                    DefaultDateFormat = "yyyy-MM-dd",
-                    DefaultTimeFormat = "HH:mm:ss",
-                    CronExpressionOptions = new CronExpressionDescriptor.Options()
-                                            {
-                                                DayOfWeekStartIndexZero = false //Quartz uses 1-7 as the range
-                                            }
+                    DayOfWeekStartIndexZero = false //Quartz uses 1-7 as the range
                 }
-                );
+            };
+            app.UseSilkierQuartz(silkierQuartzOptions,
+                appBuilder => appBuilder.UseEndpoints(endpoints => endpoints.MapControllerRoute(nameof(SilkierQuartz),
+                    $"{silkierQuartzOptions.VirtualPathRoot}/{{controller=Scheduler}}/{{action=Index}}")));
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
             });
             //How to compatible old code to SilkierQuartz
             //将旧的原来的规划Job的代码进行移植兼容的示例
+            //Remove this line cause the job was saved
             app.SchedulerJobs();
 
 
@@ -81,7 +108,7 @@ namespace SilkierQuartz.Example
                 return TriggerBuilder.Create()
                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever());
             });
-            
+
             app.UseQuartzJob<HelloJob>(new List<TriggerBuilder>
                 {
                     TriggerBuilder.Create()

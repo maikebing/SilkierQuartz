@@ -48,17 +48,18 @@ namespace SilkierQuartz
             return app.ApplicationServices.GetRequiredService<ISchedulerFactory>().GetAllSchedulers().Result;
         }
 
-        [Obsolete("We recommend UseSilkierQuartz")]
+        [Obsolete("We no more support this method!")]
         public static IApplicationBuilder UseQuartzmin(this IApplicationBuilder app, SilkierQuartzOptions options, Action<Services> configure = null)
-            => app.UseSilkierQuartz(options, configure);
+            => app.UseSilkierQuartz(options, null, configure);
 
         /// <summary>
         /// Use SilkierQuartz and automatically discover IJob subclasses with SilkierQuartzAttribute
         /// </summary>
         /// <param name="app"></param>
         /// <param name="options"></param>
+        /// /// <param name="applicationBuilderConfigure"></param>
         /// <param name="configure"></param>
-        public static IApplicationBuilder UseSilkierQuartz(this IApplicationBuilder app, SilkierQuartzOptions options, Action<Services> configure = null)
+        public static IApplicationBuilder UseSilkierQuartz(this IApplicationBuilder app, SilkierQuartzOptions options, Action<IApplicationBuilder> applicationBuilderConfigure, Action<Services> configure = null)
         {
             options = options ?? throw new ArgumentNullException(nameof(options));
 
@@ -87,10 +88,11 @@ namespace SilkierQuartz
                 await next.Invoke();
             });
 
-            app.UseEndpoints(endpoints =>
-           {
-               endpoints.MapControllerRoute(nameof(SilkierQuartz), $"{options.VirtualPathRoot}/{{controller=Scheduler}}/{{action=Index}}");
-           });
+            if (applicationBuilderConfigure == null)
+            {
+                throw new InvalidOperationException("Default application builder configure is missing!");
+            }
+            applicationBuilderConfigure.Invoke(app);
 
             var types = GetSilkierQuartzJobs();
             types.ForEach(t =>
@@ -155,16 +157,19 @@ namespace SilkierQuartz
 
             app.UseFileServer(fsOptions);
         }
-        [Obsolete("We recommend AddSilkierQuartz")]
+        [Obsolete("We no more support this method!")]
         public static IServiceCollection AddQuartzmin(this IServiceCollection services, Action<NameValueCollection> stdSchedulerFactoryOptions = null)
-            => services.AddSilkierQuartz(stdSchedulerFactoryOptions);
+            => services.AddSilkierQuartz(null, stdSchedulerFactoryOptions);
 
 
-        public static IServiceCollection AddSilkierQuartz(this IServiceCollection services, Action<NameValueCollection> stdSchedulerFactoryOptions = null,Func<List<Assembly>> jobsasmlist=null)
+        public static IServiceCollection AddSilkierQuartz(this IServiceCollection services, Action<IServiceCollection> serviceCollectionConfigure, Action<NameValueCollection> stdSchedulerFactoryOptions = null,Func<List<Assembly>> jobsasmlist=null)
         {
-            services.AddControllers()
-                .AddApplicationPart(Assembly.GetExecutingAssembly())
-                .AddNewtonsoftJson();
+            if (serviceCollectionConfigure == null)
+            {
+                throw new InvalidOperationException("Default service collection configure is missing!");
+            }
+            serviceCollectionConfigure.Invoke(services);
+
             services.UseQuartzHostedService(stdSchedulerFactoryOptions);
             
             var types = GetSilkierQuartzJobs(jobsasmlist?.Invoke());

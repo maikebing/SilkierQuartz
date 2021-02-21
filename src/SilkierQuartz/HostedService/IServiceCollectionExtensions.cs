@@ -1,20 +1,17 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
 using SilkierQuartz.HostedService;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Text;
 namespace SilkierQuartz
 {
     public static class IServiceCollectionExtensions
     {
-         
-     
+
+
         private static bool _quartzHostedServiceIsAdded = false;
         /// <summary>
         ///  Must be call after Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults()
@@ -24,7 +21,8 @@ namespace SilkierQuartz
         public static IHostBuilder ConfigureSilkierQuartzHost(this IHostBuilder builder)
         {
             _quartzHostedServiceIsAdded = true;
-            return builder.ConfigureServices(services => services.AddHostedService<QuartzHostedService>());
+            return builder.ConfigureServices((builderContext, services) =>
+                services.AddHostedService<QuartzHostedService>());
         }
         [Obsolete("We recommend ConfigureSilkierQuartzHost")]
         public static IHostBuilder ConfigureQuartzHost(this IHostBuilder builder) => builder.ConfigureSilkierQuartzHost();
