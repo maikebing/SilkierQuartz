@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using Quartz;
 using SilkierQuartz.Example.Jobs;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
 using System.Reflection;
 
 namespace SilkierQuartz.Example
@@ -23,10 +25,26 @@ namespace SilkierQuartz.Example
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddSilkierQuartz(serviceCfg =>
-                serviceCfg.AddControllers()
-                    .AddApplicationPart(Assembly.GetExecutingAssembly())
-                    .AddNewtonsoftJson());
+            services.Configure<QuartzOptions>(Configuration.GetSection("Quartz"));
+            var sectionData = Configuration.GetSection("Quartz");
+            var dictionaryData = sectionData.GetChildren().ToDictionary(x => x.Key, x => x.Value);
+            var quartzConfig = new NameValueCollection();
+            foreach (var kvp in dictionaryData)
+            {
+                string value = null;
+                if (kvp.Value != null)
+                {
+                    value = kvp.Value;
+                }
+                quartzConfig.Add(kvp.Key, value);
+            }
+
+            services.AddQuartz(quartzConfig, q =>
+            {
+                q.UseMicrosoftDependencyInjectionScopedJobFactory();
+                q.UseSimpleTypeLoader();
+            });
+            services.AddScoped<DemoScheduler.DummyJob>();
             services.AddOptions();
             services.Configure<AppSettings>(Configuration);
             services.Configure<InjectProperty>(options => { options.WriteText = "This is inject string"; });
@@ -71,11 +89,12 @@ namespace SilkierQuartz.Example
                 endpoints.MapRazorPages();
             });
             //How to compatible old code to SilkierQuartz
-            //½«¾ÉµÄÔ­À´µÄ¹æ»®JobµÄ´úÂë½øĞĞÒÆÖ²¼æÈİµÄÊ¾Àı
+            //å°†æ—§çš„åŸæ¥çš„è§„åˆ’Jobçš„ä»£ç è¿›è¡Œç§»æ¤å…¼å®¹çš„ç¤ºä¾‹
+            //Remove this line cause the job was saved
             app.SchedulerJobs();
 
 
-            #region  ²»Ê¹ÓÃ SilkierQuartzAttribe ÊôĞÔµÄ½øĞĞ×¢²áºÍÊ¹ÓÃµÄIJob£¬ÕâÀïÍ¨¹ıUseQuartzJobµÄIJob±ØĞëÔÚ  ConfigureServices½øĞĞAddQuartzJob
+            #region  ä¸ä½¿ç”¨ SilkierQuartzAttribe å±æ€§çš„è¿›è¡Œæ³¨å†Œå’Œä½¿ç”¨çš„IJobï¼Œè¿™é‡Œé€šè¿‡UseQuartzJobçš„IJobå¿…é¡»åœ¨  ConfigureServicesè¿›è¡ŒAddQuartzJob
 
             app.UseQuartzJob<HelloJobSingle>(TriggerBuilder.Create().WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever()))
             .UseQuartzJob<InjectSampleJobSingle>(() =>

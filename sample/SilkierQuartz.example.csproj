@@ -6,6 +6,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.3" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.1" />
+    <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.2.4" />
+    <PackageReference Include="Quartz.Serialization.Json" Version="3.2.4" />
   </ItemGroup>
 
   <ItemGroup>

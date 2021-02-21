@@ -5,6 +5,7 @@ using Quartz.Impl;
 using Quartz.Impl.Matchers;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -22,8 +23,8 @@ namespace SilkierQuartz
             IScheduler scheduler = app.GetScheduler();
             {
                 var jobData = new JobDataMap();
-                jobData.Put("DateFrom", DateTime.Now);
-                jobData.Put("QuartzAssembly", File.ReadAllBytes(typeof(IScheduler).Assembly.Location));
+                jobData.Put("DateFrom", DateTime.Now.ToString(CultureInfo.InvariantCulture));
+                jobData.Put("QuartzAssembly", "Some random space");
 
                 var job = JobBuilder.Create<DummyJob>()
                     .WithIdentity("Sales", "REPORTS")
@@ -36,7 +37,11 @@ namespace SilkierQuartz
                     .StartNow()
                     .WithCronSchedule("0 0 8 1/1 * ? *")
                     .Build();
-                scheduler.ScheduleJob(job, trigger).Wait();
+                 if (!scheduler.CheckExists(job.Key).GetAwaiter().GetResult())
+                {
+                    scheduler.ScheduleJob(job, trigger).Wait();
+                }
+
 
                 trigger = TriggerBuilder.Create()
                     .WithIdentity("MonthlySales")
@@ -44,7 +49,10 @@ namespace SilkierQuartz
                     .StartNow()
                     .WithCronSchedule("0 0 12 1 1/1 ? *")
                     .Build();
-                scheduler.ScheduleJob(trigger).Wait(); ;
+                if (!scheduler.CheckExists(trigger.Key).GetAwaiter().GetResult())
+                {
+                    scheduler.ScheduleJob(trigger).Wait(); ;
+                }
                 scheduler.PauseTrigger(trigger.Key).Wait(); ;
 
                 trigger = TriggerBuilder.Create()
@@ -53,66 +61,69 @@ namespace SilkierQuartz
                     .StartNow()
                     .WithSimpleSchedule(x => x.WithIntervalInHours(1).RepeatForever())
                     .Build();
-                scheduler.ScheduleJob(trigger).Wait(); ;
+                if (!scheduler.CheckExists(trigger.Key).GetAwaiter().GetResult())
+                {
+                    scheduler.ScheduleJob(trigger).Wait(); ;
+                }
             }
-            Task.Run(async () =>
-                        {
-                            var job = JobBuilder.Create<DummyJob>().WithIdentity("Job1").StoreDurably().Build();
-                            await scheduler.AddJob(job, false);
-                            job = JobBuilder.Create<DummyJob>().WithIdentity("Job2").StoreDurably().Build();
-                            await scheduler.AddJob(job, false);
-                            job = JobBuilder.Create<DummyJob>().WithIdentity("Job3").StoreDurably().Build();
-                            await scheduler.AddJob(job, false);
-                            job = JobBuilder.Create<DummyJob>().WithIdentity("Job4").StoreDurably().Build();
-                            await scheduler.AddJob(job, false);
-                            job = JobBuilder.Create<DummyJob>().WithIdentity("Job5").StoreDurably().Build();
-                            await scheduler.AddJob(job, false);
-                            job = JobBuilder.Create<DummyJob>().WithIdentity("Send SMS", "CRITICAL").StoreDurably().RequestRecovery().Build();
-                            await scheduler.AddJob(job, false);
+            //Task.Run(async () =>
+            //            {
+            //                var job = JobBuilder.Create<DummyJob>().WithIdentity("Job1").StoreDurably().Build();
+            //                await scheduler.AddJob(job, false);
+            //                job = JobBuilder.Create<DummyJob>().WithIdentity("Job2").StoreDurably().Build();
+            //                await scheduler.AddJob(job, false);
+            //                job = JobBuilder.Create<DummyJob>().WithIdentity("Job3").StoreDurably().Build();
+            //                await scheduler.AddJob(job, false);
+            //                job = JobBuilder.Create<DummyJob>().WithIdentity("Job4").StoreDurably().Build();
+            //                await scheduler.AddJob(job, false);
+            //                job = JobBuilder.Create<DummyJob>().WithIdentity("Job5").StoreDurably().Build();
+            //                await scheduler.AddJob(job, false);
+            //                job = JobBuilder.Create<DummyJob>().WithIdentity("Send SMS", "CRITICAL").StoreDurably().RequestRecovery().Build();
+            //                await scheduler.AddJob(job, false);
 
-                            var trigger = TriggerBuilder.Create()
-                                .WithIdentity("PushAds  (US)")
-                                .ForJob(job.Key)
-                                .UsingJobData("Location", "US")
-                                .StartNow()
-                                .WithCronSchedule("0 0/5 * 1/1 * ? *")
-                                .Build();
-                            await scheduler.ScheduleJob(trigger);
+            //                var trigger = TriggerBuilder.Create()
+            //                    .WithIdentity("PushAds  (US)")
+            //                    .ForJob(job.Key)
+            //                    .UsingJobData("Location", "US")
+            //                    .StartNow()
+            //                    .WithCronSchedule("0 0/5 * 1/1 * ? *")
+            //                    .Build();
+            //                await scheduler.ScheduleJob(trigger);
 
-                            trigger = TriggerBuilder.Create()
-                                .WithIdentity("PushAds (EU)")
-                                .ForJob(job.Key)
-                                .UsingJobData("Location", "EU")
-                                .StartNow()
-                                .WithCronSchedule("0 0/7 * 1/1 * ? *")
-                                .Build();
-                            await scheduler.ScheduleJob(trigger);
-                            await scheduler.PauseTriggers(GroupMatcher<TriggerKey>.GroupEquals("LONGRUNNING"));
+            //                trigger = TriggerBuilder.Create()
+            //                    .WithIdentity("PushAds (EU)")
+            //                    .ForJob(job.Key)
+            //                    .UsingJobData("Location", "EU")
+            //                    .StartNow()
+            //                    .WithCronSchedule("0 0/7 * 1/1 * ? *")
+            //                    .Build();
+            //                await scheduler.ScheduleJob(trigger);
+            //                await scheduler.PauseTriggers(GroupMatcher<TriggerKey>.GroupEquals("LONGRUNNING"));
 
-                            job = JobBuilder.Create<DummyJob>().WithIdentity("Send Push", "CRITICAL").StoreDurably().RequestRecovery().Build();
-                            await scheduler.AddJob(job, false);
-                        });
-            Task.Run(async () =>
-            {
-                var job = JobBuilder.Create<DisallowConcurrentJob>()
-                    .WithIdentity("Load CSV", "IMPORT")
-                    .StoreDurably()
-                    .Build();
-                var trigger = TriggerBuilder.Create()
-                    .WithIdentity("CSV_small", "FREQUENTLY")
-                    .ForJob(job)
-                    .StartNow()
-                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(5).RepeatForever())
-                    .Build();
-                await scheduler.ScheduleJob(job, trigger);
-                trigger = TriggerBuilder.Create()
-                    .WithIdentity("CSV_big", "LONGRUNNING")
-                    .ForJob(job)
-                    .StartNow()
-                    .WithDailyTimeIntervalSchedule(x => x.OnMondayThroughFriday())
-                    .Build();
-                await scheduler.ScheduleJob(trigger);
-            });
+            //                job = JobBuilder.Create<DummyJob>().WithIdentity("Send Push", "CRITICAL").StoreDurably().RequestRecovery().Build();
+            //                await scheduler.AddJob(job, false);
+            //            });
+            //Task.Run(async () =>
+            //{
+            //    var job = JobBuilder.Create<DisallowConcurrentJob>()
+            //        .WithIdentity("Load CSV", "IMPORT")
+            //        .StoreDurably()
+            //        .Build();
+            //    var trigger = TriggerBuilder.Create()
+            //        .WithIdentity("CSV_small", "FREQUENTLY")
+            //        .ForJob(job)
+            //        .StartNow()
+            //        .WithSimpleSchedule(x => x.WithIntervalInSeconds(5).RepeatForever())
+            //        .Build();
+            //    await scheduler.ScheduleJob(job, trigger);
+            //    trigger = TriggerBuilder.Create()
+            //        .WithIdentity("CSV_big", "LONGRUNNING")
+            //        .ForJob(job)
+            //        .StartNow()
+            //        .WithDailyTimeIntervalSchedule(x => x.OnMondayThroughFriday())
+            //        .Build();
+            //    await scheduler.ScheduleJob(trigger);
+            //});
 
 
         }
@@ -125,7 +136,12 @@ namespace SilkierQuartz
             {
                 Debug.WriteLine("DummyJob > " + DateTime.Now);
 
-                await Task.Delay(TimeSpan.FromSeconds(Random.Next(1, 20)));
+                Console.WriteLine("=================================================================");
+                Console.WriteLine("DummyJob ran!");
+                Console.WriteLine("=================================================================");
+
+
+                await Task.Delay(TimeSpan.FromSeconds(Random.Next(20, 50)));
 
                 if (Random.Next(2) == 0)
                     throw new Exception("Fatal error example!");

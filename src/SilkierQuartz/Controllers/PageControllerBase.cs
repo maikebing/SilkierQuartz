@@ -15,20 +15,12 @@ namespace SilkierQuartz.Controllers
 #if ( NETSTANDARD || NETCOREAPP )
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Primitives;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Serialization;
-
-	public abstract partial class PageControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
+	
+    public abstract partial class PageControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
     {
-        private static readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings()
-        {
-            ContractResolver = new DefaultContractResolver(), // PascalCase as default
-        };
-
         protected Services Services => (Services) Request.HttpContext.Items[typeof(Services)];
         protected string GetRouteData(string key) => RouteData.Values[key].ToString();
-        protected IActionResult Json( object content ) => new JsonResult( content, _serializerSettings ); // should be new JsonResult(content); ?
-
+        protected IActionResult Json( object content ) => new JsonResult( content );
 
         protected IActionResult NotModified() => new StatusCodeResult(304);
 
