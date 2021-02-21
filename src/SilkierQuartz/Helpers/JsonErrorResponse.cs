@@ -3,9 +3,12 @@ namespace SilkierQuartz.Helpers
 {
 #if (NETSTANDARD || NETCOREAPP)
     using Microsoft.AspNetCore.Mvc.Filters;
+    using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.DependencyInjection;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
+    using System.Text.Json;
 
     public class JsonErrorResponseAttribute : ActionFilterAttribute
     {
@@ -13,12 +16,18 @@ namespace SilkierQuartz.Helpers
         {
             ContractResolver = new DefaultContractResolver(), // PascalCase as default
         };
+        private static readonly object _systemTextSerializerOptions = new JsonSerializerOptions();
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
             if (context.Exception != null)
             {
-                context.Result = new JsonResult(new { ExceptionMessage = context.Exception.Message }, _serializerSettings) { StatusCode = 400 };
+                var executor = context.HttpContext.RequestServices.GetRequiredService<IActionResultExecutor<JsonResult>>();
+                var serializerOptions = executor.GetType().FullName.Contains("SystemTextJson")
+                    ? _systemTextSerializerOptions
+                    : _serializerSettings;
+
+                context.Result = new JsonResult(new { ExceptionMessage = context.Exception.Message }, serializerOptions) { StatusCode = 400 };
                 context.ExceptionHandled = true;
             }
         }

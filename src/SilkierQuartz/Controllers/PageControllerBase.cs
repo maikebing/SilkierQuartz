@@ -13,21 +13,32 @@ namespace SilkierQuartz.Controllers
 	#region Target-Specific Directives
 
 #if ( NETSTANDARD || NETCOREAPP )
+    using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Primitives;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
+    using System.Text.Json;
 
-	public abstract partial class PageControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
+    public abstract partial class PageControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
     {
         private static readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings()
         {
             ContractResolver = new DefaultContractResolver(), // PascalCase as default
         };
+        private static readonly object _systemTextSerializerOptions = new JsonSerializerOptions();
 
         protected Services Services => (Services) Request.HttpContext.Items[typeof(Services)];
         protected string GetRouteData(string key) => RouteData.Values[key].ToString();
-        protected IActionResult Json( object content ) => new JsonResult( content, _serializerSettings );
+        protected IActionResult Json( object content )
+        {
+            var executor = HttpContext.RequestServices.GetRequiredService<IActionResultExecutor<JsonResult>>();
+            var serializerOptions = executor.GetType().FullName.Contains("SystemTextJson")
+                ? _systemTextSerializerOptions
+                : _serializerSettings;
+            return new JsonResult(content, serializerOptions);
+        }
 
 
         protected IActionResult NotModified() => new StatusCodeResult(304);
