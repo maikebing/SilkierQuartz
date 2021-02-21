@@ -27,7 +27,7 @@ namespace SilkierQuartz.Controllers
 
         protected Services Services => (Services) Request.HttpContext.Items[typeof(Services)];
         protected string GetRouteData(string key) => RouteData.Values[key].ToString();
-        protected IActionResult Json( object content ) => new JsonResult( content, _serializerSettings );
+        protected IActionResult Json( object content ) => new JsonResult( content, _serializerSettings ); // should be new JsonResult(content); ?
 
 
         protected IActionResult NotModified() => new StatusCodeResult(304);

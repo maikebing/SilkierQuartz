@@ -18,7 +18,7 @@ namespace SilkierQuartz.Helpers
         {
             if (context.Exception != null)
             {
-                context.Result = new JsonResult(new { ExceptionMessage = context.Exception.Message }, _serializerSettings) { StatusCode = 400 };
+                context.Result = new JsonResult(new { ExceptionMessage = context.Exception.Message }, _serializerSettings) { StatusCode = 400 }; //should be new JsonResult(content);?
                 context.ExceptionHandled = true;
             }
         }
