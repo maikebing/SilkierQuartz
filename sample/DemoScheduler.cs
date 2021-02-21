@@ -36,7 +36,11 @@ namespace SilkierQuartz
                     .StartNow()
                     .WithCronSchedule("0 0 8 1/1 * ? *")
                     .Build();
-                scheduler.ScheduleJob(job, trigger).Wait();
+                if (!scheduler.CheckExists(job.Key).GetAwaiter().GetResult())
+                {
+                    scheduler.ScheduleJob(job, trigger).Wait();
+                }
+
 
                 trigger = TriggerBuilder.Create()
                     .WithIdentity("MonthlySales")
@@ -44,7 +48,10 @@ namespace SilkierQuartz
                     .StartNow()
                     .WithCronSchedule("0 0 12 1 1/1 ? *")
                     .Build();
-                scheduler.ScheduleJob(trigger).Wait(); ;
+                if (!scheduler.CheckExists(trigger.Key).GetAwaiter().GetResult())
+                {
+                    scheduler.ScheduleJob(trigger).Wait(); ;
+                }
                 scheduler.PauseTrigger(trigger.Key).Wait(); ;
 
                 trigger = TriggerBuilder.Create()
@@ -53,7 +60,10 @@ namespace SilkierQuartz
                     .StartNow()
                     .WithSimpleSchedule(x => x.WithIntervalInHours(1).RepeatForever())
                     .Build();
-                scheduler.ScheduleJob(trigger).Wait(); ;
+                if (!scheduler.CheckExists(trigger.Key).GetAwaiter().GetResult())
+                {
+                    scheduler.ScheduleJob(trigger).Wait(); ;
+                }
             }
             Task.Run(async () =>
                         {
