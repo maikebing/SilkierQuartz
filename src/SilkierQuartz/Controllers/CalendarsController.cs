@@ -5,16 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-#region Target-Specific Directives
-#if ( NETSTANDARD || NETCOREAPP )
 using Microsoft.AspNetCore.Mvc;
-#endif
-#if NETFRAMEWORK
-using System.Web.Http;
-using IActionResult = System.Web.Http.IHttpActionResult;
-#endif
-#endregion
 
 namespace SilkierQuartz.Controllers
 {
@@ -135,7 +126,6 @@ namespace SilkierQuartz.Controllers
             public string Name { get; set; }
         }
 
-
         [HttpPost, JsonErrorResponse]
         public async Task<IActionResult> Delete([FromBody] DeleteArgs args)
         {
@@ -144,6 +134,5 @@ namespace SilkierQuartz.Controllers
 
             return NoContent();
         }
-
     }
 }

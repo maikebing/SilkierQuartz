@@ -1,26 +1,16 @@
-﻿using Quartz;
+﻿using Microsoft.AspNetCore.Http;
+using Quartz;
+using Quartz.Plugins.RecentHistory;
 using SilkierQuartz.Models;
 using SilkierQuartz.TypeHandlers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
-using CronExpressionDescriptor;
-using Quartz.Impl.Matchers;
-using Quartz.Plugins.RecentHistory;
-
-#region Target-Specific Directives
-#if ( NETSTANDARD || NETCOREAPP )
-using HttpRequest = Microsoft.AspNetCore.Http.HttpRequest;
-#endif
-#if NETFRAMEWORK
-using HttpRequest = System.Net.Http.HttpRequestMessage;
-#endif
-#endregion
 
 namespace SilkierQuartz
 {
@@ -74,7 +64,7 @@ namespace SilkierQuartz
 
         public static string ReadAsString(this HttpRequest request)
         {
-			using ( var ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
                 request.Body.CopyTo(ms);
                 return Encoding.UTF8.GetString(ms.ToArray());
@@ -281,7 +271,7 @@ namespace SilkierQuartz
                     if (t.StartTimeUtc < DateTimeOffset.UtcNow) b.StartNow();
                     return b.Build();
                 }).ToArray();
-                
+
                 // delete old job
                 await scheduler.DeleteJob(jobKey);
 
@@ -406,7 +396,7 @@ namespace SilkierQuartz
 
             return result;
         }
-        
+
 
         public static string ToShortFormat(this TimeOfDay timeOfDay)
         {
@@ -477,8 +467,8 @@ namespace SilkierQuartz
                 if (detailed)
                     detailsHtml = $"Job: <b>{entry.Job}</b><br>Trigger: <b>{entry.Trigger}</b><br>";
 
-                hst.AddBar(duration?.TotalSeconds ?? 1, 
-                    $"{detailsHtml}Fired: <b>{entry.ActualFireTimeUtc.ToDefaultFormat()} UTC</b>{durationHtml}{delayHtml}"+
+                hst.AddBar(duration?.TotalSeconds ?? 1,
+                    $"{detailsHtml}Fired: <b>{entry.ActualFireTimeUtc.ToDefaultFormat()} UTC</b>{durationHtml}{delayHtml}" +
                     $"<br>State: <b>{state}</b>{errorHtml}",
                     cssClass);
             }
@@ -506,6 +496,5 @@ namespace SilkierQuartz
 
             return string.Format(CultureInfo.InvariantCulture, "{0:%d} days {0:hh\\:mm}", timeSpan);
         }
-
     }
 }
