@@ -238,9 +238,9 @@ namespace SilkierQuartz.Controllers
         }
 
         [HttpPost, JsonErrorResponse]
-        public IActionResult Cron()
+        public async Task<IActionResult> Cron()
         {
-            var cron = Request.ReadAsString()?.Trim();
+            var cron = (await Request.ReadAsStringAsync())?.Trim();
             if (string.IsNullOrEmpty(cron))
                 return Json(new { Description = "", Next = new object[0] });
 
