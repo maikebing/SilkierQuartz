@@ -82,6 +82,16 @@ namespace SilkierQuartz
 
         }
 
+        public static async Task<string> ReadAsStringAsync(this HttpRequest request)
+        {
+            using (var ms = new MemoryStream())
+            {
+                await request.Body.CopyToAsync(ms);
+                return Encoding.UTF8.GetString(ms.ToArray());
+            }
+
+        }
+
         public static JobDataMap GetQuartzJobDataMap(this IEnumerable<JobDataMapItemBase> models)
         {
             var map = new JobDataMap();
