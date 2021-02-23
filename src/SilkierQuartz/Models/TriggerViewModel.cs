@@ -46,25 +46,25 @@ namespace SilkierQuartz.Models
         {
             builder.WithCronSchedule(Expression, x =>
             {
-                 if (!string.IsNullOrEmpty(TimeZone))
-                     x.InTimeZone(TimeZoneInfo.FindSystemTimeZoneById(TimeZone));
+                if (!string.IsNullOrEmpty(TimeZone))
+                    x.InTimeZone(TimeZoneInfo.FindSystemTimeZoneById(TimeZone));
 
-                 switch (model.MisfireInstruction)
-                 {
-                     case InstructionNotSet:
-                         break;
-                     case IgnoreMisfirePolicy:
-                         x.WithMisfireHandlingInstructionIgnoreMisfires();
-                         break;
-                     case CronTrigger.DoNothing:
-                         x.WithMisfireHandlingInstructionDoNothing();
-                         break;
-                     case CronTrigger.FireOnceNow:
-                         x.WithMisfireHandlingInstructionFireAndProceed();
-                         break;
-                     default:
-                         throw new ArgumentException("Invalid value: " + model.MisfireInstruction, nameof(model.MisfireInstruction));
-                 }
+                switch (model.MisfireInstruction)
+                {
+                    case InstructionNotSet:
+                        break;
+                    case IgnoreMisfirePolicy:
+                        x.WithMisfireHandlingInstructionIgnoreMisfires();
+                        break;
+                    case CronTrigger.DoNothing:
+                        x.WithMisfireHandlingInstructionDoNothing();
+                        break;
+                    case CronTrigger.FireOnceNow:
+                        x.WithMisfireHandlingInstructionFireAndProceed();
+                        break;
+                    default:
+                        throw new ArgumentException("Invalid value: " + model.MisfireInstruction, nameof(model.MisfireInstruction));
+                }
             });
         }
     }
@@ -498,9 +498,10 @@ namespace SilkierQuartz.Models
         {
             var standardMisfireInstructions = new Dictionary<int, string>()
             {
-                [0] = "Smart Policy",
-                [1] = "Fire Once Now",
-                [2] = "Do Nothing",
+                [IgnoreMisfirePolicy] = "Ignore Misfire Policy",
+                [InstructionNotSet] = "Instruction Not Set",
+                [CronTrigger.FireOnceNow] = "Fire Once Now",
+                [CronTrigger.DoNothing] = "Do Nothing",
             };
 
             var validMisfireInstructions = new Dictionary<string, Dictionary<int, string>>()
@@ -510,12 +511,13 @@ namespace SilkierQuartz.Models
                 ["daily"] = standardMisfireInstructions,
                 ["simple"] = new Dictionary<int, string>()
                 {
-                    [0] = "Smart Policy",
-                    [1] = "Fire Now",
-                    [2] = "Reschedule Now With Existing Repeat Count",
-                    [3] = "Reschedule Now With Remaining Repeat Count",
-                    [4] = "Reschedule Next With Remaining Count",
-                    [5] = "Reschedule Next With Existing Count",
+                    [IgnoreMisfirePolicy] = "Ignore Misfire Policy",
+                    [InstructionNotSet] = "Instruction Not Set",
+                    [SimpleTrigger.FireNow] = "Fire Now",
+                    [SimpleTrigger.RescheduleNowWithExistingRepeatCount] = "Reschedule Now With Existing Repeat Count",
+                    [SimpleTrigger.RescheduleNowWithRemainingRepeatCount] = "Reschedule Now With Remaining Repeat Count",
+                    [SimpleTrigger.RescheduleNextWithRemainingCount] = "Reschedule Next With Remaining Count",
+                    [SimpleTrigger.RescheduleNextWithExistingCount] = "Reschedule Next With Existing Count",
                 },
             };
 

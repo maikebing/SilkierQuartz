@@ -56,7 +56,7 @@ namespace SilkierQuartz.Controllers
 
             ViewBag.Groups = (await Scheduler.GetTriggerGroupNames()).GroupArray();
 
-            list = list.OrderBy(x => x.JobKey).ToList();
+            list = list.OrderBy(x => x.NextFireTime).ToList();
             string prevKey = null;
             foreach (var item in list)
             {
