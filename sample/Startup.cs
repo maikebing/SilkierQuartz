@@ -70,7 +70,7 @@ namespace SilkierQuartz.Example
             });
             //How to compatible old code to SilkierQuartz
             //将旧的原来的规划Job的代码进行移植兼容的示例
-            app.SchedulerJobs();
+            //  app.SchedulerJobs();
 
 
             #region  不使用 SilkierQuartzAttribe 属性的进行注册和使用的IJob，这里通过UseQuartzJob的IJob必须在  ConfigureServices进行AddQuartzJob
@@ -81,7 +81,7 @@ namespace SilkierQuartz.Example
                 return TriggerBuilder.Create()
                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever());
             });
-            
+
             app.UseQuartzJob<HelloJob>(new List<TriggerBuilder>
                 {
                     TriggerBuilder.Create()
