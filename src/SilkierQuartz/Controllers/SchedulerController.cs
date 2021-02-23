@@ -1,23 +1,14 @@
-﻿using Quartz;
+﻿using Microsoft.AspNetCore.Mvc;
+using Quartz;
+using Quartz.Impl.Matchers;
+using Quartz.Plugins.RecentHistory;
 using SilkierQuartz.Helpers;
 using SilkierQuartz.Models;
-using Quartz.Plugins.RecentHistory;
-using Quartz.Impl.Matchers;
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Globalization;
-
-#region Target-Specific Directives
-#if ( NETSTANDARD || NETCOREAPP )
-using Microsoft.AspNetCore.Mvc;
-#endif
-#if NETFRAMEWORK
-using System.Web.Http;
-using IActionResult = System.Web.Http.IHttpActionResult;
-#endif
-#endregion
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SilkierQuartz.Controllers
 {
@@ -29,7 +20,7 @@ namespace SilkierQuartz.Controllers
             var histStore = Scheduler.Context.GetExecutionHistoryStore();
             var metadata = await Scheduler.GetMetaData();
             IReadOnlyCollection<JobKey> jobKeys = null;
-            IReadOnlyCollection<TriggerKey> triggerKeys = null; 
+            IReadOnlyCollection<TriggerKey> triggerKeys = null;
             if (!Scheduler.IsShutdown)
             {
                 try
@@ -60,7 +51,7 @@ namespace SilkierQuartz.Controllers
 
             int? failedJobs = null;
             int executedJobs = metadata.NumberOfJobsExecuted;
-            
+
             if (histStore != null)
             {
                 execHistory = await histStore?.FilterLast(10);
@@ -80,8 +71,8 @@ namespace SilkierQuartz.Controllers
                 UtcLabel = DateTimeSettings.UseLocalTime ? string.Empty : "UTC",
                 Environment.MachineName,
                 Application = Environment.CommandLine,
-                JobsCount = jobKeys?.Count??0,
-                TriggerCount = triggerKeys?.Count??0,
+                JobsCount = jobKeys?.Count ?? 0,
+                TriggerCount = triggerKeys?.Count ?? 0,
                 ExecutingJobs = currentlyExecutingJobs.Count,
                 ExecutedJobs = executedJobs,
                 FailedJobs = failedJobs?.ToString(CultureInfo.InvariantCulture) ?? "N / A",
@@ -156,6 +147,5 @@ namespace SilkierQuartz.Controllers
                     throw new InvalidOperationException("Invalid action: " + args.Action);
             }
         }
-
     }
 }

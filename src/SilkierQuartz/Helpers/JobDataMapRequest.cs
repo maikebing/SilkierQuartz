@@ -1,17 +1,8 @@
-﻿using SilkierQuartz.Models;
+﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-#region Target-Specific Directives
-#if ( NETSTANDARD || NETCOREAPP )
-using HttpRequest = Microsoft.AspNetCore.Http.HttpRequest;
-#endif
-#if NETFRAMEWORK
-using HttpRequest = System.Net.Http.HttpRequestMessage;
-using System.Net.Http;
-#endif
-#endregion
+using FormFile = SilkierQuartz.Models.FormFile;
 
 namespace SilkierQuartz.Helpers
 {
@@ -57,8 +48,7 @@ namespace SilkierQuartz.Helpers
             return field.Substring(n + 1);
         }
 
-#if ( NETSTANDARD || NETCOREAPP )
-		public static Task<List<KeyValuePair<string, object>>> GetFormData(this HttpRequest request)
+        public static Task<List<KeyValuePair<string, object>>> GetFormData(this HttpRequest request)
         {
             var result = new List<KeyValuePair<string, object>>();
 
@@ -72,29 +62,5 @@ namespace SilkierQuartz.Helpers
 
             return Task.FromResult(result);
         }
-#endif
-#if NETFRAMEWORK
-        public static async Task<List<KeyValuePair<string, object>>> GetFormData(this HttpRequest request)
-        {
-            var result = new List<KeyValuePair<string, object>>();
-
-            var multipart = (await request.Content.ReadAsMultipartAsync());
-            foreach (var item in multipart.Contents)
-            {
-                string contentName = item.Headers.ContentDisposition.Name.Trim('"', '\'');
-                object value;
-
-                if (string.IsNullOrEmpty(item.Headers.ContentDisposition.FileName))
-                    value = await item.ReadAsStringAsync();
-                else
-                    value = new FormFile(item);
-
-                result.Add(new KeyValuePair<string, object>(contentName, value));
-            }
-
-            return result;
-        }
-#endif
-
     }
 }

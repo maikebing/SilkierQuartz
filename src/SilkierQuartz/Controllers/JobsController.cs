@@ -1,22 +1,13 @@
-﻿using Quartz;
+﻿using Microsoft.AspNetCore.Mvc;
+using Quartz;
 using Quartz.Impl.Matchers;
+using Quartz.Plugins.RecentHistory;
 using SilkierQuartz.Helpers;
 using SilkierQuartz.Models;
-using Quartz.Plugins.RecentHistory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-#region Target-Specific Directives
-#if ( NETSTANDARD || NETCOREAPP )
-using Microsoft.AspNetCore.Mvc;
-#endif
-#if NETFRAMEWORK
-using System.Web.Http;
-using IActionResult = System.Web.Http.IHttpActionResult;
-#endif
-#endregion
 
 namespace SilkierQuartz.Controllers
 {
@@ -142,7 +133,7 @@ namespace SilkierQuartz.Controllers
                 throw new InvalidOperationException("Job " + key + " not found.");
 
             return job;
-        } 
+        }
 
         [HttpPost, JsonErrorResponse]
         public async Task<IActionResult> Save([FromForm] JobViewModel model, bool trigger)
@@ -216,7 +207,8 @@ namespace SilkierQuartz.Controllers
 
                 list.Add(new
                 {
-                    JobName = key.Name, key.Group,
+                    JobName = key.Name,
+                    key.Group,
                     History = historyByJob.TryGet(key.ToString()).ToHistogram(),
                     NextFireTime = nextFires.Where(x => x != null).OrderBy(x => x).FirstOrDefault()?.ToDefaultFormat(),
                 });
@@ -233,6 +225,5 @@ namespace SilkierQuartz.Controllers
 
         bool EnsureValidKey(string name, string group) => !(string.IsNullOrEmpty(name) || string.IsNullOrEmpty(group));
         bool EnsureValidKey(KeyModel model) => EnsureValidKey(model.Name, model.Group);
-
     }
 }
