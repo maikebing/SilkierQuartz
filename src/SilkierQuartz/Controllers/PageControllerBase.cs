@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
@@ -14,6 +15,7 @@ using System.Text.Json;
 
 namespace SilkierQuartz.Controllers
 {
+    [Authorize(SilkierQuartzAuthenticateConfig.AuthScheme)]
     public abstract partial class PageControllerBase : ControllerBase
     {
         private static readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings()

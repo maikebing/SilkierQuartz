@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Quartz;
 using Quartz.Impl.Matchers;
 using Quartz.Plugins.RecentHistory;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace SilkierQuartz.Controllers
 {
+    [Authorize(SilkierQuartzAuthenticateConfig.AuthScheme)]
     public class JobsController : PageControllerBase
     {
         [HttpGet]

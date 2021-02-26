@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SilkierQuartz.Helpers;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace SilkierQuartz.Controllers
 {
+    [Authorize(SilkierQuartzAuthenticateConfig.AuthScheme)]
     public class JobDataMapController : PageControllerBase
     {
         [HttpPost, JsonErrorResponse]

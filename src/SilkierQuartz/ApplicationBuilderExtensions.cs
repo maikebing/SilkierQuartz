@@ -1,14 +1,11 @@
 ﻿
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Quartz;
 using Quartz.Impl;
-using SilkierQuartz;
+using SilkierQuartz.Middlewares;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -34,9 +31,9 @@ namespace SilkierQuartz
         /// <param name="app"></param>
         /// <param name="schedName"></param>
         /// <returns></returns>
-        public static IScheduler GetScheduler(this IApplicationBuilder app,string schedName)
+        public static IScheduler GetScheduler(this IApplicationBuilder app, string schedName)
         {
-            return app.ApplicationServices.GetRequiredService<ISchedulerFactory>().GetScheduler(schedName ).Result;
+            return app.ApplicationServices.GetRequiredService<ISchedulerFactory>().GetScheduler(schedName).Result;
         }
         /// <summary>
         /// Returns handles to all known Schedulers (made by any SchedulerFactory within  this app domain.
@@ -73,7 +70,7 @@ namespace SilkierQuartz
                 {
                     options.Scheduler = null;
                 }
-                if (options.Scheduler==null)
+                if (options.Scheduler == null)
                 {
                     options.Scheduler = StdSchedulerFactory.GetDefaultScheduler().Result;
                 }
@@ -90,46 +87,54 @@ namespace SilkierQuartz
             app.UseEndpoints(endpoints =>
            {
                endpoints.MapControllerRoute(nameof(SilkierQuartz), $"{options.VirtualPathRoot}/{{controller=Scheduler}}/{{action=Index}}");
+
+               SilkierQuartzAuthenticateConfig.VirtualPathRoot = options.VirtualPathRoot;
+               SilkierQuartzAuthenticateConfig.VirtualPathRootUrlEncode = options.VirtualPathRoot.Replace("/", "%2F");
+               SilkierQuartzAuthenticateConfig.UserName = options.AccountName;
+               SilkierQuartzAuthenticateConfig.UserPassword = options.AccountPassword;
+               SilkierQuartzAuthenticateConfig.IsPersist = options.IsAuthenticationPersist;
+               endpoints.MapControllerRoute($"{nameof(SilkierQuartz)}Authenticate",
+                   $"{options.VirtualPathRoot}{{controller=Authenticate}}/{{action=Login}}");
            });
 
             var types = GetSilkierQuartzJobs();
             types.ForEach(t =>
             {
                 var so = t.GetCustomAttribute<SilkierQuartzAttribute>();
-               app.UseQuartzJob( t,() =>
-               {
-                   var tb = TriggerBuilder.Create();
-                   tb.WithSimpleSchedule(x =>
-                   {
-                       x.WithInterval(so.WithInterval);
-                       if (so.RepeatCount>0)
-                       {
-                           x.WithRepeatCount(so.RepeatCount);
-                          
-                       }
-                       else
-                       {
-                           x.RepeatForever();
-                       }
-                   });
-                   if (so.StartAt== DateTimeOffset.MinValue)
-                   {
-                       tb.StartNow();
-                   }
-                   else
-                   {
-                       tb.StartAt(so.StartAt);
-                   }
-                   var tk = new TriggerKey(!string.IsNullOrEmpty(so.TriggerName) ? so.TriggerName : $"{t.Name}'s Trigger");
-                   if (!string.IsNullOrEmpty(so.TriggerGroup))
-                   {
-                       so.TriggerGroup = so.TriggerGroup;
-                   }
-                   tb.WithIdentity(tk);
-                   tb.WithDescription(so.TriggerDescription ?? $"{t.Name}'s Trigger,full name is {t.FullName}");
-                   if (so.Priority > 0) tb.WithPriority(so.Priority);
-                   return tb;
-               });
+                app.UseQuartzJob(t, () =>
+                {
+                    var tb = TriggerBuilder.Create();
+                    tb.WithSimpleSchedule(x =>
+                    {
+                        x.WithInterval(so.WithInterval);
+                        if (so.RepeatCount > 0)
+                        {
+                            x.WithRepeatCount(so.RepeatCount);
+
+                        }
+                        else
+                        {
+                            x.RepeatForever();
+                        }
+                    });
+                    if (so.StartAt == DateTimeOffset.MinValue)
+                    {
+                        tb.StartNow();
+                    }
+                    else
+                    {
+                        tb.StartAt(so.StartAt);
+                    }
+                    var tk = new TriggerKey(!string.IsNullOrEmpty(so.TriggerName) ? so.TriggerName : $"{t.Name}'s Trigger");
+                    if (!string.IsNullOrEmpty(so.TriggerGroup))
+                    {
+                        so.TriggerGroup = so.TriggerGroup;
+                    }
+                    tb.WithIdentity(tk);
+                    tb.WithDescription(so.TriggerDescription ?? $"{t.Name}'s Trigger,full name is {t.FullName}");
+                    if (so.Priority > 0) tb.WithPriority(so.Priority);
+                    return tb;
+                });
 
             });
 
@@ -160,23 +165,48 @@ namespace SilkierQuartz
             => services.AddSilkierQuartz(stdSchedulerFactoryOptions);
 
 
-        public static IServiceCollection AddSilkierQuartz(this IServiceCollection services, Action<NameValueCollection> stdSchedulerFactoryOptions = null,Func<List<Assembly>> jobsasmlist=null)
+        public static IServiceCollection AddSilkierQuartz(this IServiceCollection services, Action<NameValueCollection> stdSchedulerFactoryOptions = null, Func<List<Assembly>> jobsasmlist = null)
         {
             services.AddControllers()
                 .AddApplicationPart(Assembly.GetExecutingAssembly())
                 .AddNewtonsoftJson();
+
+            services.AddAuthentication(SilkierQuartzAuthenticateConfig.AuthScheme).AddCookie(
+                SilkierQuartzAuthenticateConfig.AuthScheme,
+                cfg =>
+                {
+                    cfg.Cookie.Name = SilkierQuartzAuthenticateConfig.AuthScheme;
+                    cfg.LoginPath = $"{SilkierQuartzAuthenticateConfig.VirtualPathRoot}/Authenticate/Login";
+                    cfg.AccessDeniedPath = $"{SilkierQuartzAuthenticateConfig.VirtualPathRoot}/Authenticate/Login";
+                    if (SilkierQuartzAuthenticateConfig.IsPersist)
+                    {
+                        cfg.ExpireTimeSpan = TimeSpan.FromDays(7);
+                        cfg.SlidingExpiration = true;
+                    }
+                });
+
+            services.AddAuthorization(opts =>
+            {
+                opts.AddPolicy(SilkierQuartzAuthenticateConfig.AuthScheme, authBuilder =>
+                {
+                    authBuilder.RequireAuthenticatedUser();
+                    authBuilder.RequireClaim(SilkierQuartzAuthenticateConfig.SilkierQuartzSpecificClaim,
+                        SilkierQuartzAuthenticateConfig.SilkierQuartzSpecificClaimValue);
+                });
+            });
+
             services.UseQuartzHostedService(stdSchedulerFactoryOptions);
-            
+
             var types = GetSilkierQuartzJobs(jobsasmlist?.Invoke());
             types.ForEach(t =>
             {
                 var so = t.GetCustomAttribute<SilkierQuartzAttribute>();
-                services.AddQuartzJob(t,  so.Identity??t.Name, so.Desciption??t.FullName);
+                services.AddQuartzJob(t, so.Identity ?? t.Name, so.Desciption ?? t.FullName);
             });
             return services;
         }
         private static List<Type> _silkierQuartzJobs = null;
-        private static List<Type> GetSilkierQuartzJobs(List<Assembly> lists=null)
+        private static List<Type> GetSilkierQuartzJobs(List<Assembly> lists = null)
         {
             if (_silkierQuartzJobs == null)
             {
@@ -199,6 +229,21 @@ namespace SilkierQuartz
                 }
             }
             return _silkierQuartzJobs;
+        }
+
+        /// <summary>
+        /// Adds the <see cref="SilkierQuartzAuthenticationMiddleware"/> to the specified <see cref="IApplicationBuilder"/>, which enables simple authentication for silkier Quartz.
+        /// </summary>
+        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IApplicationBuilder AddSilkierQuartzAuthentication(this IApplicationBuilder app)
+        {
+            if (app == null)
+            {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            return app.UseMiddleware<SilkierQuartzAuthenticationMiddleware>();
         }
     }
 }

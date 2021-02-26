@@ -1,14 +1,16 @@
-﻿using Quartz;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Quartz;
 using SilkierQuartz.Helpers;
 using SilkierQuartz.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace SilkierQuartz.Controllers
 {
+    [Authorize(SilkierQuartzAuthenticateConfig.AuthScheme)]
     public class CalendarsController : PageControllerBase
     {
         [HttpGet]
@@ -23,7 +25,7 @@ namespace SilkierQuartz.Controllers
                 var cal = await Scheduler.GetCalendar(name);
                 list.Add(new CalendarListItem() { Name = name, Description = cal.Description, Type = cal.GetType() });
             }
-            
+
             return View(list);
         }
 
@@ -81,7 +83,7 @@ namespace SilkierQuartz.Controllers
                 errors.ForEach(x => x.SegmentIndex = i);
                 result.Errors.AddRange(errors);
             }
-            
+
             if (result.Success)
             {
                 string name = chain[0].Name;
@@ -107,7 +109,7 @@ namespace SilkierQuartz.Controllers
                     current = newCal;
                     existing = existing?.CalendarBase;
                 }
-                
+
                 if (root == null)
                 {
                     result.Errors.Add(new ValidationError() { Field = nameof(CalendarViewModel.Type), Reason = "Cannot create calendar.", SegmentIndex = 0 });

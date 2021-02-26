@@ -1,0 +1,44 @@
+﻿{{!<Layout}}
+{{ViewBag Title='Login'}}
+
+<div class="ui inverted page dimmer" id="dimmer"><div class="ui loader"></div></div>
+<form class="ui form" method="post" enctype="multipart/form-data">
+    <div class="ui clearing basic segment" style="padding: 0px" id="header">
+        <h1 class="ui left floated header">
+            Login
+        </h1>
+    </div>
+    {{#with Model}}
+    <div class="ui segment" style="width: 700px; height: 250px;">
+        <div>
+            <div class="field accept-error">
+                <label>Name</label>
+                <input type="text" placeholder="User Name" value="{{UserName}}" name="userName" />
+            </div>
+            <div class="field accept-error">
+                <label>Password</label>
+                <input type="password" placeholder="User Name" value="{{Password}}" name="password" />
+            </div>
+
+            <div class="field accept-error">
+                <div class="ui checkbox">
+                    <input type="checkbox" value="False" {{IsPersist}} />
+                    <label>Remember Me</label>
+                </div>
+            </div>
+        </div>
+        <div style="float: left; margin-top: 15px;">
+            <div class="ui buttons">
+                <button type="submit" class="ui primary button">Login</button>
+            </div>
+        </div>
+    </div>
+    {{#if IsLoginError}}
+    <div class="ui negative message">
+        <p>User Name or Password is incorrect!</p>
+    </div>
+    {{/if}}
+    {{/with}}
+</form>
+
+<script src="Content/Scripts/post-validation.js"></script>
