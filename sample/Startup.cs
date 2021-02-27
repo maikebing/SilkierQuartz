@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SilkierQuartz.Example.Jobs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Quartz;
+using SilkierQuartz.Example.Jobs;
+using System.Collections.Generic;
 
 namespace SilkierQuartz.Example
 {
@@ -50,6 +46,8 @@ namespace SilkierQuartz.Example
 
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseAuthentication();
+            app.AddSilkierQuartzAuthentication();
             app.UseAuthorization();
             app.UseSilkierQuartz(
                 new SilkierQuartzOptions()
@@ -59,18 +57,22 @@ namespace SilkierQuartz.Example
                     DefaultDateFormat = "yyyy-MM-dd",
                     DefaultTimeFormat = "HH:mm:ss",
                     CronExpressionOptions = new CronExpressionDescriptor.Options()
-                                            {
-                                                DayOfWeekStartIndexZero = false //Quartz uses 1-7 as the range
-                                            }
+                    {
+                        DayOfWeekStartIndexZero = false //Quartz uses 1-7 as the range
+                    },
+                    AccountName = "admin",
+                    AccountPassword = "password",
+                    IsAuthenticationPersist = false
                 }
                 );
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
             });
             //How to compatible old code to SilkierQuartz
             //将旧的原来的规划Job的代码进行移植兼容的示例
-            //  app.SchedulerJobs();
+            // app.SchedulerJobs();
 
 
             #region  不使用 SilkierQuartzAttribe 属性的进行注册和使用的IJob，这里通过UseQuartzJob的IJob必须在  ConfigureServices进行AddQuartzJob

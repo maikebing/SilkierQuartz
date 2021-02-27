@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Quartz.Plugins.RecentHistory;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SilkierQuartz.Controllers
 {
+    [Authorize(SilkierQuartzAuthenticateConfig.AuthScheme)]
     public class HistoryController : PageControllerBase
     {
         [HttpGet]
