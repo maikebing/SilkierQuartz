@@ -29,6 +29,7 @@ SilkierQuartz was created with **Semantic UI** and **Handlebars.Net** as the tem
 ##  SilkierQuartz's Features
   -  automatically discover IJob subclasses with SilkierQuartzAttribute
   -  With QuartzHostedService and more extensions
+  -  Authentication feature  , by [khanhna](https://github.com/khanhna)
 
 
 ## Quartzmin's Features
@@ -56,18 +57,7 @@ PM> Install-Package SilkierQuartz
 ```
 
   
-
-### OWIN middleware
-Add to your `Startup.cs` file:
-```csharp
-public void Configuration(IAppBuilder app)
-{
-    app.UseSilkierQuartz(new SilkierQuartzOptions()
-    {
-        Scheduler = StdSchedulerFactory.GetDefaultScheduler().Result
-    });
-}
-```
+ 
 
 ### ASP.NET Core middleware
 Add to your `Program.cs` file:
