@@ -59,10 +59,13 @@ namespace SilkierQuartz.Example
                     CronExpressionOptions = new CronExpressionDescriptor.Options()
                     {
                         DayOfWeekStartIndexZero = false //Quartz uses 1-7 as the range
-                    },
+                    }
+#if ENABLE_AUTH
+                    ,
                     AccountName = "admin",
                     AccountPassword = "password",
                     IsAuthenticationPersist = false
+#endif
                 }
                 );
 

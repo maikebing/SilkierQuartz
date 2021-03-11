@@ -4,6 +4,10 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;_ENABLE_AUTH</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\src\Quartz.Plugins.RecentHistory\Quartz.Plugins.RecentHistory.csproj" />
     <ProjectReference Include="..\src\SilkierQuartz\SilkierQuartz.csproj" />
