@@ -27,7 +27,7 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>SilkierQuartz</PackageId>
 		<PackageIcon>logo.png</PackageIcon>
-	<IsPackable>true</IsPackable> 
+		<IsPackable>true</IsPackable>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -43,13 +43,11 @@
 		<PackageReference Include="JsonSubTypes" Version="1.8.0" />
 		<PackageReference Include="Quartz" Version="3.2.4" />
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-	
 	</ItemGroup>
 
- 
-		<ItemGroup Condition="'$(TargetFramework)' == 'net5'">
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.3" />
-		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.3" />
+	<ItemGroup Condition="'$(TargetFramework)' == 'net5'">
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.4" />
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.4" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="5.0.0" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
@@ -61,8 +59,8 @@
 	<ItemGroup>
 		<None Include="..\..\LICENSE" Pack="true" PackagePath="" />
 		<None Include="Content\Images\logo.png">
-		  <Pack>True</Pack>
-		  <PackagePath></PackagePath>
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
 		</None>
 	</ItemGroup>
 
@@ -76,5 +74,4 @@
 		<EmbeddedResource Include="TypeHandlers\*.hbs" />
 		<EmbeddedResource Include="TypeHandlers\*.js" />
 	</ItemGroup>
-
 </Project>
