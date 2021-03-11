@@ -167,10 +167,6 @@ namespace SilkierQuartz
 
         public static IServiceCollection AddSilkierQuartz(this IServiceCollection services, Action<NameValueCollection> stdSchedulerFactoryOptions = null, Func<List<Assembly>> jobsasmlist = null)
         {
-            services.AddControllers()
-                .AddApplicationPart(Assembly.GetExecutingAssembly())
-                .AddNewtonsoftJson();
-
             services.AddAuthentication(SilkierQuartzAuthenticateConfig.AuthScheme).AddCookie(
                 SilkierQuartzAuthenticateConfig.AuthScheme,
                 cfg =>
@@ -236,13 +232,12 @@ namespace SilkierQuartz
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IApplicationBuilder AddSilkierQuartzAuthentication(this IApplicationBuilder app)
+        public static IApplicationBuilder UseSilkierQuartzAuthentication(this IApplicationBuilder app)
         {
             if (app == null)
             {
                 throw new ArgumentNullException(nameof(app));
             }
-
             return app.UseMiddleware<SilkierQuartzAuthenticationMiddleware>();
         }
     }

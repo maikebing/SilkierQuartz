@@ -47,7 +47,7 @@ namespace SilkierQuartz.Example
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
-            app.AddSilkierQuartzAuthentication();
+            app.UseSilkierQuartzAuthentication() ;
             app.UseAuthorization();
             app.UseSilkierQuartz(
                 new SilkierQuartzOptions()
