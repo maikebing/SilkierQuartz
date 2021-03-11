@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;_ENABLE_AUTH</DefineConstants>
+    <DefineConstants>TRACE;ENABLE_AUTH</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

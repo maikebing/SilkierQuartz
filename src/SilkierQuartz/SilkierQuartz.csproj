@@ -8,7 +8,7 @@
 		<NoWarn>1591</NoWarn>
 		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
 
-		<Version>1.0.5</Version>
+		<Version>5.0.1</Version>
 		<Product>SilkierQuartz</Product>
 		<Title>Web management tool for Quartz.NET</Title>
 		<Authors>Jan Lucansky, Yanhong Ma,  mukmyash</Authors>
