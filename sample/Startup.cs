@@ -52,7 +52,7 @@ namespace SilkierQuartz.Example
             app.UseSilkierQuartz(
                 new SilkierQuartzOptions()
                 {
-                    VirtualPathRoot = "/SilkierQuartz",
+                    VirtualPathRoot = "/quartz",
                     UseLocalTime = true,
                     DefaultDateFormat = "yyyy-MM-dd",
                     DefaultTimeFormat = "HH:mm:ss",

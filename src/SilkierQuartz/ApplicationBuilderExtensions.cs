@@ -94,7 +94,7 @@ namespace SilkierQuartz
                SilkierQuartzAuthenticateConfig.UserPassword = options.AccountPassword;
                SilkierQuartzAuthenticateConfig.IsPersist = options.IsAuthenticationPersist;
                endpoints.MapControllerRoute($"{nameof(SilkierQuartz)}Authenticate",
-                   $"{options.VirtualPathRoot}{{controller=Authenticate}}/{{action=Login}}");
+                   $"{options.VirtualPathRoot}/{{controller=Authenticate}}/{{action=Login}}");
            });
 
             var types = GetSilkierQuartzJobs();
