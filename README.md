@@ -17,7 +17,7 @@ SilkierQuartz is a new after merging  [Quartzmin](https://github.com/jlucansky/Q
 
 So  
 
-SilkierQuartz can be used within your existing application with minimum effort as a Quartz.NET plugin when it automatically creates embedded web server. Or it can be plugged into your existing OWIN-based web application as a middleware.
+SilkierQuartz can be used within your existing application with minimum effort as a Quartz.NET plugin when it automatically creates embedded web server.
 
 
 ![Demo](https://raw.githubusercontent.com/jlucansky/public-assets/master/Quartzmin/demo.gif)
