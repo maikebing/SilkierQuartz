@@ -89,6 +89,11 @@ public void ConfigureServices(IServiceCollection services)
 
 public void Configure(IApplicationBuilder app)
 {
+    /* Optional for authentication
+    app.UseAuthentication();
+    app.AddSilkierQuartzAuthentication();
+    app.UseAuthorization();
+    */
     app.UseSilkierQuartz(new SilkierQuartzOptions()
                 {
                     Scheduler = scheduler,
@@ -96,6 +101,11 @@ public void Configure(IApplicationBuilder app)
                     UseLocalTime = true,
                     DefaultDateFormat = "yyyy-MM-dd",
                     DefaultTimeFormat = "HH:mm:ss"
+                    /* Optional for authentication
+                    AccountName = "Your User Name",
+                    AccountPassword = "Your User Password",
+                    IsAuthenticationPersist = false
+                    */
                 });
 }
 ```
