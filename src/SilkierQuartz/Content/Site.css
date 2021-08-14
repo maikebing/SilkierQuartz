@@ -454,6 +454,12 @@ input[type=text].stats {
     padding: 5px 8px;
 }
 
+#history-list td.job-key,
+#history-list td.trigger-name {
+    word-break: break-all;
+    white-space: normal;
+}
+
 #history-list td.job-key > .play.icon {
     color: #2185d0;
 }

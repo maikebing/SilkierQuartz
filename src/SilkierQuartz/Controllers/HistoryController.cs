@@ -55,9 +55,9 @@ namespace SilkierQuartz.Controllers
                     Entity = h,
 
                     JobGroup = jobKey[0],
-                    JobName = jobKey[1],
+                    JobName = h.Job.Substring(jobKey[0].Length + 1),
                     TriggerGroup = triggerKey[0],
-                    TriggerName = triggerKey[1],
+                    TriggerName = h.Trigger.Substring(triggerKey[0].Length + 1),
 
                     ScheduledFireTimeUtc = h.ScheduledFireTimeUtc?.ToDefaultFormat(),
                     ActualFireTimeUtc = h.ActualFireTimeUtc.ToDefaultFormat(),
