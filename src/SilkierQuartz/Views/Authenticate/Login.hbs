@@ -21,9 +21,10 @@
             </div>
 
             <div class="field accept-error">
-                <div class="ui checkbox">
-                    <input type="checkbox" value="False" {{IsPersist}} />
-                    <label>Remember Me</label>
+                <div class="ui checkbox">                    
+                    <input type="checkbox" value="true" {{#if IsPersist}} checked {{/if}} name="isPersist" id="isPersist" />
+                    <input name="isPersist" type="hidden" value="false">
+                    <label for="isPersist">Remember Me</label>
                 </div>
             </div>
         </div>

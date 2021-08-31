@@ -13,6 +13,4 @@
     <ProjectReference Include="..\src\SilkierQuartz\SilkierQuartz.csproj" />
   </ItemGroup>
 
-
-
 </Project>

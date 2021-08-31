@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +23,31 @@ namespace SilkierQuartz.Example
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddSilkierQuartz();
+            services.AddSilkierQuartz(options =>
+            {
+                options.VirtualPathRoot = "/";
+                options.VirtualPathRoot = "/quartz";
+                options.UseLocalTime = true;
+                options.DefaultDateFormat = "yyyy-MM-dd";
+                options.DefaultTimeFormat = "HH:mm:ss";
+                options.CronExpressionOptions = new CronExpressionDescriptor.Options()
+                {
+                    DayOfWeekStartIndexZero = false //Quartz uses 1-7 as the range
+                };
+            }
+#if ENABLE_AUTH
+            ,
+            authenticationOptions =>
+            {
+                authenticationOptions.AuthScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                authenticationOptions.SilkierQuartzClaim = "Silkier";
+                authenticationOptions.SilkierQuartzClaimValue = "Quartz";
+                authenticationOptions.UserName = "admin";
+                authenticationOptions.UserPassword = "password";
+                authenticationOptions.AccessRequirement = SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowOnlyAuthenticated;
+            }
+#endif
+            );
             services.AddOptions();
             services.Configure<AppSettings>(Configuration);
             services.Configure<InjectProperty>(options => { options.WriteText = "This is inject string"; });
@@ -47,27 +72,8 @@ namespace SilkierQuartz.Example
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
-            app.UseSilkierQuartzAuthentication() ;
             app.UseAuthorization();
-            app.UseSilkierQuartz(
-                new SilkierQuartzOptions()
-                {
-                    VirtualPathRoot = "/quartz",
-                    UseLocalTime = true,
-                    DefaultDateFormat = "yyyy-MM-dd",
-                    DefaultTimeFormat = "HH:mm:ss",
-                    CronExpressionOptions = new CronExpressionDescriptor.Options()
-                    {
-                        DayOfWeekStartIndexZero = false //Quartz uses 1-7 as the range
-                    }
-#if ENABLE_AUTH
-                    ,
-                    AccountName = "admin",
-                    AccountPassword = "password",
-                    IsAuthenticationPersist = false
-#endif
-                }
-                );
+            app.UseSilkierQuartz();
 
             app.UseEndpoints(endpoints =>
             {

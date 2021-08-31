@@ -13,13 +13,25 @@ namespace SilkierQuartz.Controllers
     [AllowAnonymous]
     public class AuthenticateController : PageControllerBase
     {
+        private readonly SilkierQuartzAuthenticationOptions authenticationOptions;
+
+        public AuthenticateController(SilkierQuartzAuthenticationOptions authenticationOptions)
+        {
+            this.authenticationOptions = authenticationOptions ?? throw new ArgumentNullException(nameof(authenticationOptions));
+        }
+
         [HttpGet]
         public async Task<IActionResult> Login([FromServices] IAuthenticationSchemeProvider schemes)
         {
-            var silkierScheme = await schemes.GetSchemeAsync(SilkierQuartzAuthenticateConfig.AuthScheme);
+            if (authenticationOptions.AccessRequirement == SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowAnonymous)
+            {
+                return RedirectToAction(nameof(SchedulerController.Index), nameof(Scheduler));
+            }
 
-            if (string.IsNullOrEmpty(SilkierQuartzAuthenticateConfig.UserName) ||
-                string.IsNullOrEmpty(SilkierQuartzAuthenticateConfig.UserPassword))
+            var silkierScheme = await schemes.GetSchemeAsync(authenticationOptions.AuthScheme);
+
+            if (string.IsNullOrEmpty(authenticationOptions.UserName) ||
+                string.IsNullOrEmpty(authenticationOptions.UserPassword))
             {
                 foreach (var userClaim in HttpContext.User.Claims)
                 {
@@ -27,24 +39,10 @@ namespace SilkierQuartz.Controllers
                 }
 
                 if (HttpContext.User == null || !HttpContext.User.Identity.IsAuthenticated ||
-                    !HttpContext.User.HasClaim(SilkierQuartzAuthenticateConfig.SilkierQuartzSpecificClaim,
-                        SilkierQuartzAuthenticateConfig.SilkierQuartzSpecificClaimValue))
+                    !HttpContext.User.HasClaim(authenticationOptions.SilkierQuartzClaim,
+                        authenticationOptions.SilkierQuartzClaimValue))
                 {
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, string.IsNullOrEmpty(SilkierQuartzAuthenticateConfig.UserName) ? "SilkierQuartzAdmin" : SilkierQuartzAuthenticateConfig.UserName ),
-                        new Claim(ClaimTypes.Name, string.IsNullOrEmpty(SilkierQuartzAuthenticateConfig.UserPassword) ? "SilkierQuartzPassword" : SilkierQuartzAuthenticateConfig.UserPassword),
-                        new Claim(SilkierQuartzAuthenticateConfig.SilkierQuartzSpecificClaim, SilkierQuartzAuthenticateConfig.SilkierQuartzSpecificClaimValue)
-                    };
-
-                    var authProperties = new AuthenticationProperties()
-                    {
-                        IsPersistent = SilkierQuartzAuthenticateConfig.IsPersist
-                    };
-
-                    var userIdentity = new ClaimsIdentity(claims, SilkierQuartzAuthenticateConfig.AuthScheme);
-                    await HttpContext.SignInAsync(SilkierQuartzAuthenticateConfig.AuthScheme, new ClaimsPrincipal(userIdentity),
-                        authProperties);
+                    await SignIn(false);
 
                     return RedirectToAction(nameof(SchedulerController.Index), nameof(Scheduler));
                 }
@@ -56,7 +54,7 @@ namespace SilkierQuartz.Controllers
             else
             {
                 if (HttpContext.User == null || !HttpContext.User.Identity.IsAuthenticated ||
-                    !HttpContext.User.HasClaim(SilkierQuartzAuthenticateConfig.SilkierQuartzSpecificClaim, "Authorized"))
+                    !HttpContext.User.HasClaim(authenticationOptions.SilkierQuartzClaim, authenticationOptions.SilkierQuartzClaimValue))
                 {
                     ViewBag.IsLoginError = false;
                     return View(new AuthenticateViewModel());
@@ -69,42 +67,55 @@ namespace SilkierQuartz.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(AuthenticateViewModel request)
+        public async Task<IActionResult> Login([FromForm] AuthenticateViewModel request)
         {
-            if (string.Compare(request.UserName, SilkierQuartzAuthenticateConfig.UserName,
-                StringComparison.InvariantCulture) != 0 || 
-                string.Compare(request.Password, SilkierQuartzAuthenticateConfig.UserPassword, 
+            var form = HttpContext.Request.Form;
+
+            if (string.Compare(request.UserName, authenticationOptions.UserName,
+                StringComparison.InvariantCulture) != 0 ||
+                string.Compare(request.Password, authenticationOptions.UserPassword,
                     StringComparison.InvariantCulture) != 0)
             {
                 request.IsLoginError = true;
                 return View(request);
             }
 
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, string.IsNullOrEmpty(SilkierQuartzAuthenticateConfig.UserName) ? "SilkierQuartzAdmin" : SilkierQuartzAuthenticateConfig.UserName ),
-                new Claim(ClaimTypes.Name, string.IsNullOrEmpty(SilkierQuartzAuthenticateConfig.UserPassword) ? "SilkierQuartzPassword" : SilkierQuartzAuthenticateConfig.UserPassword),
-                new Claim(SilkierQuartzAuthenticateConfig.SilkierQuartzSpecificClaim, "Authorized")
-            };
-
-            var authProperties = new AuthenticationProperties()
-            {
-                IsPersistent = request.IsPersist
-            };
-
-            var userIdentity = new ClaimsIdentity(claims, SilkierQuartzAuthenticateConfig.AuthScheme);
-            await HttpContext.SignInAsync(SilkierQuartzAuthenticateConfig.AuthScheme, new ClaimsPrincipal(userIdentity),
-                authProperties);
+            await SignIn(request.IsPersist);
 
             return RedirectToAction(nameof(SchedulerController.Index), nameof(Scheduler));
         }
 
         [HttpGet]
-        [Authorize(SilkierQuartzAuthenticateConfig.AuthScheme)]
+        [Authorize(Policy = SilkierQuartzAuthenticationOptions.AuthorizationPolicyName)]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(SilkierQuartzAuthenticateConfig.AuthScheme);
+            await HttpContext.SignOutAsync(authenticationOptions.AuthScheme);
             return RedirectToAction(nameof(Login));
+        }
+
+        private async Task SignIn(bool isPersistentSignIn)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, string.IsNullOrEmpty(authenticationOptions.UserName)
+                    ? "SilkierQuartzAdmin"
+                    : authenticationOptions.UserName ),
+
+                new Claim(ClaimTypes.Name, string.IsNullOrEmpty(authenticationOptions.UserPassword)
+                    ? "SilkierQuartzPassword"
+                    : authenticationOptions.UserPassword),
+
+                new Claim(authenticationOptions.SilkierQuartzClaim, authenticationOptions.SilkierQuartzClaimValue)
+            };
+
+            var authProperties = new AuthenticationProperties()
+            {
+                IsPersistent = isPersistentSignIn
+            };
+
+            var userIdentity = new ClaimsIdentity(claims, authenticationOptions.AuthScheme);
+            await HttpContext.SignInAsync(authenticationOptions.AuthScheme, new ClaimsPrincipal(userIdentity),
+                authProperties);
         }
     }
 }

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace SilkierQuartz.Controllers
 {
-    [Authorize(SilkierQuartzAuthenticateConfig.AuthScheme)]
+    [Authorize(Policy = SilkierQuartzAuthenticationOptions.AuthorizationPolicyName)]
     public class TriggersController : PageControllerBase
     {
         [HttpGet]

@@ -20,7 +20,7 @@ namespace SilkierQuartz
 
         internal Cache Cache { get; private set; }
 
-        public static Services Create(SilkierQuartzOptions options)
+        public static Services Create(SilkierQuartzOptions options, SilkierQuartzAuthenticationOptions authenticationOptions)
         {
             var handlebarsConfiguration = new HandlebarsConfiguration()
             {
@@ -35,7 +35,7 @@ namespace SilkierQuartz
                 Handlebars = HandlebarsDotNet.Handlebars.Create(handlebarsConfiguration),
             };
 
-            HandlebarsHelpers.Register(services);
+            HandlebarsHelpers.Register(services, authenticationOptions);
 
             services.ViewEngine = new ViewEngine(services);
             services.TypeHandlers = new TypeHandlerService(services);
