@@ -1,9 +1,8 @@
-﻿using Quartz;
-using Quartz.Impl;
+﻿using CronExpressionDescriptor;
+using Quartz;
 using SilkierQuartz.TypeHandlers;
 using System.Collections.Generic;
 using System.IO;
-using CronExpressionDescriptor;
 using Number = SilkierQuartz.TypeHandlers.NumberHandler.UnderlyingType;
 
 namespace SilkierQuartz
@@ -20,14 +19,9 @@ namespace SilkierQuartz
         public string ProductName { get; set; } = "";
 
         public string VirtualPathRoot { get; set; } = "/";
+        public string VirtualPathRootUrlEncode => VirtualPathRoot.Replace("/", "%2F");
 
         public IScheduler Scheduler { get; set; }
-
-        public string AccountName { get; set; }
-
-        public string AccountPassword { get; set; }
-
-        public bool IsAuthenticationPersist { get; set; }
 
         /// <summary>
         /// Supported value types in job data map.
@@ -61,7 +55,7 @@ namespace SilkierQuartz
         /// Set options used by the cron expression description provider
         /// </summary>
         public Options CronExpressionOptions { get; set; } = new Options();
-        
+
         public SilkierQuartzOptions()
         {
             DefaultSelectedType = new StringHandler() { Name = "String" };
@@ -83,9 +77,9 @@ namespace SilkierQuartz
 #if DEBUG
         public string SitePhysicalDirectory { get; set; }
 
-        internal string ContentRootDirectory => 
+        internal string ContentRootDirectory =>
             string.IsNullOrEmpty(SitePhysicalDirectory) ? null : Path.Combine(SitePhysicalDirectory, "Content");
-        internal string ViewsRootDirectory => 
+        internal string ViewsRootDirectory =>
             string.IsNullOrEmpty(SitePhysicalDirectory) ? null : Path.Combine(SitePhysicalDirectory, "Views");
 
 #else

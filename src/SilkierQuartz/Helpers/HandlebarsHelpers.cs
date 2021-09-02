@@ -17,15 +17,17 @@ namespace SilkierQuartz.Helpers
     internal class HandlebarsHelpers
     {
         Services _services;
+        private readonly SilkierQuartzAuthenticationOptions authenticationOptions;
 
-        public HandlebarsHelpers(Services services)
+        public HandlebarsHelpers(Services services, SilkierQuartzAuthenticationOptions authenticationOptions)
         {
             _services = services;
+            this.authenticationOptions = authenticationOptions;
         }
 
-        public static void Register(Services services)
+        public static void Register(Services services, SilkierQuartzAuthenticationOptions authenticationOptions)
         {
-            new HandlebarsHelpers(services).RegisterInternal();
+            new HandlebarsHelpers(services, authenticationOptions).RegisterInternal();
         }
 
         void RegisterInternal()
@@ -127,6 +129,11 @@ namespace SilkierQuartz.Helpers
         void MenuItemActionLink(TextWriter output, dynamic context, params object[] arguments)
         {
             var dict = arguments[0] as IDictionary<string, object> ?? new Dictionary<string, object>() { ["controller"] = arguments[0] };
+
+            if (string.Equals(dict["controller"], "Authenticate/Logout") && authenticationOptions.AccessRequirement == SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowAnonymous)
+            {
+                return;
+            }
 
             string classes = "item";
             if (dict["controller"].Equals(context.ControllerName))

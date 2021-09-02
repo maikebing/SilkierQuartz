@@ -15,7 +15,7 @@ using System.Text.Json;
 
 namespace SilkierQuartz.Controllers
 {
-    [Authorize(SilkierQuartzAuthenticateConfig.AuthScheme)]
+    [Authorize(Policy = SilkierQuartzAuthenticationOptions.AuthorizationPolicyName)]
     public abstract partial class PageControllerBase : ControllerBase
     {
         private static readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings()
