@@ -25,7 +25,6 @@ namespace SilkierQuartz.Example
             services.AddRazorPages();
             services.AddSilkierQuartz(options =>
             {
-                options.VirtualPathRoot = "/";
                 options.VirtualPathRoot = "/quartz";
                 options.UseLocalTime = true;
                 options.DefaultDateFormat = "yyyy-MM-dd";
@@ -44,7 +43,13 @@ namespace SilkierQuartz.Example
                 authenticationOptions.SilkierQuartzClaimValue = "Quartz";
                 authenticationOptions.UserName = "admin";
                 authenticationOptions.UserPassword = "password";
-                authenticationOptions.AccessRequirement = SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowOnlyAuthenticated;
+                authenticationOptions.AccessRequirement = SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowOnlyUsersWithClaim;
+            }
+#else 
+    ,
+            authenticationOptions =>
+            {
+                authenticationOptions.AccessRequirement = SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowAnonymous;
             }
 #endif
             );
