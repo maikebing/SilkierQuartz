@@ -1,4 +1,6 @@
 ﻿using HandlebarsDotNet;
+using Microsoft.Extensions.FileProviders;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -10,7 +12,6 @@ namespace SilkierQuartz
         public static ViewEngineFileSystem Create(SilkierQuartzOptions options)
         {
             ViewEngineFileSystem fs;
-
             if (string.IsNullOrEmpty(options.ViewsRootDirectory))
             {
                 fs = new EmbeddedFileSystem();
@@ -55,18 +56,19 @@ namespace SilkierQuartz
 
         private class EmbeddedFileSystem : ViewEngineFileSystem
         {
+            private EmbeddedFileProvider fs = new EmbeddedFileProvider(Assembly.GetExecutingAssembly(), "SilkierQuartz.Views");
             public override string GetFileContent(string filename)
             {
-                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(GetFullPath(filename)))
+                string result = string.Empty;
+                var fi = fs.GetFileInfo(GetFullPath(filename));
+                using (var stream =fi.CreateReadStream())
                 {
-                    if (stream == null)
-                        return null;
-
-                    using (var reader = new StreamReader(stream, Encoding.UTF8))
+                    using (StreamReader reader = new StreamReader(stream))
                     {
-                        return reader.ReadToEnd();
+                        result = reader.ReadToEnd();
                     }
                 }
+                return result;
             }
 
             protected override string CombinePath(string dir, string otherFileName)
@@ -76,13 +78,13 @@ namespace SilkierQuartz
 
             public override bool FileExists(string filePath)
             {
-                return Assembly.GetExecutingAssembly().GetManifestResourceInfo(GetFullPath(filePath)) != null;
+                return fs.GetFileInfo(GetFullPath(filePath)).Exists;
             }
-
             string GetFullPath(string filePath)
             {
-                return Path.Combine(nameof(SilkierQuartz) + ".Views", filePath.Replace("partials/", "Partials/")).Replace('/', '.').Replace('\\', '.');
+                return filePath.Replace("partials/", "Partials/").Replace('/', Path.DirectorySeparatorChar);
             }
+
         }
 
     }

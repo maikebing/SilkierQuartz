@@ -74,17 +74,8 @@ namespace SilkierQuartz
             StandardTypes.Add(new StringHandler() { Name = "MultilineString", DisplayName = "String (Multiline)", IsMultiline = true });
         }
 
-#if DEBUG
-        public string SitePhysicalDirectory { get; set; }
-
-        internal string ContentRootDirectory =>
-            string.IsNullOrEmpty(SitePhysicalDirectory) ? null : Path.Combine(SitePhysicalDirectory, "Content");
-        internal string ViewsRootDirectory =>
-            string.IsNullOrEmpty(SitePhysicalDirectory) ? null : Path.Combine(SitePhysicalDirectory, "Views");
-
-#else
+ 
         internal string ContentRootDirectory => null;
         internal string ViewsRootDirectory => null;
-#endif
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Quartz;
@@ -44,7 +45,7 @@ namespace Microsoft.AspNetCore.Builder
 
         [Obsolete("We recommend UseSilkierQuartz")]
         public static IApplicationBuilder UseQuartzmin(this IApplicationBuilder app, Action<Services> configure = null)
-            => app.UseSilkierQuartz(configure);
+            => app.UseSilkierQuartz(configure: configure);
 
         /// <summary>
         /// Use SilkierQuartz and automatically discover IJob subclasses with SilkierQuartzAttribute
@@ -52,8 +53,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="app"></param>
         /// <param name="configure"></param>
         public static IApplicationBuilder UseSilkierQuartz(
-            this IApplicationBuilder app,
-            Action<Services> configure = null)
+            this IApplicationBuilder app ,Action<Services> configure = null)
         {
             var options = app.ApplicationServices
                 .GetService<SilkierQuartzOptions>() ?? throw new ArgumentNullException(nameof(SilkierQuartzOptions));
@@ -140,11 +140,12 @@ namespace Microsoft.AspNetCore.Builder
         private static void UseFileServer(this IApplicationBuilder app, SilkierQuartzOptions options)
         {
             IFileProvider fs;
-            if (string.IsNullOrEmpty(options.ContentRootDirectory))
-                fs = new ManifestEmbeddedFileProvider(Assembly.GetExecutingAssembly(), "Content");
-            else
-                fs = new PhysicalFileProvider(options.ContentRootDirectory);
+           
+            var manifestEmbeddedProvider =
+                new EmbeddedFileProvider(typeof(SilkierQuartzOptions).Assembly);
+    
 
+            fs = new EmbeddedFileProvider(typeof(SilkierQuartzOptions).Assembly, "SilkierQuartz.Content");
             var fsOptions = new FileServerOptions()
             {
                 RequestPath = new PathString($"{options.VirtualPathRoot}/Content"),
