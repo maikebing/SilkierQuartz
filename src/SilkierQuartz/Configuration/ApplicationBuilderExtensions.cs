@@ -58,7 +58,7 @@ namespace Microsoft.AspNetCore.Builder
             var options = app.ApplicationServices
                 .GetService<SilkierQuartzOptions>() ?? throw new ArgumentNullException(nameof(SilkierQuartzOptions));
             var authenticationOptions = app.ApplicationServices
-                .GetService<SilkierQuartzAuthenticationOptions>() ?? throw new ArgumentNullException(nameof(SilkierQuartzAuthenticationOptions));
+                .GetService<SilkierQuartzAuthenticationOptions>() ;
 
             app.UseFileServer(options);
             if (options.Scheduler == null)
@@ -98,37 +98,45 @@ namespace Microsoft.AspNetCore.Builder
                 var so = t.GetCustomAttribute<SilkierQuartzAttribute>();
                 app.UseQuartzJob(t, () =>
                 {
-                    var tb = TriggerBuilder.Create();
-                    tb.WithSimpleSchedule(x =>
+                    if (!so.Manual)
                     {
-                        x.WithInterval(so.WithInterval);
-                        if (so.RepeatCount > 0)
+                        var tb = TriggerBuilder.Create();
+                        tb.WithSimpleSchedule(x =>
                         {
-                            x.WithRepeatCount(so.RepeatCount);
+                            x.WithInterval(so.WithInterval);
+                            if (so.RepeatCount > 0)
+                            {
+                                x.WithRepeatCount(so.RepeatCount);
 
+                            }
+                            else
+                            {
+                                x.RepeatForever();
+                            }
+                        });
+                        if (so.StartAt == DateTimeOffset.MinValue)
+                        {
+                            tb.StartNow();
                         }
                         else
                         {
-                            x.RepeatForever();
+                            tb.StartAt(so.StartAt);
                         }
-                    });
-                    if (so.StartAt == DateTimeOffset.MinValue)
-                    {
-                        tb.StartNow();
+
+                        var tk = new TriggerKey(!string.IsNullOrEmpty(so.TriggerName) ? so.TriggerName : $"{t.Name}'s Trigger");
+                        if (!string.IsNullOrEmpty(so.TriggerGroup))
+                        {
+                            so.TriggerGroup = so.TriggerGroup;
+                        }
+                        tb.WithIdentity(tk);
+                        tb.WithDescription(so.TriggerDescription ?? $"{t.Name}'s Trigger,full name is {t.FullName}");
+                        if (so.Priority > 0) tb.WithPriority(so.Priority);
+                        return tb;
                     }
                     else
                     {
-                        tb.StartAt(so.StartAt);
+                        return null;
                     }
-                    var tk = new TriggerKey(!string.IsNullOrEmpty(so.TriggerName) ? so.TriggerName : $"{t.Name}'s Trigger");
-                    if (!string.IsNullOrEmpty(so.TriggerGroup))
-                    {
-                        so.TriggerGroup = so.TriggerGroup;
-                    }
-                    tb.WithIdentity(tk);
-                    tb.WithDescription(so.TriggerDescription ?? $"{t.Name}'s Trigger,full name is {t.FullName}");
-                    if (so.Priority > 0) tb.WithPriority(so.Priority);
-                    return tb;
                 });
 
             });

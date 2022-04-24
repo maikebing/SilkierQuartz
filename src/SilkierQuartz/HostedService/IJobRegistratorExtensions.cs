@@ -23,20 +23,20 @@ namespace SilkierQuartz
                 );
         }
 
-
         public static IJobRegistrator RegiserJob<TJob>(
             this IJobRegistrator jobRegistrator,
             Func<IEnumerable<TriggerBuilder>> triggers)
             where TJob : class, IJob
         {
-
             return jobRegistrator.RegiserJob<TJob>(triggers());
         }
+
         public static IServiceCollection AddQuartzJobDetail(this IServiceCollection services, Func<IJobDetail> detail)
         {
             services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(detail(), new List<ITrigger>()));
             return services;
         }
+
         public static IServiceCollection AddQuartzJob<TJob>(this IServiceCollection services, string identity) where TJob : class
         {
             return services.AddQuartzJob<TJob>(identity, null);
@@ -44,7 +44,6 @@ namespace SilkierQuartz
 
         public static IServiceCollection AddQuartzJob<TJob>(this IServiceCollection services, string identity, string description) where TJob : class
         {
-
             return services.AddQuartzJob(typeof(TJob), identity, description);
         }
 
@@ -72,6 +71,7 @@ namespace SilkierQuartz
             services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(jobDetail, new List<ITrigger>()));
             return services;
         }
+
         public static IApplicationBuilder UseQuartzJob<TJob>(
                 this IApplicationBuilder app,
                 Func<TriggerBuilder> triggerBuilder_func)
@@ -79,12 +79,14 @@ namespace SilkierQuartz
         {
             return app.UseQuartzJob<TJob>(new TriggerBuilder[] { triggerBuilder_func() });
         }
+
         public static IApplicationBuilder UseQuartzJob<TJob>(
             this IApplicationBuilder app, string JobKey,
             Func<TriggerBuilder> triggerBuilder_func)
             where TJob : class, IJob
         {
             var _scheduleJobs = app.ApplicationServices.GetService<IEnumerable<IScheduleJob>>();
+
             var job = from js in _scheduleJobs where js.JobDetail.JobType == typeof(TJob) && js.JobDetail.Key.Name == JobKey select js;
             if (job.Any())
             {
@@ -94,6 +96,7 @@ namespace SilkierQuartz
             }
             return app;
         }
+
         public static IApplicationBuilder UseQuartzJob<TJob>(
                 this IApplicationBuilder app,
                 TriggerBuilder triggerBuilder)
@@ -101,6 +104,7 @@ namespace SilkierQuartz
         {
             return app.UseQuartzJob<TJob>(new TriggerBuilder[] { triggerBuilder });
         }
+
         public static IApplicationBuilder UseQuartzJob<TJob>(
             this IApplicationBuilder app,
             Func<IEnumerable<TriggerBuilder>> triggerBuilders_func)
@@ -108,6 +112,7 @@ namespace SilkierQuartz
         {
             return app.UseQuartzJob<TJob>(triggerBuilders_func());
         }
+
         public static IApplicationBuilder UseQuartzJob<TJob>(
           this IApplicationBuilder app,
           IEnumerable<TriggerBuilder> triggerBuilders)
@@ -115,18 +120,27 @@ namespace SilkierQuartz
         {
             return app.UseQuartzJob(typeof(TJob), triggerBuilders);
         }
+
         public static IApplicationBuilder UseQuartzJob(
              this IApplicationBuilder app, Type t,
              TriggerBuilder triggerBuilder)
         {
             return app.UseQuartzJob(t, new TriggerBuilder[] { triggerBuilder });
         }
+
         public static IApplicationBuilder UseQuartzJob(
               this IApplicationBuilder app, Type t,
              Func<TriggerBuilder> triggerBuilders_func)
         {
-            return app.UseQuartzJob(t, new TriggerBuilder[] { triggerBuilders_func() });
+            var lst = new List<TriggerBuilder>();
+            var tb = triggerBuilders_func?.Invoke();
+            if (tb != null)
+            {
+                lst.Add(tb);
+            }
+            return app.UseQuartzJob(t, lst);
         }
+
         public static IApplicationBuilder UseQuartzJob(
            this IApplicationBuilder app, Type t,
            Func<IEnumerable<TriggerBuilder>> triggerBuilders_func)
@@ -166,7 +180,6 @@ namespace SilkierQuartz
             {
                 triggers.Add(triggerBuilder.ForJob(jobDetail).Build());
             }
-
             jobRegistrator.Services.AddSingleton<IScheduleJob>(provider => new ScheduleJob(jobDetail, triggers));
 
             return jobRegistrator;

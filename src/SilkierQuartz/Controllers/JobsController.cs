@@ -197,8 +197,9 @@ namespace SilkierQuartz.Controllers
         public async Task<IActionResult> AdditionalData()
         {
             var keys = await Scheduler.GetJobKeys(GroupMatcher<JobKey>.AnyGroup());
-            var history = await Scheduler.Context.GetExecutionHistoryStore().FilterLastOfEveryJob(10);
-            var historyByJob = history.ToLookup(x => x.Job);
+            var hsl = Scheduler.Context.GetExecutionHistoryStore();
+            var history = hsl!=null? await hsl.FilterLastOfEveryJob(10):null;
+            var historyByJob = history?.ToLookup(x => x.Job);
 
             var list = new List<object>();
             foreach (var key in keys)
@@ -211,7 +212,7 @@ namespace SilkierQuartz.Controllers
                 {
                     JobName = key.Name,
                     key.Group,
-                    History = historyByJob.TryGet(key.ToString()).ToHistogram(),
+                    History = historyByJob?.TryGet(key.ToString())?.ToHistogram(),
                     NextFireTime = nextFires.Where(x => x != null).OrderBy(x => x).FirstOrDefault()?.ToDefaultFormat(),
                 });
             }

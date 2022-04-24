@@ -130,7 +130,7 @@ namespace SilkierQuartz.Helpers
         {
             var dict = arguments[0] as IDictionary<string, object> ?? new Dictionary<string, object>() { ["controller"] = arguments[0] };
 
-            if (string.Equals(dict["controller"], "Authenticate/Logout") && authenticationOptions.AccessRequirement == SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowAnonymous)
+            if (string.Equals(dict["controller"], "Authenticate/Logout") && (authenticationOptions==null || authenticationOptions.AccessRequirement == SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowAnonymous))
             {
                 return;
             }

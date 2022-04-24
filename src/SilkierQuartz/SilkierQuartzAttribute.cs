@@ -41,6 +41,10 @@ namespace SilkierQuartz
         {
         }
 
+        public SilkierQuartzAttribute(bool Manual) : this(0, 0, 0, 0, 0, 0, null, null)
+        {
+            this.Manual = true;
+        }
 
 
         public SilkierQuartzAttribute(double days, double hours, double minutes, double seconds, double milliseconds, long ticks, string _identity, string _desciption)
@@ -61,5 +65,6 @@ namespace SilkierQuartz
         public string TriggerGroup { get; set; } = string.Empty;
         public string TriggerDescription { get; set; } = string.Empty;
         public int Priority { get; set; } = 0;
+        public bool Manual { get; set; } = false;
     }
 }

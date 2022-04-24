@@ -26,7 +26,7 @@ namespace SilkierQuartz
         /// Sets the authentication scheme for the SilkierQuartz authentication signin.
         /// Defaults to <see cref="CookieAuthenticationDefaults.AuthenticationScheme"/>
         /// </summary>
-        public string AuthScheme { get; set; } = CookieAuthenticationDefaults.AuthenticationScheme;
+        public string AuthScheme { get; set; }  = CookieAuthenticationDefaults.AuthenticationScheme;
 
         /// <summary>
         /// Sets the claim key used for authorization when <see cref="SimpleAccessRequirement"/> is set to <see cref="SimpleAccessRequirement.AllowOnlyUsersWithClaim"/>

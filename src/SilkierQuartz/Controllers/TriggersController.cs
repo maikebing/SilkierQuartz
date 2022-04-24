@@ -7,6 +7,7 @@ using SilkierQuartz.Helpers;
 using SilkierQuartz.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,25 +26,33 @@ namespace SilkierQuartz.Controllers
             {
                 var t = await GetTrigger(key);
                 var state = await Scheduler.GetTriggerState(key);
-
-                list.Add(new TriggerListItem()
+                try
                 {
-                    Type = t.GetTriggerType(),
-                    TriggerName = t.Key.Name,
-                    TriggerGroup = t.Key.Group,
-                    IsPaused = state == TriggerState.Paused,
-                    JobKey = t.JobKey.ToString(),
-                    JobGroup = t.JobKey.Group,
-                    JobName = t.JobKey.Name,
-                    ScheduleDescription = t.GetScheduleDescription(Services),
-                    History = Histogram.Empty,
-                    StartTime = t.StartTimeUtc.UtcDateTime.ToDefaultFormat(),
-                    EndTime = t.FinalFireTimeUtc?.UtcDateTime.ToDefaultFormat(),
-                    LastFireTime = t.GetPreviousFireTimeUtc()?.UtcDateTime.ToDefaultFormat(),
-                    NextFireTime = t.GetNextFireTimeUtc()?.UtcDateTime.ToDefaultFormat(),
-                    ClrType = t.GetType().Name,
-                    Description = t.Description,
-                });
+                    var tli = new TriggerListItem()
+                    {
+                        Type = t.GetTriggerType(),
+                        TriggerName = t.Key.Name,
+                        TriggerGroup = t.Key.Group,
+                        IsPaused = state == TriggerState.Paused,
+                        JobKey = t.JobKey.ToString(),
+                        JobGroup = t.JobKey.Group,
+                        JobName = t.JobKey.Name,
+                        ScheduleDescription = t.GetScheduleDescription(Services),
+                        History = Histogram.Empty,
+                        StartTime = t.StartTimeUtc.UtcDateTime.ToDefaultFormat(),
+                        EndTime = t.StartTimeUtc.Year==9999?"":t.FinalFireTimeUtc?.UtcDateTime.ToDefaultFormat(),
+                        LastFireTime = t.GetPreviousFireTimeUtc()?.UtcDateTime.ToDefaultFormat(),
+                        NextFireTime = t.GetNextFireTimeUtc()?.UtcDateTime.ToDefaultFormat(),
+                        ClrType = t.GetType().Name,
+                        Description = t.Description,
+                    };
+                    list.Add(tli);
+                }
+                catch (Exception ex)
+                {
+
+                    Debug.Fail(ex.Message);
+                }
             }
 
             ViewBag.Groups = (await Scheduler.GetTriggerGroupNames()).GroupArray();
@@ -280,9 +289,9 @@ namespace SilkierQuartz.Controllers
         public async Task<IActionResult> AdditionalData()
         {
             var keys = await Scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.AnyGroup());
-            var history = await Scheduler.Context.GetExecutionHistoryStore().FilterLastOfEveryTrigger(10);
-            var historyByTrigger = history.ToLookup(x => x.Trigger);
-
+            var ehs = Scheduler.Context.GetExecutionHistoryStore();
+            var history = ehs !=null? await ehs.FilterLastOfEveryTrigger(10) :null;
+            var historyByTrigger = history?.ToLookup(x => x.Trigger);
             var list = new List<object>();
             foreach (var key in keys)
             {
@@ -290,10 +299,9 @@ namespace SilkierQuartz.Controllers
                 {
                     TriggerName = key.Name,
                     TriggerGroup = key.Group,
-                    History = historyByTrigger.TryGet(key.ToString()).ToHistogram(),
+                    History = historyByTrigger?.TryGet(key.ToString())?.ToHistogram(),
                 });
             }
-
             return View(list);
         }
 

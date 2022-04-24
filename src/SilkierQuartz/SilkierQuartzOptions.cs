@@ -74,7 +74,8 @@ namespace SilkierQuartz
             StandardTypes.Add(new StringHandler() { Name = "MultilineString", DisplayName = "String (Multiline)", IsMultiline = true });
         }
 
- 
+        public bool EnableEditor {get;set;} =true;
+
         internal string ContentRootDirectory => null;
         internal string ViewsRootDirectory => null;
     }

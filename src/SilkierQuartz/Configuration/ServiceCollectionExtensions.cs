@@ -25,33 +25,37 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var options = new SilkierQuartzOptions();
             configureOptions?.Invoke(options);
+            services.AddSingleton(options);
 
             var authenticationOptions = new SilkierQuartzAuthenticationOptions();
             configureAuthenticationOptions?.Invoke(authenticationOptions);
 
-            services.AddSingleton(options);
-            services.AddSingleton(authenticationOptions);
+         
 
-            services
-                .AddAuthentication(authenticationOptions.AuthScheme)
-                .AddCookie(authenticationOptions.AuthScheme, cfg =>
-                {
-                    cfg.Cookie.Name = authenticationOptions.AuthScheme;
-                    cfg.LoginPath = $"{options.VirtualPathRoot}/Authenticate/Login";
-                    cfg.AccessDeniedPath = $"{options.VirtualPathRoot}/Authenticate/Login";
-                    cfg.ExpireTimeSpan = TimeSpan.FromDays(7);
-                    cfg.SlidingExpiration = true;
-                });
 
-            services.AddAuthorization(opts =>
+                services.AddSingleton(authenticationOptions);
+         if (authenticationOptions.AccessRequirement != SilkierQuartzAuthenticationOptions.SimpleAccessRequirement.AllowAnonymous)
             {
-                opts.AddPolicy(SilkierQuartzAuthenticationOptions.AuthorizationPolicyName, builder =>
+                services
+                    .AddAuthentication(authenticationOptions.AuthScheme)
+                    .AddCookie(authenticationOptions.AuthScheme, cfg =>
+                    {
+                        cfg.Cookie.Name = $"sq_authenticationOptions.AuthScheme";
+                        cfg.LoginPath = $"{options.VirtualPathRoot}/Authenticate/Login";
+                        cfg.AccessDeniedPath = $"{options.VirtualPathRoot}/Authenticate/Login";
+                        cfg.ExpireTimeSpan = TimeSpan.FromDays(7);
+                        cfg.SlidingExpiration = true;
+                    });
+            }
+            services.AddAuthorization(opts =>
                 {
-                    builder.AddRequirements(new SilkierQuartzDefaultAuthorizationRequirement(authenticationOptions.AccessRequirement));
+                    opts.AddPolicy(SilkierQuartzAuthenticationOptions.AuthorizationPolicyName, builder =>
+                    {
+                        builder.AddRequirements(new SilkierQuartzDefaultAuthorizationRequirement(authenticationOptions.AccessRequirement));
+                    });
                 });
-            });
-
-            services.AddScoped<IAuthorizationHandler, SilkierQuartzDefaultAuthorizationHandler>();
+                services.AddScoped<IAuthorizationHandler, SilkierQuartzDefaultAuthorizationHandler>();
+        
 
             services.UseQuartzHostedService(stdSchedulerFactoryOptions);
 
