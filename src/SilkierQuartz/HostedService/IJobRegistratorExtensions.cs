@@ -158,10 +158,11 @@ namespace SilkierQuartz
             {
                 var scheduleJob = job.First();
                 var lstgs = (List<ITrigger>)scheduleJob.Triggers;
-                foreach (var triggerBuilder in triggerBuilders)
+                triggerBuilders.ToList().ForEach(triggerBuilder =>
                 {
                     lstgs.Add(triggerBuilder.ForJob(scheduleJob.JobDetail).Build());
-                }
+                });
+               
             }
             return app;
         }
