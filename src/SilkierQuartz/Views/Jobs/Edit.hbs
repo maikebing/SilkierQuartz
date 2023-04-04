@@ -60,18 +60,37 @@
                     {{>DropdownOptions items=TypeList selected=Type}}
                 </select>
             </div>
-
             <div class="field accept-error">
                 <label>Description</label>
                 <textarea rows="2" name="job[description]">{{Description}}</textarea>
             </div>
-
-            <div class="field accept-error">
-                <div class="ui checkbox">
-                    <input name="job[recovery]" type="checkbox" value="True" {{Checked Recovery}} />
-                    <label>Requests Recovery</label>
+            <div class="two fields">
+                <div class="field accept-error">
+                    <div class="ui checkbox">
+                        <input name="job[durable]" type="checkbox" value="True" {{Checked durable}} />
+                        <label>Durable</label>
+                    </div>
+                </div>
+                <div class="field accept-error">
+                    <div class="ui checkbox">
+                        <input name="job[recovery]" type="checkbox" value="True" {{Checked Recovery}} />
+                        <label>Requests Recovery</label>
+                    </div>
+                </div>
+                <div class="field accept-error">
+                    <div class="ui checkbox">
+                        <input name="job[concurrent]" type="checkbox" value="True" {{Checked concurrent}} />
+                        <label>Concurrent</label>
+                    </div>
+                </div>
+                <div class="field accept-error">
+                    <div class="ui checkbox">
+                        <input name="job[persist]" type="checkbox" value="True" {{Checked persist}} />
+                        <label>Persist</label>
+                    </div>
                 </div>
             </div>
+            
         </div>
         {{/with}}
         <h3 class="ui dividing header">Job Data Map</h3>
