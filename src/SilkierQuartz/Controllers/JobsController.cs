@@ -118,6 +118,9 @@ namespace SilkierQuartz.Controllers
 
             jobModel.Description = job.Description;
             jobModel.Recovery = job.RequestsRecovery;
+            jobModel.Concurrent = !job.ConcurrentExecutionDisallowed;
+            jobModel.Persist = job.PersistJobDataAfterExecution;
+            jobModel.Durable = job.Durable;
 
             if (clone)
                 jobModel.JobName += " - Copy";
@@ -158,6 +161,9 @@ namespace SilkierQuartz.Controllers
                         .WithDescription(jobModel.Description)
                         .SetJobData(jobDataMap.GetQuartzJobDataMap())
                         .RequestRecovery(jobModel.Recovery)
+                        .StoreDurably(jobModel.Durable)
+                        .DisallowConcurrentExecution(jobModel.Concurrent)
+                        .PersistJobDataAfterExecution(jobModel.Persist)
                         .Build();
                 }
 

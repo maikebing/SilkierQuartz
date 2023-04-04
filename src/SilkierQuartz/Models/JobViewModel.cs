@@ -37,6 +37,13 @@ namespace SilkierQuartz.Models
         public string Description { get; set; }
 
         public bool Recovery { get; set; }
+        
+        public bool Concurrent { get; set; }
+        
+        public bool Durable { get; set; }
+        
+        public bool Persist { get; set; }
+        
 
         public void Validate(ICollection<ValidationError> errors) => ModelValidator.ValidateObject(this, errors, nameof(JobViewModel.Job));
     }
