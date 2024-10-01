@@ -79,7 +79,7 @@ namespace SilkierQuartz.Controllers
 
         protected IActionResult View(string viewName, object model)
         {
-            string content = Services.ViewEngine.Render($"{GetRouteData("controller")}/{viewName}.hbs", new Page(this, model));
+            var content = Services.ViewEngine.Render($"{GetRouteData("controller")}/{viewName}.hbs", new Page(this, model));
             return Html(content);
         }
 
@@ -94,7 +94,7 @@ namespace SilkierQuartz.Controllers
 
         protected string GetETag()
         {
-            IEnumerable<string> values = GetHeader("If-None-Match");
+            var values = GetHeader("If-None-Match");
             if (values == null)
                 return null;
             else

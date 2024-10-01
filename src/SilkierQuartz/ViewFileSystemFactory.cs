@@ -59,11 +59,11 @@ namespace SilkierQuartz
             private EmbeddedFileProvider fs = new EmbeddedFileProvider(Assembly.GetExecutingAssembly(), "SilkierQuartz.Views");
             public override string GetFileContent(string filename)
             {
-                string result = string.Empty;
+                var result = string.Empty;
                 var fi = fs.GetFileInfo(GetFullPath(filename));
                 using (var stream =fi.CreateReadStream())
                 {
-                    using (StreamReader reader = new StreamReader(stream))
+                    using (var reader = new StreamReader(stream))
                     {
                         result = reader.ReadToEnd();
                     }

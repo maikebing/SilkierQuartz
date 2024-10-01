@@ -71,13 +71,13 @@ namespace CronExpressionDescriptor
     /// <returns>The cron expression description</returns>
     public string GetDescription(DescriptionTypeEnum type)
     {
-      string description = string.Empty;
+      var description = string.Empty;
 
       try
       {
         if (!m_parsed)
         {
-          ExpressionParser parser = new ExpressionParser(m_expression, m_options);
+          var parser = new ExpressionParser(m_expression, m_options);
           m_expressionParts = parser.Parse();
           m_parsed = true;
         }
@@ -144,11 +144,11 @@ namespace CronExpressionDescriptor
 
       try
       {
-        string timeSegment = GetTimeOfDayDescription();
-        string dayOfMonthDesc = GetDayOfMonthDescription();
-        string monthDesc = GetMonthDescription();
-        string dayOfWeekDesc = GetDayOfWeekDescription();
-        string yearDesc = GetYearDescription();
+        var timeSegment = GetTimeOfDayDescription();
+        var dayOfMonthDesc = GetDayOfMonthDescription();
+        var monthDesc = GetMonthDescription();
+        var dayOfWeekDesc = GetDayOfWeekDescription();
+        var yearDesc = GetYearDescription();
 
         description = string.Format("{0}{1}{2}{3}{4}",
                timeSegment,
@@ -178,11 +178,11 @@ namespace CronExpressionDescriptor
     /// <returns>The TIMEOFDAY description</returns>
     protected string GetTimeOfDayDescription()
     {
-      string secondsExpression = m_expressionParts[0];
-      string minuteExpression = m_expressionParts[1];
-      string hourExpression = m_expressionParts[2];
+      var secondsExpression = m_expressionParts[0];
+      var minuteExpression = m_expressionParts[1];
+      var hourExpression = m_expressionParts[2];
 
-      StringBuilder description = new StringBuilder();
+      var description = new StringBuilder();
 
       //handle special cases first
       if (minuteExpression.IndexOfAny(m_specialCharacters) == -1
@@ -197,7 +197,7 @@ namespace CronExpressionDescriptor
           && hourExpression.IndexOfAny(m_specialCharacters) == -1)
       {
         //minute range in single hour (i.e. 0-10 11)
-        string[] minuteParts = minuteExpression.Split('-');
+        var minuteParts = minuteExpression.Split('-');
         description.Append(string.Format(GetString("EveryMinuteBetweenX0AndX1"),
             FormatTime(hourExpression, minuteParts[0]),
             FormatTime(hourExpression, minuteParts[1])));
@@ -207,9 +207,9 @@ namespace CronExpressionDescriptor
           && minuteExpression.IndexOfAny(m_specialCharacters) == -1)
       {
         //hours list with single minute (o.e. 30 6,14,16)
-        string[] hourParts = hourExpression.Split(',');
+        var hourParts = hourExpression.Split(',');
         description.Append(GetString("At"));
-        for (int i = 0; i < hourParts.Length; i++)
+        for (var i = 0; i < hourParts.Length; i++)
         {
           description.Append(" ").Append(FormatTime(hourParts[i], minuteExpression));
 
@@ -227,9 +227,9 @@ namespace CronExpressionDescriptor
       else
       {
         //default time description
-        string secondsDescription = GetSecondsDescription();
-        string minutesDescription = GetMinutesDescription();
-        string hoursDescription = GetHoursDescription();
+        var secondsDescription = GetSecondsDescription();
+        var minutesDescription = GetMinutesDescription();
+        var hoursDescription = GetHoursDescription();
 
         description.Append(secondsDescription);
 
@@ -258,7 +258,7 @@ namespace CronExpressionDescriptor
     /// <returns>The SECONDS description</returns>
     protected string GetSecondsDescription()
     {
-      string description = GetSegmentDescription(
+      var description = GetSegmentDescription(
          m_expressionParts[0],
          GetString("EverySecond"),
          (s => s),
@@ -266,7 +266,7 @@ namespace CronExpressionDescriptor
          (s => GetString("SecondsX0ThroughX1PastTheMinute")),
          (s =>
          {
-           int i = 0;
+           var i = 0;
            if (int.TryParse(s, out i))
            {
              return s == "0"
@@ -293,7 +293,7 @@ namespace CronExpressionDescriptor
     /// <returns>The MINUTE description</returns>
     protected string GetMinutesDescription()
     {
-      string description = GetSegmentDescription(
+      var description = GetSegmentDescription(
           expression: m_expressionParts[1],
           allDescription: GetString("EveryMinute"),
           getSingleItemDescription: (s => s),
@@ -301,7 +301,7 @@ namespace CronExpressionDescriptor
           getBetweenDescriptionFormat: (s => GetString("MinutesX0ThroughX1PastTheHour")),
           getDescriptionFormat: (s =>
           {
-            int i = 0;
+            var i = 0;
             if (int.TryParse(s, out i))
             {
               return s == "0"
@@ -327,8 +327,8 @@ namespace CronExpressionDescriptor
     /// <returns>The HOUR description</returns>
     protected string GetHoursDescription()
     {
-      string expression = m_expressionParts[2];
-      string description = GetSegmentDescription(expression,
+      var expression = m_expressionParts[2];
+      var description = GetSegmentDescription(expression,
              GetString("EveryHour"),
              (s => FormatTime(s, "0")),
              (s => string.Format(GetString("EveryX0Hours"), s)),
@@ -363,7 +363,7 @@ namespace CronExpressionDescriptor
             GetString("ComaEveryDay"),
             (s =>
             {
-              string exp = s.Contains("#")
+              var exp = s.Contains("#")
                           ? s.Remove(s.IndexOf("#"))
                           : s.Contains("L")
                               ? s.Replace("L", string.Empty)
@@ -378,7 +378,7 @@ namespace CronExpressionDescriptor
               string format = null;
               if (s.Contains("#"))
               {
-                string dayOfWeekOfMonthNumber = s.Substring(s.IndexOf("#") + 1);
+                var dayOfWeekOfMonthNumber = s.Substring(s.IndexOf("#") + 1);
                 string dayOfWeekOfMonthDescription = null;
                 switch (dayOfWeekOfMonthNumber)
                 {
@@ -427,7 +427,7 @@ namespace CronExpressionDescriptor
     /// <returns>The MONTH description</returns>
     protected string GetMonthDescription()
     {
-      string description = GetSegmentDescription(
+      var description = GetSegmentDescription(
           m_expressionParts[4],
           string.Empty,
          (s => new DateTime(DateTime.Now.Year, Convert.ToInt32(s), 1).ToString("MMMM", m_culture)),
@@ -447,7 +447,7 @@ namespace CronExpressionDescriptor
     protected string GetDayOfMonthDescription()
     {
       string description = null;
-      string expression = m_expressionParts[3];
+      var expression = m_expressionParts[3];
 
       switch (expression)
       {
@@ -459,13 +459,13 @@ namespace CronExpressionDescriptor
           description = GetString("ComaOnTheLastWeekdayOfTheMonth");
           break;
         default:
-          Regex weekDayNumberMatches = new Regex("(\\d{1,2}W)|(W\\d{1,2})");
+          var weekDayNumberMatches = new Regex("(\\d{1,2}W)|(W\\d{1,2})");
           if (weekDayNumberMatches.IsMatch(expression))
           {
-            Match m = weekDayNumberMatches.Match(expression);
-            int dayNumber = Int32.Parse(m.Value.Replace("W", ""));
+            var m = weekDayNumberMatches.Match(expression);
+            var dayNumber = Int32.Parse(m.Value.Replace("W", ""));
 
-            string dayString = dayNumber == 1 ? GetString("FirstWeekday") :
+            var dayString = dayNumber == 1 ? GetString("FirstWeekday") :
                 String.Format(GetString("WeekdayNearestDayX0"), dayNumber);
             description = String.Format(GetString("ComaOnTheX0OfTheMonth"), dayString);
 
@@ -474,11 +474,11 @@ namespace CronExpressionDescriptor
           else
           {
             // Handle "last day offset" (i.e. L-5:  "5 days before the last day of the month")
-            Regex lastDayOffSetMatches = new Regex("L-(\\d{1,2})");
+            var lastDayOffSetMatches = new Regex("L-(\\d{1,2})");
             if (lastDayOffSetMatches.IsMatch(expression))
             {
-              Match m = lastDayOffSetMatches.Match(expression);
-              string offSetDays = m.Groups[1].Value;
+              var m = lastDayOffSetMatches.Match(expression);
+              var offSetDays = m.Groups[1].Value;
               description = String.Format(GetString("CommaDaysBeforeTheLastDayOfTheMonth"), offSetDays);
               break;
             }
@@ -506,7 +506,7 @@ namespace CronExpressionDescriptor
     /// <returns>The YEAR description</returns>
     private string GetYearDescription()
     {
-      string description = GetSegmentDescription(m_expressionParts[6],
+      var description = GetSegmentDescription(m_expressionParts[6],
           string.Empty,
          (s => Regex.IsMatch(s, @"^\d+$") ?
           new DateTime(Convert.ToInt32(s), 1, 1).ToString("yyyy") : s),
@@ -563,13 +563,13 @@ namespace CronExpressionDescriptor
       }
       else if (expression.Contains("/"))
       {
-        string[] segments = expression.Split('/');
+        var segments = expression.Split('/');
         description = string.Format(getIntervalDescriptionFormat(segments[1]), getSingleItemDescription(segments[1]));
 
         //interval contains 'between' piece (i.e. 2-59/3 )
         if (segments[0].Contains("-"))
         {
-          string betweenSegmentDescription = GenerateBetweenSegmentDescription(segments[0], getBetweenDescriptionFormat, getSingleItemDescription);
+          var betweenSegmentDescription = GenerateBetweenSegmentDescription(segments[0], getBetweenDescriptionFormat, getSingleItemDescription);
 
           if (!betweenSegmentDescription.StartsWith(", "))
           {
@@ -580,7 +580,7 @@ namespace CronExpressionDescriptor
         }
         else if (segments[0].IndexOfAny(new char[] { '*', ',' }) == -1)
         {
-          string rangeItemDescription = string.Format(getDescriptionFormat(segments[0]), getSingleItemDescription(segments[0]));
+          var rangeItemDescription = string.Format(getDescriptionFormat(segments[0]), getSingleItemDescription(segments[0]));
           //remove any leading comma
           rangeItemDescription = rangeItemDescription.Replace(", ", "");
 
@@ -589,10 +589,10 @@ namespace CronExpressionDescriptor
       }
       else if (expression.Contains(","))
       {
-        string[] segments = expression.Split(',');
+        var segments = expression.Split(',');
 
-        string descriptionContent = string.Empty;
-        for (int i = 0; i < segments.Length; i++)
+        var descriptionContent = string.Empty;
+        for (var i = 0; i < segments.Length; i++)
         {
           if (i > 0 && segments.Length > 2)
           {
@@ -611,7 +611,7 @@ namespace CronExpressionDescriptor
 
           if (segments[i].Contains("-"))
           {
-            string betweenSegmentDescription = GenerateBetweenSegmentDescription(segments[i], getRangeFormat, getSingleItemDescription);
+            var betweenSegmentDescription = GenerateBetweenSegmentDescription(segments[i], getRangeFormat, getSingleItemDescription);
 
             //remove any leading comma
             betweenSegmentDescription = betweenSegmentDescription.Replace(", ", "");
@@ -643,10 +643,10 @@ namespace CronExpressionDescriptor
     /// <returns>The between segment description</returns>
     protected string GenerateBetweenSegmentDescription(string betweenExpression, Func<string, string> getBetweenDescriptionFormat, Func<string, string> getSingleItemDescription)
     {
-      string description = string.Empty;
-      string[] betweenSegments = betweenExpression.Split('-');
-      string betweenSegment1Description = getSingleItemDescription(betweenSegments[0]);
-      string betweenSegment2Description = getSingleItemDescription(betweenSegments[1]);
+      var description = string.Empty;
+      var betweenSegments = betweenExpression.Split('-');
+      var betweenSegment1Description = getSingleItemDescription(betweenSegments[0]);
+      var betweenSegment2Description = getSingleItemDescription(betweenSegments[1]);
       betweenSegment2Description = betweenSegment2Description.Replace(":00", ":59");
       var betweenDescriptionFormat = getBetweenDescriptionFormat(betweenExpression);
       description += string.Format(betweenDescriptionFormat, betweenSegment1Description, betweenSegment2Description);
@@ -674,9 +674,9 @@ namespace CronExpressionDescriptor
     /// <returns>Formatted time description</returns>
     protected string FormatTime(string hourExpression, string minuteExpression, string secondExpression)
     {
-      int hour = Convert.ToInt32(hourExpression);
+      var hour = Convert.ToInt32(hourExpression);
 
-      string period = string.Empty;
+      var period = string.Empty;
       if (!m_use24HourTimeFormat)
       {
         period = GetString((hour >= 12) ? "PMPeriod" : "AMPeriod");
@@ -696,8 +696,8 @@ namespace CronExpressionDescriptor
         }
       }
 
-      string minute = Convert.ToInt32(minuteExpression).ToString();
-      string second = string.Empty;
+      var minute = Convert.ToInt32(minuteExpression).ToString();
+      var second = string.Empty;
       if (!string.IsNullOrEmpty(secondExpression))
       {
         second = string.Concat(":", Convert.ToInt32(secondExpression).ToString().PadLeft(2, '0'));
@@ -755,7 +755,7 @@ namespace CronExpressionDescriptor
     /// <returns>The cron expression description</returns>
     public static string GetDescription(string expression, Options options)
     {
-      ExpressionDescriptor descripter = new ExpressionDescriptor(expression, options);
+      var descripter = new ExpressionDescriptor(expression, options);
       return descripter.GetDescription(DescriptionTypeEnum.FULL);
     }
     #endregion

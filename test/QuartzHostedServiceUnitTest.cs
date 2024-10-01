@@ -15,15 +15,15 @@ namespace SilkierQuartz.Test
         [Fact(DisplayName = "Install JobFactory (For DI)")]
         public async void IServiceCollectionExtensions_Register_HostedService()
         {
-            IServiceProvider serviceProvider = A.Fake<IServiceProvider>();
+            var serviceProvider = A.Fake<IServiceProvider>();
             A.CallTo(() => serviceProvider.GetService(typeof(IEnumerable<IScheduleJob>))).Returns(null);
 
-            ISchedulerFactory schedulerFactory = A.Fake<ISchedulerFactory>();
-            IScheduler scheduler = A.Fake<IScheduler>();
+            var schedulerFactory = A.Fake<ISchedulerFactory>();
+            var scheduler = A.Fake<IScheduler>();
             A.CallTo(() => schedulerFactory.GetScheduler(A<CancellationToken>.Ignored))
                 .Returns(Task.FromResult(scheduler));
 
-            IJobFactory jobFactory = A.Fake<IJobFactory>();
+            var jobFactory = A.Fake<IJobFactory>();
 
             var testClass = new QuartzHostedService(serviceProvider, schedulerFactory, jobFactory);
             await testClass.StartAsync(CancellationToken.None);
@@ -46,16 +46,16 @@ namespace SilkierQuartz.Test
             scheduleJobc.Add(new ScheduleJob(jobDetail2, new List<ITrigger>() { A.Fake<ITrigger>() }));
             scheduleJobc.Add(new ScheduleJob(jobDetail3, new List<ITrigger>() { A.Fake<ITrigger>() }));
 
-            IServiceProvider serviceProvider = A.Fake<IServiceProvider>();
+            var serviceProvider = A.Fake<IServiceProvider>();
             A.CallTo(() => serviceProvider.GetService(typeof(IEnumerable<IScheduleJob>))).Returns(scheduleJobc);
 
 
-            ISchedulerFactory schedulerFactory = A.Fake<ISchedulerFactory>();
-            IScheduler scheduler = A.Fake<IScheduler>();
+            var schedulerFactory = A.Fake<ISchedulerFactory>();
+            var scheduler = A.Fake<IScheduler>();
             A.CallTo(() => schedulerFactory.GetScheduler(A<CancellationToken>.Ignored))
                 .Returns(Task.FromResult(scheduler));
 
-            IJobFactory jobFactory = A.Fake<IJobFactory>();
+            var jobFactory = A.Fake<IJobFactory>();
 
             var testClass = new QuartzHostedService(serviceProvider, schedulerFactory, jobFactory);
             await testClass.StartAsync(CancellationToken.None);
@@ -80,16 +80,16 @@ namespace SilkierQuartz.Test
             var trigger3 = A.Fake<ITrigger>();
             scheduleJobc.Add(new ScheduleJob(jobDetail1, new List<ITrigger>() { trigger1, trigger2, trigger3 }));
 
-            IServiceProvider serviceProvider = A.Fake<IServiceProvider>();
+            var serviceProvider = A.Fake<IServiceProvider>();
             A.CallTo(() => serviceProvider.GetService(typeof(IEnumerable<IScheduleJob>))).Returns(scheduleJobc);
 
 
-            ISchedulerFactory schedulerFactory = A.Fake<ISchedulerFactory>();
-            IScheduler scheduler = A.Fake<IScheduler>();
+            var schedulerFactory = A.Fake<ISchedulerFactory>();
+            var scheduler = A.Fake<IScheduler>();
             A.CallTo(() => schedulerFactory.GetScheduler(A<CancellationToken>.Ignored))
                 .Returns(Task.FromResult(scheduler));
 
-            IJobFactory jobFactory = A.Fake<IJobFactory>();
+            var jobFactory = A.Fake<IJobFactory>();
 
             var testClass = new QuartzHostedService(serviceProvider, schedulerFactory, jobFactory);
             await testClass.StartAsync(CancellationToken.None);

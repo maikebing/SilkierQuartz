@@ -33,8 +33,8 @@ namespace SilkierQuartz.Models
 
         internal void Layout()
         {
-            double max = Bars.Max(x => x.Value);
-            int i = 0;
+            var max = Bars.Max(x => x.Value);
+            var i = 0;
             foreach (var b in Bars)
             {
                 b.ComputedLeft = i * BarWidth;
@@ -48,7 +48,7 @@ namespace SilkierQuartz.Models
         {
             var hst = new Histogram();
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 hst.Bars.Add(new Bar()
                 {

@@ -48,7 +48,7 @@ namespace SilkierQuartz.TypeHandlers
 
         protected string GetManifestResourceString(string name)
         {
-            string fullName = $"{Namespace}.{name}";
+            var fullName = $"{Namespace}.{name}";
             using (var stream = Assembly.GetManifestResourceStream(fullName))
             {
                 if (stream == null)

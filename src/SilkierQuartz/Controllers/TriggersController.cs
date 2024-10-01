@@ -245,7 +245,7 @@ namespace SilkierQuartz.Controllers
             if (string.IsNullOrEmpty(cron))
                 return Json(new { Description = "", Next = new object[0] });
 
-            string desc = "Invalid format.";
+            var desc = "Invalid format.";
 
             try
             {
@@ -254,13 +254,13 @@ namespace SilkierQuartz.Controllers
             catch
             { }
 
-            List<string> nextDates = new List<string>();
+            var nextDates = new List<string>();
 
             try
             {
                 var qce = new CronExpression(cron);
-                DateTime dt = DateTime.Now;
-                for (int i = 0; i < 10; i++)
+                var dt = DateTime.Now;
+                for (var i = 0; i < 10; i++)
                 {
                     var next = qce.GetNextValidTimeAfter(dt);
                     if (next == null)

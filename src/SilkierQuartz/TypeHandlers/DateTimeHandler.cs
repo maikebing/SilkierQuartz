@@ -30,7 +30,7 @@ namespace SilkierQuartz.TypeHandlers
         {
             if (value is DateTime dt)
             {
-                bool missingTime = dt.TimeOfDay.Ticks == 0;
+                var missingTime = dt.TimeOfDay.Ticks == 0;
 
                 if (IgnoreTimeComponent == missingTime || IsUtc)
                     return (IsUtc == (dt.Kind == DateTimeKind.Utc));

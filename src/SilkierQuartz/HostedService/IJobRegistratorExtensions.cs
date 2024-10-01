@@ -176,7 +176,7 @@ namespace SilkierQuartz
 
             var jobDetail = JobBuilder.Create<TJob>().Build();
 
-            List<ITrigger> triggers = new List<ITrigger>(triggerBuilders.Count());
+            var triggers = new List<ITrigger>(triggerBuilders.Count());
             foreach (var triggerBuilder in triggerBuilders)
             {
                 triggers.Add(triggerBuilder.ForJob(jobDetail).Build());

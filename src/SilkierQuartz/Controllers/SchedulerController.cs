@@ -52,7 +52,7 @@ namespace SilkierQuartz.Controllers
             }
 
             int? failedJobs = null;
-            int executedJobs = metadata.NumberOfJobsExecuted;
+            var executedJobs = metadata.NumberOfJobsExecuted;
 
             if (histStore != null)
             {

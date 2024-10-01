@@ -20,7 +20,7 @@ namespace SilkierQuartz.Controllers
 
             var list = new List<CalendarListItem>();
 
-            foreach (string name in calendarNames)
+            foreach (var name in calendarNames)
             {
                 var cal = await Scheduler.GetCalendar(name);
                 list.Add(new CalendarListItem() { Name = name, Description = cal.Description, Type = cal.GetType() });
@@ -73,7 +73,7 @@ namespace SilkierQuartz.Controllers
             if (chain.Length == 0 || string.IsNullOrEmpty(chain[0].Name))
                 result.Errors.Add(ValidationError.EmptyField(nameof(CalendarViewModel.Name)));
 
-            for (int i = 0; i < chain.Length; i++)
+            for (var i = 0; i < chain.Length; i++)
             {
                 RemoveLastEmpty(chain[i].Days);
                 RemoveLastEmpty(chain[i].Dates);
@@ -86,7 +86,7 @@ namespace SilkierQuartz.Controllers
 
             if (result.Success)
             {
-                string name = chain[0].Name;
+                var name = chain[0].Name;
 
                 ICalendar existing = null;
 
@@ -94,9 +94,9 @@ namespace SilkierQuartz.Controllers
                     existing = await Scheduler.GetCalendar(name);
 
                 ICalendar root = null, current = null;
-                for (int i = 0; i < chain.Length; i++)
+                for (var i = 0; i < chain.Length; i++)
                 {
-                    ICalendar newCal = chain[i].Type.Equals("custom") ? existing : chain[i].BuildCalendar();
+                    var newCal = chain[i].Type.Equals("custom") ? existing : chain[i].BuildCalendar();
 
                     if (newCal == null)
                         break;
