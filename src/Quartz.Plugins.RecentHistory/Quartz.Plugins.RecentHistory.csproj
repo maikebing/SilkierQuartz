@@ -6,7 +6,7 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NoWarn>1591</NoWarn>
 
-		<Version>1.0.9</Version>
+		<Version>8.0.1</Version>
 		<Product>SilkierQuartz</Product>
 		<Title>Quartz.NET plugin to persist recent job execution history</Title>
 		<Authors>Jan Lucansky,Maikebing</Authors>
