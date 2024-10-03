@@ -36,6 +36,16 @@ namespace SilkierQuartz
                     CultureInfo.InvariantCulture);
         }
 
+        public static string ToDefaultFormat(this DateTimeOffset date)
+        {
+            return DateTimeSettings.UseLocalTime
+                ? date.ToLocalTime()
+                    .ToString(DateTimeSettings.DefaultDateFormat + " " + DateTimeSettings.DefaultTimeFormat,
+                        CultureInfo.InvariantCulture)
+                : date.ToString(DateTimeSettings.DefaultDateFormat + " " + DateTimeSettings.DefaultTimeFormat,
+                    CultureInfo.InvariantCulture);
+        }
+
         public static Dictionary<string, string> ToDictionary(this IEnumerable<TimeZoneInfo> timeZoneInfos)
         {
             return timeZoneInfos.ToDictionary(x => x.Id, x =>

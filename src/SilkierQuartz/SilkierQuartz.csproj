@@ -7,7 +7,7 @@
 		<NoWarn>1591</NoWarn>
 		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
 
-		<Version>8.0.0</Version>
+		<Version>8.0.1</Version>
 		<Product>SilkierQuartz</Product>
 		<Title>Web management tool for Quartz.NET</Title>
 		<Authors>Jan Lucansky, Yanhong Ma,  mukmyash</Authors>
@@ -15,10 +15,10 @@
 		<PackageIconUrl></PackageIconUrl>
 		<Description>Powerful, easy to use web management tool for Quartz.NET</Description>
 		<PackageTags>quartz;web;ui</PackageTags>
-		<AssemblyVersion>1.0.8.0</AssemblyVersion>
-		<FileVersion>1.0.8.0</FileVersion>
+		<AssemblyVersion>1.0.8.1</AssemblyVersion>
+		<FileVersion>1.0.8.1</FileVersion>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<Copyright>Copyright © 2020 Jan Lucansky, Yanhong Ma,  mukmyash</Copyright>
+		<Copyright>Copyright © 2024 Jan Lucansky, Yanhong Ma,  mukmyash</Copyright>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/maikebing/SilkierQuartz</RepositoryUrl>
 		<EmbeddedResourceUseDependentUponConvention>false</EmbeddedResourceUseDependentUponConvention>
