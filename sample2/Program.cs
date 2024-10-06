@@ -21,7 +21,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddRazorPages();
 
 var services = builder.Services;
-var Configuration =builder.Configuration;
+var configuration = builder.Configuration;
 services.AddSilkierQuartz(options =>
 {
     options.VirtualPathRoot = "/quartz";
@@ -53,12 +53,13 @@ services.AddSilkierQuartz(options =>
 #endif
             );
 services.AddOptions();
-services.Configure<AppSettings>(Configuration);
+services.Configure<AppSettings>(configuration);
 services.Configure<InjectProperty>(options => { options.WriteText = "This is inject string"; });
 services.AddQuartzJob<HelloJob>()
         .AddQuartzJob<InjectSampleJob>()
         .AddQuartzJob<HelloJobSingle>()
-        .AddQuartzJob<InjectSampleJobSingle>();
+        .AddQuartzJob<InjectSampleJobSingle>()
+        .AddQuartzJob<LongRunningJob>();
 
 
 var app = builder.Build();
@@ -84,7 +85,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseSilkierQuartz();
 app.MapRazorPages();
-#region  ²»Ê¹ÓÃ SilkierQuartzAttribe ÊôĞÔµÄ½øĞĞ×¢²áºÍÊ¹ÓÃµÄIJob£¬ÕâÀïÍ¨¹ıUseQuartzJobµÄIJob±ØĞëÔÚ  ConfigureServices½øĞĞAddQuartzJob
+#region  ä¸ä½¿ç”¨ SilkierQuartzAttribe å±æ€§çš„è¿›è¡Œæ³¨å†Œå’Œä½¿ç”¨çš„IJobï¼Œè¿™é‡Œé€šè¿‡UseQuartzJobçš„IJobå¿…é¡»åœ¨  ConfigureServicesè¿›è¡ŒAddQuartzJob
 
 app.UseQuartzJob<HelloJobSingle>(TriggerBuilder.Create().WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever()))
 .UseQuartzJob<InjectSampleJobSingle>(() =>
@@ -102,6 +103,17 @@ app.UseQuartzJob<HelloJob>(new List<TriggerBuilder>
                      //Add a sample that uses 1-7 for dow
                     TriggerBuilder.Create()
                                   .WithCronSchedule("0 0 2 ? * 7 *"),
+                });
+var runAt = DateTime.Now.AddMinutes(3);
+app.UseQuartzJob<LongRunningJob>(new List<TriggerBuilder>
+                {
+                    TriggerBuilder.Create()
+                    .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever()),
+                    TriggerBuilder.Create()
+                    .WithSimpleSchedule(x => x.WithIntervalInMinutes(2).RepeatForever()),
+                     //Add a sample that uses 1-7 for dow
+                    TriggerBuilder.Create()
+                                  .WithCronSchedule($"0 {runAt.Minute} {runAt.Hour} ? * {(int)runAt.DayOfWeek} *"),
                 });
 
 app.UseQuartzJob<InjectSampleJob>(() =>

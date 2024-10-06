@@ -1,40 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net8.0</TargetFrameworks>
+		<RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>1591</NoWarn>
 
-  <PropertyGroup>
-	  <TargetFrameworks>net6.0</TargetFrameworks>
-    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
-    <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>1591</NoWarn>
+		<Version>8.0.1</Version>
+		<Product>SilkierQuartz</Product>
+		<Title>Quartz.NET plugin to persist recent job execution history</Title>
+		<Authors>Jan Lucansky,Maikebing</Authors>
+		<PackageProjectUrl>https://github.com/jlucansky/SilkierQuartz</PackageProjectUrl>
+		<Description>This is supporting package for SilkierQuartz</Description>
+		<PackageTags>quartz;recent;history</PackageTags>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<FileVersion>1.0.0.0</FileVersion>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<Copyright>Copyright © 2018 Jan Lucansky, Copyright © 2020  Maikebing</Copyright>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/jlucansky/SilkierQuartz</RepositoryUrl>
+		<PackageId>SilkierQuartz.Plugins.RecentHistory</PackageId>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
 
-    <Version>1.0.3</Version>
-    <Product>SilkierQuartz</Product>
-    <Title>Quartz.NET plugin to persist recent job execution history</Title>
-    <Authors>Jan Lucansky,Maikebing</Authors>
-    <PackageProjectUrl>https://github.com/jlucansky/SilkierQuartz</PackageProjectUrl>
-    <Description>This is supporting package for SilkierQuartz</Description>
-    <PackageTags>quartz;recent;history</PackageTags>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Copyright>Copyright © 2018 Jan Lucansky, Copyright © 2020  Maikebing</Copyright>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/jlucansky/SilkierQuartz</RepositoryUrl>
-    <PackageId>SilkierQuartz.Plugins.RecentHistory</PackageId>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
+	<ItemGroup>
+		<None Include="..\..\.editorconfig" Link=".editorconfig" />
+		<None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\..\.editorconfig" Link=".editorconfig" />
-    <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Quartz" Version="3.7.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Quartz" Version="3.3.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="*.vspscc" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="*.vspscc" />
+	</ItemGroup>
 
 </Project>

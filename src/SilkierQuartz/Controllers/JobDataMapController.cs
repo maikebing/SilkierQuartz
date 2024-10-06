@@ -31,10 +31,10 @@ namespace SilkierQuartz.Controllers
 
             var dataMapForm = (await formData.GetJobDataMapForm(includeRowIndex: false)).SingleOrDefault(); // expected single row
 
-            object oldValue = selectedType.ConvertFrom(dataMapForm);
+            var oldValue = selectedType.ConvertFrom(dataMapForm);
 
             // phase 1: direct conversion
-            object newValue = targetType.ConvertFrom(oldValue);
+            var newValue = targetType.ConvertFrom(oldValue);
 
             if (oldValue != null && newValue == null) // if phase 1 failed
             {
@@ -54,12 +54,12 @@ namespace SilkierQuartz.Controllers
             if (etag.Equals(GetETag()))
                 return NotModified();
 
-            StringBuilder execStubBuilder = new StringBuilder();
+            var execStubBuilder = new StringBuilder();
             execStubBuilder.AppendLine();
             foreach (var func in new[] { "init" })
                 execStubBuilder.AppendLine(string.Format("if (f === '{0}' && {0} !== 'undefined') {{ {0}.call(this); }}", func));
 
-            string execStub = execStubBuilder.ToString();
+            var execStub = execStubBuilder.ToString();
 
             var js = Services.TypeHandlers.GetScripts().ToDictionary(x => x.Key,
                 x => new JRaw("function(f) {" + x.Value + execStub + "}"));

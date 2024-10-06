@@ -36,6 +36,16 @@ namespace SilkierQuartz
                     CultureInfo.InvariantCulture);
         }
 
+        public static string ToDefaultFormat(this DateTimeOffset date)
+        {
+            return DateTimeSettings.UseLocalTime
+                ? date.ToLocalTime()
+                    .ToString(DateTimeSettings.DefaultDateFormat + " " + DateTimeSettings.DefaultTimeFormat,
+                        CultureInfo.InvariantCulture)
+                : date.ToString(DateTimeSettings.DefaultDateFormat + " " + DateTimeSettings.DefaultTimeFormat,
+                    CultureInfo.InvariantCulture);
+        }
+
         public static Dictionary<string, string> ToDictionary(this IEnumerable<TimeZoneInfo> timeZoneInfos)
         {
             return timeZoneInfos.ToDictionary(x => x.Id, x =>
@@ -58,7 +68,7 @@ namespace SilkierQuartz
 
         public static string ETag(this DateTime dateTime)
         {
-            long etagHash = dateTime.ToFileTimeUtc();
+            var etagHash = dateTime.ToFileTimeUtc();
             return '\"' + Convert.ToString(etagHash, 16) + '\"';
         }
 
@@ -130,16 +140,16 @@ namespace SilkierQuartz
         {
             // https://github.com/JamesNK/Newtonsoft.Json/blob/master/Src/Newtonsoft.Json/Utilities/ReflectionUtils.cs
 
-            string fullyQualifiedTypeName = type.AssemblyQualifiedName;
+            var fullyQualifiedTypeName = type.AssemblyQualifiedName;
 
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
             // loop through the type name and filter out qualified assembly details from nested type names
-            bool writingAssemblyName = false;
-            bool skippingAssemblyDetails = false;
-            for (int i = 0; i < fullyQualifiedTypeName.Length; i++)
+            var writingAssemblyName = false;
+            var skippingAssemblyDetails = false;
+            for (var i = 0; i < fullyQualifiedTypeName.Length; i++)
             {
-                char current = fullyQualifiedTypeName[i];
+                var current = fullyQualifiedTypeName[i];
                 switch (current)
                 {
                     case '[':
@@ -180,7 +190,7 @@ namespace SilkierQuartz
 
         private static List<JobDataMapItem> GetJobDataMapModelCore(object jobOrTrigger, Services services)
         {
-            List<JobDataMapItem> list = new List<JobDataMapItem>();
+            var list = new List<JobDataMapItem>();
 
             // TODO: doplnit parametre z template na zaklade jobKey; value najprv skonvertovat na ocakavany typ zo sablony
 
@@ -228,7 +238,7 @@ namespace SilkierQuartz
 
                     if (model.SelectedType == null) // if there is no suitable TypeHandler, create dynamic one
                     {
-                        Type t = model.Value.GetType();
+                        var t = model.Value.GetType();
 
                         string strValue;
                         var m = t.GetMethod(nameof(ToString), BindingFlags.Instance | BindingFlags.Public, null, CallingConventions.Any, new Type[0], null);
@@ -336,7 +346,7 @@ namespace SilkierQuartz
 
         public static string GetScheduleDescription(this IDailyTimeIntervalTrigger trigger)
         {
-            string result = GetScheduleDescription(trigger.RepeatInterval, trigger.RepeatIntervalUnit, trigger.RepeatCount);
+            var result = GetScheduleDescription(trigger.RepeatInterval, trigger.RepeatIntervalUnit, trigger.RepeatCount);
             result += " from " + trigger.StartTimeOfDay.ToShortFormat() + " to " + trigger.EndTimeOfDay.ToShortFormat();
 
             if (trigger.DaysOfWeek.Count < 7)
@@ -356,7 +366,7 @@ namespace SilkierQuartz
 
         public static string GetScheduleDescription(this ISimpleTrigger trigger)
         {
-            string result = "Repeat ";
+            var result = "Repeat ";
             if (trigger.RepeatCount > 0)
                 result += trigger.RepeatCount + " times ";
             result += "every ";
@@ -382,12 +392,12 @@ namespace SilkierQuartz
 
         public static string GetScheduleDescription(int repeatInterval, IntervalUnit repeatIntervalUnit, int repeatCount = 0)
         {
-            string result = "Repeat ";
+            var result = "Repeat ";
             if (repeatCount > 0)
                 result += repeatCount + " times ";
             result += "every ";
 
-            string unitStr = repeatIntervalUnit.ToString().ToLower();
+            var unitStr = repeatIntervalUnit.ToString().ToLower();
 
             if (repeatInterval == 1)
                 result += unitStr;
@@ -433,8 +443,8 @@ namespace SilkierQuartz
             foreach (var entry in entries)
             {
                 TimeSpan? duration = null;
-                string cssClass = "";
-                string state = "Finished";
+                var cssClass = "";
+                var state = "Finished";
 
                 if (entry.FinishedTimeUtc != null)
                     duration = entry.FinishedTimeUtc - entry.ActualFireTimeUtc;

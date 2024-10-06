@@ -15,10 +15,10 @@ namespace SilkierQuartz.Helpers
 
             foreach (var item in formData)
             {
-                string g = GetJobDataMapFieldGroup(item.Key);
+                var g = GetJobDataMapFieldGroup(item.Key);
                 if (g != null)
                 {
-                    string field = item.Key.Substring(0, item.Key.Length - g.Length - 1);
+                    var field = item.Key.Substring(0, item.Key.Length - g.Length - 1);
                     if (!map.ContainsKey(g))
                         map[g] = new Dictionary<string, object>();
                     map[g][field] = item.Value;
@@ -54,7 +54,7 @@ namespace SilkierQuartz.Helpers
 
             foreach (var key in request.Form.Keys)
             {
-                foreach (string strValue in request.Form[key])
+                foreach (var strValue in request.Form[key])
                     result.Add(new KeyValuePair<string, object>(key, strValue));
             }
             foreach (var file in request.Form.Files)

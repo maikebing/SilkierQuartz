@@ -19,7 +19,7 @@ namespace SilkierQuartz
         /// <param name="app"></param>
         public static   void  SchedulerJobs(this IApplicationBuilder app)
         {
-            IScheduler scheduler = app.GetScheduler();
+            var scheduler = app.GetScheduler();
             {
                 var jobData = new JobDataMap();
                 jobData.Put("DateFrom", DateTime.Now);

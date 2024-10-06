@@ -93,9 +93,9 @@ namespace SilkierQuartz.Models
                 },
                 Validator = (model, errors) =>
                 {
-                    for (int i = 0; i < model.Days.Count; i++)
+                    for (var i = 0; i < model.Days.Count; i++)
                     {
-                        if (DateTime.TryParseExact(model.Days[i], "MMMM d", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime _) == false)
+                        if (DateTime.TryParseExact(model.Days[i], "MMMM d", CultureInfo.InvariantCulture, DateTimeStyles.None, out var _) == false)
                             errors.Add(new ValidationError() { Field = nameof(model.Days), Reason = "Invalid format.", FieldIndex = i });
                     }
                 }
@@ -159,9 +159,9 @@ namespace SilkierQuartz.Models
                 },
                 Validator = (model, errors) =>
                 {
-                    for (int i = 0; i < model.Dates.Count; i++)
+                    for (var i = 0; i < model.Dates.Count; i++)
                     {
-                        if (DateTime.TryParseExact(model.Dates[i], DateTimeSettings.DefaultDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime _) == false)
+                        if (DateTime.TryParseExact(model.Dates[i], DateTimeSettings.DefaultDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var _) == false)
                             errors.Add(new ValidationError() { Field = nameof(model.Dates), Reason = "Invalid format.", FieldIndex = i });
                     }
                 }
@@ -171,7 +171,7 @@ namespace SilkierQuartz.Models
                 Builder = model =>
                 {
                     var cal = new MonthlyCalendar() { TimeZone = model.ResolveTimeZone(), Description = model.Description };
-                    for (int i = 0; i < model.DaysExcluded.Length; i++)
+                    for (var i = 0; i < model.DaysExcluded.Length; i++)
                         cal.SetDayExcluded(i + 1, model.DaysExcluded[i]);
                     return cal;
                 },
@@ -186,7 +186,7 @@ namespace SilkierQuartz.Models
                 Builder = model =>
                 {
                     var cal = new WeeklyCalendar() { TimeZone = model.ResolveTimeZone(), Description = model.Description };
-                    for (int i = 0; i < model.DaysExcluded.Length; i++)
+                    for (var i = 0; i < model.DaysExcluded.Length; i++)
                         cal.SetDayExcluded((DayOfWeek)i, model.DaysExcluded[i]);
                     return cal;
                 },

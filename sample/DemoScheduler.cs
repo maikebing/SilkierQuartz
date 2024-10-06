@@ -17,9 +17,9 @@ namespace SilkierQuartz
         /// How to compatible old code to SilkierQuartz
         /// </summary>
         /// <param name="app"></param>
-        public static   void  SchedulerJobs(this IApplicationBuilder app)
+        public static void SchedulerJobs(this IApplicationBuilder app)
         {
-            IScheduler scheduler = app.GetScheduler();
+            var scheduler = app.GetScheduler();
             {
                 var jobData = new JobDataMap();
                 jobData.Put("DateFrom", DateTime.Now);
@@ -127,7 +127,7 @@ namespace SilkierQuartz
 
         }
 
-        public class DummyJob : IJob
+        private class DummyJob : IJob
         {
             private static readonly Random Random = new Random();
 

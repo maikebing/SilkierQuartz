@@ -21,7 +21,7 @@ namespace SilkierQuartz.Controllers
             if (store == null)
                 return View(null);
 
-            IEnumerable<ExecutionHistoryEntry> history = await store.FilterLast(100);
+            var history = await store.FilterLast(100);
 
             var list = new List<object>();
 

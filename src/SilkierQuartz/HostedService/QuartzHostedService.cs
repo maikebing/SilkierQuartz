@@ -43,7 +43,7 @@ namespace SilkierQuartz.HostedService
 
             foreach (var scheduleJob in _scheduleJobs)
             {
-                bool isNewJob = true;
+                var isNewJob = true;
                 foreach (var trigger in scheduleJob.Triggers)
                 {
 
